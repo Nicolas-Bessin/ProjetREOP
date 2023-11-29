@@ -1,0 +1,98 @@
+%Classe du document, A4, police taille 12
+\documentclass[a4paper,12pt]{article}
+
+% Dictionnaire français, pour caractères spéciaux, tirets, caractères accentués
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+%Toujours plus d'accents
+\usepackage[T1]{fontenc}
+
+\usepackage{indentfirst}
+%Pour créer des paragraphes random
+\usepackage{lipsum}  
+%bibliographie
+%Le style dépend du projet, voir avec le grand chef
+%A mettre à l'endroit où vous voulez la faire apparaitre
+%Donc dans le code pas ici t'as vu
+%\bibliographystyle{ieeetr}
+%\bibligraphy{nom_du_fichier.bib}
+
+%hauteur entre deux lignes
+\baselineskip 200cm
+%hauteur entre deux paragraphes
+\parskip 2mm
+%longueur d'indentation
+\parindent 2mm
+%(on utilise \indent et \noindent sinon)
+
+%Gérer ses marges
+
+%Facilement
+\usepackage[margin=2cm]{geometry}
+
+%Précisément
+%\usepackage[left=2cm , right=2cm, bottom=2cm, top=2cm, headheight=2cm]{geometry} 
+%header c'est l'en-tête pas la marge supérieure
+
+%Toujours plus précisément
+%\addtolength{\oddsidemargin}{-0.5in}
+%\addtolength{\evensidemargin}{-5cm}
+%\addtolength{\topmargin}{-0.5in}
+
+%Faires des articles  plusieures colonnes
+\usepackage{multicol}
+%Separation des colonnes
+\setlength{\columnsep}{2cm}
+
+%Avoir des entêtes et pieds de page stylés
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+%Pour enlever l'entête avec les sections
+%\fancyhf{}
+
+%Ca se fait sous format \<pos><type>{<contenu>}
+%type c'est "head" ou "foot"
+%pos pour position gauche "l", droite "r" ou centre "c"
+%contenu c'est ce que tu mets dans dedans 
+%marche aussi avec des images mais flemme
+%mettre un trait
+%\renewcommand{\footrulewidth}{1.5pt}
+
+% Liens dans le document
+\usepackage{hyperref}  
+% Légendes dans les environnements "figure" et "float"
+\usepackage{subcaption}
+%La base pour faire des figures juste
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{wrapfig}
+%Trucs utiles pour les maths
+\usepackage{amsmath}
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+        \vspace*{0.5cm}
+        \includegraphics[scale=0.1]{logo_ponts.jpg}\\
+        \vspace{0.7cm}
+        {\Large ÉCOLE NATIONALE DES PONTS ET CHAUSSÉES}\\
+        \vspace{4cm}
+        \rule\linewidth{0.05cm}
+        {\huge Recherche Opérationelle\par}
+        \rule\linewidth{0.05cm}
+        \vspace{1cm}
+        {\Large Projet \par}
+        \vspace{0.8cm}
+        %{\Large }\\
+        \vspace{0.3cm}
+        {\large \textit{Nicolas Bessin}}\\
+        \vspace{0.3cm}
+        {\large \textit{Erwann Esteve}}\\
+        \vspace{0.3cm}
+        {\large \textit{Tidiane Polo}}\\
+        \vspace{1.2cm}
+        
+    \end{center}
+\end{titlepage}
+
+\end{document}
