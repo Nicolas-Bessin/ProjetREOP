@@ -97,11 +97,59 @@
 
 \section{Questions}
 On veut linéariser des contraintes:
+\\
 \begin {enumerate}
 \item { 
     Contrainte de la forme : $\mu = \alpha \beta$ (1) avec $\alpha \in \lbrace 0,1 \rbrace$ et $\beta \in \lbrack 0, M \rbrack$ \\ 
-    On a (1) $$\iff 0 \leq \mu \space et \space \beta - (1 - \alpha)M \leq \mu \leq \beta$$
+    On a  $$(1) \iff 0 \leq \mu \leq \alpha M \text{  et  } \beta - (1 - \alpha)M \leq \mu \leq \beta$$
     }
+\\
+\item {
+    Contrainte de la forme : $ \mu = \lbrack \beta \rbrack ^+$ avec $\beta \in \lbrack -M, M \rbrack$ \\
+    On introduit une variable binaire $\alpha$ qui vaut 1 si $\beta > 0$ et 0 sinon. \\
+    Pour cela, on introduit les contraintes suivantes :
+    $$ 1 + \frac{\beta}{M} \geq \alpha \geq \frac{\beta}{M}$$
+    La contrainte initiale s'écrit alors :
+    $$ \mu = \alpha \beta $$
+    et on peut la linéariser comme dans la question précédente. \\
+    Cas limite : $\beta = 0$, on a alors $1 \geq \alpha \geq 0$. \\
+    Ce n'est pas un problème puisque $\mu = \alpha \beta = 0$ quel que soit la valeur prise par $\alpha$
+    }
+\\
+\item {
+    Contrainte de la forme : $ \gamma = min(\alpha, \beta)$ avec $\alpha, \beta \in \lbrack -M, M \rbrack$ \\
+    On introduit une variable binaire $\delta$ qui vaut 1 si $\beta < \alpha$ et 0 sinon. \\
+    Pour cela, on introduit les contraintes suivantes :
+    $$ \frac{\alpha - \beta}{2M} \leq \delta \leq 1 + \frac{\alpha - \beta}{2M}$$
+    La contrainte initiale s'écrit alors :
+    $$ \gamma = \delta \beta + (1 - \delta) \alpha $$
+    et on peut la linéariser comme dans la question 1. \\
+}
+\\
+\item {
+    On a le problème suivant : 
+    \begin{equation}
+        \begin{aligned}
+            \min _{\alpha, \beta, \gamma} & \max (\alpha, \beta) + \gamma \\
+            \text{ s.c. } & A(\alpha, \beta, \gamma)^T \leq b \\
+        \end{aligned}
+    \end{equation}
+    On introduit la variable continue $\delta$ et les contraintes suivantes :
+    $$ \delta \geq \alpha $$
+    $$ \delta \geq \beta $$
+    Le problème initial s'écrit alors :
+    \begin{equation}
+        \begin{aligned}
+            \min _{\alpha, \beta, \gamma, \delta}  \delta &+ \gamma \\
+            \text{ s.c. }  A(\alpha, \beta, \gamma)^T &\leq b \\
+            \alpha &\leq \delta \\
+            \beta &\leq \delta \\
+        \end{aligned}
+    \end{equation}
+}
+
+
+
 \end{enumerate}
 \end{document}
 
