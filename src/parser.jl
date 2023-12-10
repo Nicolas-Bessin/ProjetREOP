@@ -3,7 +3,7 @@ include("constants.jl")
 include("instance.jl")
 include("solution.jl")
 
-function read_instance(filename :: String)
+function read_instance(filename :: String) :: Instance
     data = JSON.parsefile(filename)
     general_parameters = data[GEN_PARAMETERS]
     landSubstationCable_data = data[LAND_SUB_CABLE_TYPES]
@@ -38,7 +38,7 @@ function read_instance(filename :: String)
             cable[FIX_COST],
             cable[VAR_COST],
             cable[RATING],
-            cable[PROB_FAIL]
+            0.0
         ) for cable in substationSubstationCable_data
     ]
     # Substation Location
