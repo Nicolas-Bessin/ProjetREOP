@@ -63,13 +63,13 @@ for v in 1:nbSubLocations
 end
 
 # We then add variables for the curtailing of each substation under each scenario
-nbScenarios = length(instance.scenarios)
+nbScenarios = length(instance.windScenarios)
 
 @variable(model, curtailing[1:nbSubLocations, 1:nbScenarios])
 
 for ω in 1:nbScenarios
     for v in 1:nbSubLocations
-        net_power = instance.scenarios[ω].power * sum(z[v, :]) + minusCapa[v]
+        net_power = instance.windScenarios[ω].power * sum(z[v, :]) + minusCapa[v]
         @constraint(model, curtailing[v, ω] >= net_power)
         @constraint(model, curtailing[v, ω] >= 0)
     end

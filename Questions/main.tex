@@ -124,6 +124,26 @@ On veut linéariser des contraintes:
     La contrainte initiale s'écrit alors :
     $$ \gamma = \delta \beta + (1 - \delta) \alpha $$
     et on peut la linéariser comme dans la question 1. \\
+    \\
+    Autre méthode : \\
+    Toujours avec $ \alpha, \beta \in \lbrack -M, M \rbrack$. \\
+    On introduit les variables binaires $y_\alpha$ et $y_\beta$, et la variable continue $y$.
+    Le problème s'écrit alors :
+    \begin{equation}
+        \begin{aligned}
+            \min _{\alpha, \beta, y_\alpha, y_\beta, y} & y \\
+            \text{ s.c. } 
+            &y \leq &\alpha \\
+            &y \leq &\beta \\
+            &y \geq &\alpha - 2M y_\alpha \\
+            &y \geq &\beta - 2M y_\beta \\
+            &y_\alpha + y_\beta &= 1 \\
+        \end{aligned}
+    \end{equation}
+    La contrainte $y_\alpha + y_\beta = 1$ assure que l'un des $y_\alpha$ ou $y_\beta$ vaut zéro,
+     c'est-à-dire que l'on a bien $y$ qui prend la valeur $\alpha$ ou $\beta$.
+    De plus, puisque c'est un problème de minimisation, on a bien $y = min(\alpha, \beta)$.
+    (J'ai pu trouver cette élégante méthode dans https://doi.org/10.3390/math10020283)
 }
 \\
 \item {
