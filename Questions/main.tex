@@ -148,6 +148,36 @@ On veut linéariser des contraintes:
     \end{equation}
 }
 
+\item{
+    Considérons le problème suivant :
+    \begin{equation}
+        \begin{aligned}
+            \min _{a, b, c} & \lbrack a - \min(b, c) \rbrack^+ \\
+        \end{aligned}
+        \label{linmin}
+    \end{equation}
+
+    On a $ \forall b, c : -\min(b, c) = \max(-b, -c) $ \\
+    Puisque c'est un problème de minimisation, on peut écrire :
+    \begin{equation}
+        \eqref{linmin} \iff
+        \begin{aligned}
+            \min _{a, b, c, d} & d \\
+            \text{ s.c. } & d \geq 0 \\
+            & d \geq a - \min(b, c) \\
+        \end{aligned}
+        \iff
+        \begin{aligned}
+            \min _{a, b, c, d, e} d \\
+            \text{ s.c. }
+            d &\geq 0 \\
+            d &\geq a + e \\
+            e &\geq -b \\
+            e &\geq -c \\   
+        \end{aligned}
+    \end{equation}
+}
+
 
 
 \end{enumerate}

@@ -45,3 +45,43 @@ nbSubCableTypes = length(instance.substationSubstationCables)
 for v in 1:nbSubLocations
     @constraint(model, sum(ysub[v, :, :]) <= sum(x[v, :]))
 end
+
+# We will add some parts of the objective function as variables to make it easier to read
+
+# Using what we proved in question 5 of the report
+# We can write the no-curtailing cost as follows, by adding two variables per substation
+# So as to linearize the [power_received - min(capa_sub, capa_cable)]⁺ terms
+
+#This corresponds to the -min(capa_sub, capa_cable) part
+@variable(model, minusCapa[1:nbSubLocations])
+
+substation_ratings = [instance.substationTypes[i].rating for i in 1:nbSubTypes]
+landCable_ratings = [instance.landSubstationCables[i].rating for i in 1:nbLandCableTypes]
+for v in 1:nbSubLocations
+    @constraint(model, minusCapa[v] >= - sum(substation_ratings[i] * x[v, i] for i in 1:nbSubTypes))
+    @constraint(model,minusCapa[v] >= - sum(landCable_ratings[i] * yland[v, i] for i in 1:nbLandCableTypes))
+end
+
+# We then add variables for the curtailing of each substation under each scenario
+nbScenarios = length(instance.scenarios)
+
+@variable(model, curtailing[1:nbSubLocations, 1:nbScenarios])
+
+for ω in 1:nbScenarios
+    for v in 1:nbSubLocations
+        net_power = instance.scenarios[ω].power * sum(z[v, :]) + minusCapa[v]
+        @constraint(model, curtailing[v, ω] >= net_power)
+        @constraint(model, curtailing[v, ω] >= 0)
+    end
+end
+
+# Then add the total curtailing without probability_failure
+
+@variable(model, curtailingNoFailure[1:nbScenarios])
+for ω in 1:nbScenarios
+    @constraint(model, curtailingNoFailure[ω] == sum(curtailing[:, ω]))
+end
+
+# Then variables for the power sent from substation v1 to v2 under scenario ω
+# Here we will need to truly linearize the min(power_received by v1, capa_cable(v1, v2)) term 
+    
