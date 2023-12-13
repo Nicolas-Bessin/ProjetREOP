@@ -1,5 +1,5 @@
 include("parser.jl")
-size = "tiny"
+size = "medium"
 input = "instances/KIRO-$size.json"
 output = "solutions/KIRO-$(size)_sol1.json"
 
@@ -12,7 +12,7 @@ model = Model(HiGHS.Optimizer)
 # Add x_vs variables
 nbSubLocations = length(instance.substationLocations)
 nbSubTypes = length(instance.substationTypes)
-@variable(model, x[1:nbSubLocations, 1:nbSubLocations], Bin)
+@variable(model, x[1:nbSubLocations, 1:nbSubTypes], Bin)
 
 # Add the constraints on substation locations. (1)
 for i in 1:nbSubLocations
@@ -103,7 +103,7 @@ for ω in 1:nbScenarios
     for v in 1:nbSubLocations
         @constraint(model, curtailingUnderOwnFailure[v, ω] >= 0)
         power_received = instance.windScenarios[ω].power * nbTurbinesLinked[v]
-        capa_cable = sum(instance.substationSubstationCables[i].rating * ysub[v, i, j] for i in 1:nbSubLocations for j in 1:nbSubCableTypes)
+        capa_cable = sum(instance.substationSubstationCables[j].rating * ysub[v, i, j] for i in 1:nbSubLocations for j in 1:nbSubCableTypes)
         @constraint(model, curtailingUnderOwnFailure[v, ω] >= power_received - capa_cable)
     end
 end
@@ -120,7 +120,7 @@ for ω in 1:nbScenarios
         for v2 in 1:nbSubLocations
             # Only one is the actual min
             @constraint(model, minIsPowerSent[v1, v2, ω] + minIsCableCapa[v1, v2, ω] == 1)
-            power_sent = instance.windScenarios[ω].power * nbTurbinesLinked[v]
+            power_sent = instance.windScenarios[ω].power * nbTurbinesLinked[v1]
             cable_capa = sum(instance.substationSubstationCables[i].rating * ysub[v1, v2, i] for i in 1:nbSubCableTypes)
             @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] <= power_sent)
             @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] <= cable_capa)
@@ -141,7 +141,7 @@ for ω in 1:nbScenarios
             @constraint(model, curtailingUnderOtherFailure[v1, v2, ω] >= 0)
             power_received_from_turbines = instance.windScenarios[ω].power * nbTurbinesLinked[v2]
             power_received_from_other = powerSentUnderOtherFailure[v1, v2, ω]
-            @constraint(model, curtailingUnderOtherFailure[v1, v2, ω] >= power_received - capa_cable + minusCapa[v2])
+            @constraint(model, curtailingUnderOtherFailure[v1, v2, ω] >= power_received_from_turbines + power_received_from_other + minusCapa[v2])
         end
     end
 end
@@ -168,7 +168,7 @@ end
 
 # Construction cost of the substations
 
-@varaiable(model, substationCost[1:nbSubLocations])
+@variable(model, substationCost[1:nbSubLocations])
 
 for v in 1:nbSubLocations
     substation_cost = sum(instance.substationTypes[i].cost * x[v, i] for i in 1:nbSubTypes)
