@@ -89,13 +89,13 @@ function read_instance(filename :: String) :: Instance
     return instance
 end
 
-function readSolution(filename :: String)
+function read_solution(filename :: String)
     data = JSON.parsefile(filename)
     raw_substations = data[SUBSTATIONS]
     raw_turbines = data[TURBINES]
     raw_cables = data[SUBSTATION_SUBSTATION_CABLES]
 
-    substations = [ Substation(sub[ID] , sub[LAND_CABLE_TYPE], sub[SUBSTATION_TYPES])
+    substations = [ Substation(sub[ID] , sub[LAND_CABLE_TYPE], sub[SUB_TYPE])
         for sub in raw_substations]
 
     wind_turbines = [ WindTurbine(turbine[ID], turbine[SUBSTATION_ID])

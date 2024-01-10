@@ -44,11 +44,11 @@ end
 function plotSolution(solution::Solution, instance::Instance)
     f = plotInstance(instance)
     # Turbine links
-    for (turbine, substation) in solution.windTurbines
+    for turbine in solution.windTurbines
         lines!(
             f[1, 1],
-            [instance.windTurbine[turbine].x, instance.substationLocations[substation].x],
-            [instance.windTurbine[turbine].y, instance.substationLocations[substation].y];
+            [instance.windTurbine[turbine.id_loc].x, instance.substationLocations[turbine.id_sub].x],
+            [instance.windTurbine[turbine.id_loc].y, instance.substationLocations[turbine.id_sub].y];
             color=:black,
         )
     end
@@ -56,8 +56,8 @@ function plotSolution(solution::Solution, instance::Instance)
     for substation in solution.substations
         lines!(
             f[1, 1],
-            [instance.substationLocations[substation].x, instance.mainLandSubstation.x],
-            [instance.substationLocations[substation].y, instance.mainLandSubstation.y];
+            [instance.substationLocations[substation.id_loc].x, instance.mainLandSubstation.x],
+            [instance.substationLocations[substation.id_loc].y, instance.mainLandSubstation.y];
             color=:black,
         )
     end
@@ -82,6 +82,6 @@ end
 size = "small"
 
 instance = read_instance("instances/KIRO-$size.json")
-solution = read_solution("solutions/KIRO-$size _sol.json")
+solution = read_solution("solutions/KIRO-$size-sol-linear.json")
 f = plotSolution(solution, instance)
-save("plots/instance-$size-linearized.png")
+save("plots/instance-$size-linearized.png", f)

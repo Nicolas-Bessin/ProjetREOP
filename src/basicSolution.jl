@@ -1,7 +1,7 @@
 include("parser.jl")
-size = "small"
+size = "tiny"
 input = "instances/KIRO-$size.json"
-output = "solutions/KIRO-$(size)_sol.json"
+output = "solutions/KIRO-$(size)-sol-linear.json"
 
 instance = read_instance(input) :: Instance
 
