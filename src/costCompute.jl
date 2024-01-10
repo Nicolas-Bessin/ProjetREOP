@@ -2,7 +2,7 @@ include("solution.jl")
 include("instance.jl")
 
 function constructionCost(instance::Instance, solution::Solution)
-    cost = 0
+    cost = 0.
     # We first add the construction cost for the substations
     for substation in solution.substations
         cost += instance.substationTypes[substation.id_type].cost
@@ -25,10 +25,12 @@ function constructionCost(instance::Instance, solution::Solution)
         cost += length * instance.variableCostCable
         cost += instance.fixedCostCable
     end
+
+    return cost
 end
 
 function noFailureCurtailing(instance :: Instance, solution :: Solution, power :: Float64)
-    curtailing = 0
+    curtailing = 0.
     for substation in solution.substations
         nbTurbines = sum([ 1 for turbine in solution.windTurbines if turbine.id_sub == substation.id_loc ])
         capacity = min(
@@ -42,7 +44,7 @@ function noFailureCurtailing(instance :: Instance, solution :: Solution, power :
 end
 
 function curtailingUnderOwnFailure(instance :: Instance, solution :: Solution, substation :: Substation, power :: Float64)
-    curtailing = 0
+    curtailing = 0.
     nbTurbines = sum([ 1 for turbine in solution.windTurbines if turbine.id_sub == substation.id_loc ])
     curtailing = power * nbTurbines
     # Find a cable that is connected to the substation, if applicable
@@ -53,7 +55,7 @@ function curtailingUnderOwnFailure(instance :: Instance, solution :: Solution, s
             break
         end
     end
-    if not(isnothing(connected_cable))
+    if !(isnothing(connected_cable))
         capacity = instance.substationSubstationCables[connected_cable.id_type].rating
         curtailing -= capacity
     end
@@ -62,7 +64,7 @@ function curtailingUnderOwnFailure(instance :: Instance, solution :: Solution, s
 end
 
 function curtailinUnderOtherFailure(instance :: Instance, solution :: Solution, substation :: Substation, failedSub :: Substation, power :: Float64)
-    curtailing = 0
+    curtailing = 0.
     nbTurbines = sum([ 1 for turbine in solution.windTurbines if turbine.id_sub == substation.id_loc ])
     # Find a cable from the failed_substation to this substation, if applicable
     connected_cable = nothing
@@ -77,8 +79,8 @@ function curtailinUnderOtherFailure(instance :: Instance, solution :: Solution, 
             break
         end
     end
-    power_received = 0
-    if not(isnothing(connected_cable))
+    power_received = 0.
+    if !(isnothing(connected_cable))
         nbTurbinesFailed = sum([ 1 for turbine in solution.windTurbines if turbine.id_sub == failedSub.id_loc ])
         capaSubSubCable = instance.substationSubstationCables[connected_cable.id_type].rating
         power_received = min(capaSubSubCable, power * nbTurbinesFailed)
@@ -93,16 +95,59 @@ function curtailinUnderOtherFailure(instance :: Instance, solution :: Solution, 
 end
 
 function totalCurtailingGivenFailedSub(instance :: Instance, solution :: Solution, failedSub :: Substation, power :: Float64)
-    curtailing = 0
+    curtailing = 0.
     curtailing += curtailingUnderOwnFailure(instance, solution, failedSub, power)
     for substation in solution.substations
         if substation.id_loc != failedSub.id_loc
             curtailing += curtailinUnderOtherFailure(instance, solution, substation, failedSub, power)
         end
     end
+    return curtailing
 end
 
 function costOfCurtailing(instance :: Instance, curtailing :: Float64)
     return instance.curtailingCost * curtailing + instance.curtailingPenalty * max(0, curtailing - instance.maxCurtailment)
 end
 
+function probFailure(instance :: Instance, substation :: Substation)
+    prob = instance.substationTypes[substation.id_type].probability_failure
+    prob += instance.landSubstationCables[substation.id_cable].probability_failure
+    return prob
+end
+
+function operationalCost(instance :: Instance, solution :: Solution)
+    cost = 0.
+    #Compute the failure probas only once
+    failureProbas = Dict()
+    for substation in solution.substations
+        failureProbas[substation.id_loc] = probFailure(instance, substation)
+    end
+    noFailProb = 1 - sum(values(failureProbas))
+    #Compute the cost
+    for scenario in instance.windScenarios
+        scenarioCost = 0.
+        for substation in solution.substations
+            curtailing = totalCurtailingGivenFailedSub(instance, solution, substation, scenario.power)
+            scenarioCost += failureProbas[substation.id_loc] * costOfCurtailing(instance, curtailing)
+        end
+        curtailingNoFailure = noFailureCurtailing(instance, solution, scenario.power)
+        scenarioCost += noFailProb * costOfCurtailing(instance, curtailingNoFailure)
+        cost += scenario.probability * scenarioCost
+    end
+
+    return cost
+end
+
+function costOfSolution(instance :: Instance, solution :: Solution)
+    conCost = constructionCost(instance, solution)
+    opeCost = operationalCost(instance, solution)
+    print("Julia")
+    print("Operational cost is : $opeCost")
+    print("Construction cost  is : $conCost")
+    print("Total cost is : $(opeCost + conCost)")
+    return  Dict(
+        "Ope" => opeCost,
+        "Cons" => conCost,
+        "Total" => opeCost + conCost
+    )
+end
