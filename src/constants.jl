@@ -74,5 +74,3 @@ SUBSTATION_SUBSTATION_CABLES = "substation_substation_cables"
 # SUBSTATION_ID = "substation_id"
 OTHER_SUB_ID = "other_substation_id"
 CABLE_TYPE_SUBSUB = "cable_type"
-
-#TEST GITHUB (can be erased)
