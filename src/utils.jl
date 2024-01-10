@@ -73,8 +73,15 @@ function plotSolution(solution::Solution, instance::Instance)
     return f
 end
 
-for size ∈ sizes
-    instance = read_instance("instances/KIRO-$size.json")
-    f = plotInstance(instance)
-    save("plots/instance-$size.png", f)
-end
+# for size ∈ sizes
+#     instance = read_instance("instances/KIRO-$size.json")
+#     f = plotInstance(instance)
+#     save("plots/instance-$size.png", f)
+# end
+
+size = "small"
+
+instance = read_instance("instances/KIRO-$size.json")
+solution = read_solution("solutions/KIRO-$size _sol.json")
+f = plotSolution(solution, instance)
+save("plots/instance-$size-linearized.png")

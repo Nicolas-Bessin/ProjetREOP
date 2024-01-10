@@ -89,6 +89,25 @@ function read_instance(filename :: String) :: Instance
     return instance
 end
 
+function readSolution(filename :: String)
+    data = JSON.parsefile(filename)
+    raw_substations = data[SUBSTATIONS]
+    raw_turbines = data[TURBINES]
+    raw_cables = data[SUBSTATION_SUBSTATION_CABLES]
+
+    substations = [ Substation(sub[ID] , sub[LAND_CABLE_TYPE], sub[SUBSTATION_TYPES])
+        for sub in raw_substations]
+
+    wind_turbines = [ WindTurbine(turbine[ID], turbine[SUBSTATION_ID])
+        for turbine in raw_turbines]
+
+    cables = [ Cable(cable[CABLE_TYPE_SUBSUB], cable[SUBSTATION_ID], cable[OTHER_SUB_ID])
+        for cable in raw_cables]
+
+    return Solution(substations, cables, wind_turbines)
+
+end 
+
 function writeSolution(solution :: Solution, path :: String)
     data = Dict()
     #Substations
