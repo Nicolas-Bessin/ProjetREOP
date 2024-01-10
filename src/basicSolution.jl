@@ -1,5 +1,5 @@
 include("parser.jl")
-size = "tiny"
+size = "small"
 input = "instances/KIRO-$size.json"
 output = "solutions/KIRO-$(size)-sol-linear.json"
 
