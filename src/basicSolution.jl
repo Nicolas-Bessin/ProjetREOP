@@ -1,13 +1,18 @@
 include("parser.jl")
-size = "medium"
+size = "small"
 input = "instances/KIRO-$size.json"
-output = "solutions/KIRO-$(size)_sol1.json"
+output = "solutions/KIRO-$(size)_sol.json"
 
 instance = read_instance(input) :: Instance
 
-using JuMP, HiGHS
+# We need to compute a majorant for the curtailing cost under failure (At first we can compute one for every scenario)
+nbScenarios = length(instance.windScenarios)
+max_power = maximum([instance.windScenarios[i].power for i in 1:nbScenarios]) * length(instance.windTurbine)
+max_cost = instance.curtailingCost * max_power + instance.curtailingPenalty * max((max_power - instance.maxCurtailment), 0)
 
-model = Model(HiGHS.Optimizer)
+using JuMP, Gurobi
+
+model = Model(Gurobi.Optimizer)
 
 # Add x_vs variables
 nbSubLocations = length(instance.substationLocations)
@@ -71,7 +76,6 @@ for v in 1:nbSubLocations
 end
 
 # We then add variables for the curtailing of each substation under each scenario
-nbScenarios = length(instance.windScenarios)
 
 @variable(model, curtailing[1:nbSubLocations, 1:nbScenarios])
 
@@ -124,7 +128,6 @@ for ω in 1:nbScenarios
             cable_capa = sum(instance.substationSubstationCables[i].rating * ysub[v1, v2, i] for i in 1:nbSubCableTypes)
             @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] <= power_sent)
             @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] <= cable_capa)
-            max_power = instance.maximumPower * length(instance.windTurbine)
             @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] >= power_sent - minIsCableCapa[v1, v2, ω] * max_power)
             @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] >= cable_capa - minIsPowerSent[v1, v2, ω] * max_power)
         end
@@ -154,16 +157,6 @@ for ω in 1:nbScenarios
     for v in 1:nbSubLocations
         @constraint(model, curtailingUnderFailure[v, ω] == curtailingUnderOwnFailure[v, ω] + sum(curtailingUnderOtherFailure[v, :, ω]))
     end
-end
-
-# Probility of failure of v
-
-@variable(model, probaFailure[1:nbSubLocations])
-
-for v in 1:nbSubLocations
-    prob_failure = sum(instance.substationTypes[i].probability_failure * x[v, i] for i in 1:nbSubTypes)
-    prob_failure += sum(instance.landSubstationCables[i].probability_failure * yland[v, i] for i in 1:nbLandCableTypes)
-    @constraint(model, probaFailure[v] == prob_failure)
 end
 
 # Construction cost of the substations
@@ -204,3 +197,104 @@ end
 constructionCost = @variable(model)
 
 @constraint(model, constructionCost == sum(substationCost) + sum(landCableCost) + sum(subCableCost))
+
+# Cost of the curtailment per substation, per scenario (This is c^c(C^f(v, ω)))
+
+curtailmentCostFailure = @variable(model, [1:nbSubLocations, 1:nbScenarios])
+
+for ω in 1:nbScenarios
+    for v in 1:nbSubLocations
+        linear_part = instance.curtailingCost * curtailingUnderFailure[v, ω]
+        penalty_part = instance.curtailingPenalty * (curtailingUnderFailure[v, ω] - instance.maxCurtailment)
+        @constraint(model, curtailmentCostFailure[v, ω] >= linear_part)
+        @constraint(model, curtailmentCostFailure[v, ω] >= penalty_part + linear_part)
+    end
+end
+
+# Cost of the curtailment, under no failure (This is c^c(C^n(ω)))
+
+curtailmentCostNoFailure = @variable(model, [1:nbScenarios])
+
+for ω in 1:nbScenarios
+    linear_part = instance.curtailingCost * curtailingNoFailure[ω]
+    penalty_part = instance.curtailingPenalty * (curtailingNoFailure[ω] - instance.maxCurtailment)
+    @constraint(model, curtailmentCostNoFailure[ω] >= linear_part)
+    @constraint(model, curtailmentCostNoFailure[ω] >= penalty_part + linear_part)
+end
+
+# Weighted costs, this is the terms p^f(v) * c^c(C^f(v, ω))
+
+
+@variable(model, weightedCurtailingCostFailure[1:nbSubLocations, 1:nbScenarios])
+@variable(model, xvsTimesCurtailingCostFailure[1:nbSubLocations, 1:nbSubTypes, 1:nbScenarios])
+@variable(model, yeqTimesCurtailingCostFailure[1:nbSubLocations, 1:nbLandCableTypes, 1:nbScenarios])
+
+
+for ω in 1:nbScenarios
+    for v in 1:nbSubLocations
+        for s in 1:nbSubTypes
+            @constraint(model, xvsTimesCurtailingCostFailure[v, s, ω] <= x[v, s] * max_cost)
+            @constraint(model, xvsTimesCurtailingCostFailure[v, s, ω] <= curtailmentCostFailure[v, ω])
+            @constraint(model, xvsTimesCurtailingCostFailure[v, s, ω] >= curtailmentCostFailure[v, ω] - (1 - x[v, s]) * max_cost)
+            @constraint(model, xvsTimesCurtailingCostFailure[v, s, ω] >= 0)
+        end
+        for q in 1:nbLandCableTypes
+            @constraint(model, yeqTimesCurtailingCostFailure[v, q, ω] <= yland[v, q] * max_cost)
+            @constraint(model, yeqTimesCurtailingCostFailure[v, q, ω] <= curtailmentCostFailure[v, ω])
+            @constraint(model, yeqTimesCurtailingCostFailure[v, q, ω] >= curtailmentCostFailure[v, ω] - (1 - yland[v, q]) * max_cost)
+            @constraint(model, yeqTimesCurtailingCostFailure[v, q, ω] >= 0)
+        end
+        @constraint(model, weightedCurtailingCostFailure[v, ω] == sum(
+            [xvsTimesCurtailingCostFailure[v, s, ω] * instance.substationTypes[s].probability_failure for s in 1:nbSubTypes])
+            + sum([yeqTimesCurtailingCostFailure[v, q, ω] * instance.landSubstationCables[q].probability_failure for q in 1:nbLandCableTypes])
+        ) 
+    end
+end
+
+# Failure cost, sum of the weighted costs over the substations
+failureCostUnderOmega = @variable(model, [1:nbScenarios])
+
+for ω in 1:nbScenarios
+    @constraint(model, failureCostUnderOmega[ω] == sum(weightedCurtailingCostFailure[:, ω]))
+end
+
+# Linearization of the products p_f(v) * c^c(C^n(ω))
+xvsTimesCurtailing = @variable(model, [1:nbSubLocations, 1:nbSubTypes, 1:nbScenarios])
+yeqTimesCurtailing = @variable(model, [1:nbSubLocations, 1:nbLandCableTypes, 1:nbScenarios])
+
+#Variable for the no curtailment cost
+noFailureCostUnderOmega = @variable(model, [1:nbScenarios])
+
+for ω in 1:nbScenarios
+    for v in 1:nbSubLocations
+        for s in 1:nbSubTypes
+            @constraint(model, xvsTimesCurtailing[v, s, ω] <= x[v, s] * max_cost)
+            @constraint(model, xvsTimesCurtailing[v, s, ω] <= curtailmentCostNoFailure[ω])
+            @constraint(model, xvsTimesCurtailing[v, s, ω] >= curtailmentCostNoFailure[ω] - (1 - x[v, s]) * max_cost)
+            @constraint(model, xvsTimesCurtailing[v, s, ω] >= 0)
+        end
+        for q in 1:nbLandCableTypes
+            @constraint(model, yeqTimesCurtailing[v, q, ω] <= yland[v, q] * max_cost)
+            @constraint(model, yeqTimesCurtailing[v, q, ω] <= curtailmentCostNoFailure[ω])
+            @constraint(model, yeqTimesCurtailing[v, q, ω] >= curtailmentCostNoFailure[ω] - (1 - yland[v, q]) * max_cost)
+            @constraint(model, yeqTimesCurtailing[v, q, ω] >= 0)
+        end
+    end
+    @constraint(model, noFailureCostUnderOmega[ω] == curtailmentCostNoFailure[ω] + 
+        - sum([xvsTimesCurtailing[v, s, ω] * instance.substationTypes[s].probability_failure for v in 1:nbSubLocations, s in 1:nbSubTypes])
+        - sum([yeqTimesCurtailing[v, q, ω] * instance.landSubstationCables[q].probability_failure for v in 1:nbSubLocations, q in 1:nbLandCableTypes])
+    )
+end
+
+operationalCost = @variable(model)
+
+@constraint(model, operationalCost == sum([instance.windScenarios[ω].probability * (failureCostUnderOmega[ω] + noFailureCostUnderOmega[ω]) for ω in 1:nbScenarios]))
+
+# objective function
+
+@objective(model, Min, constructionCost + operationalCost)
+
+optimize!(model)
+
+solution = toSolution(value.(x), value.(yland), value.(ysub), value.(z), instance)
+writeSolution(solution, output)
