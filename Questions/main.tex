@@ -209,6 +209,25 @@
             e &\geq -c \\   
         \end{aligned}
     \end{equation}
+
+
+    Pour linéariser les termes $p_f(v, x, y) c^c(C^f(v, x, y, z ,\omega))$, on doit distribuer la multiplication
+    (On sait linéariser les multiplications de variables binaires et de variables continues). On a donc :
+    $$ p_f(v, x, y) c^c(C^f(v, x, y, z ,\omega)) = (\sum _ {s \in S} p_s x_{vs} + \sum _{q \in Q_0} p_q y _{eq}) (c^c(C^f(v, x, y, z ,\omega)))  $$
+    où $c^c(C^f(v, x, y, z ,\omega))$ est une variable continue, issue du regroupement des composantes du coût et de la linéarisation de la pénalité.
+    $$
+    \begin{aligned}
+        p_f(v, x, y) c^c(C^f(v, x, y, z ,\omega)) &= \sum _ {s \in S} p_s x_{vs} (c^c(C^f(v, x, y, z ,\omega))) \\
+        &+ \sum _{q \in Q_0} p_q y _{eq} (c^c(C^f(v, x, y, z ,\omega)))
+    \end{aligned}
+    $$
+
+    On a donc besoin d'une borne supérieure pour $C^f(v, x, y, z ,\omega)$
+
+    Même raisonnement pour $(1 - \sum _{v \in V^s} p_f(v)) c^c(C^n(\omega))$ :
+
+    $$ \lbrack 1 - \sum _{v \in V^s} p_f(v) \rbrack c^c(C^n(\omega)) = 
+    c^c(C^n(\omega)) - \sum _{v \in V^s} \lbrack \sum _{s \in S} p_s x_{vs} c^c(C^n(\omega)) + \sum _{q \in Q_0} p_q y _{eq} c^c(C^n(\omega)) \rbrack  $$
 }
 
 
