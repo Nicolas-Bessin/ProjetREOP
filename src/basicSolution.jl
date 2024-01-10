@@ -192,11 +192,25 @@ for v1 in 1:nbSubLocations
     end
 end
 
+#Construction cost for the turbine - substation links
+
+turbineCableCost = @variable(model, [1:nbSubLocations, 1:nbTurbines])
+
+for v in 1:nbSubLocations
+    for t in 1:nbTurbines
+        cable_cost = sum(instance.fixedCostCable * z[v, t] for i in 1:nbSubCableTypes)
+        lengthCable = distance(instance.substationLocations[v], instance.windTurbine[t])
+        cable_cost += sum(instance.variableCostCable * lengthCable * z[v, t] for i in 1:nbSubCableTypes)
+        @constraint(model, turbineCableCost[v, t] == cable_cost)
+    end
+end 
+
+
 # Total construction cost
 
 constructionCost = @variable(model)
 
-@constraint(model, constructionCost == sum(substationCost) + sum(landCableCost) + sum(subCableCost))
+@constraint(model, constructionCost == sum(substationCost) + sum(landCableCost) + sum(subCableCost) + sum(turbineCableCost))
 
 # Cost of the curtailment per substation, per scenario (This is c^c(C^f(v, ω)))
 

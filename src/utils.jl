@@ -79,7 +79,7 @@ end
 #     save("plots/instance-$size.png", f)
 # end
 
-size = "small"
+size = "tiny"
 
 instance = read_instance("instances/KIRO-$size.json")
 solution = read_solution("solutions/KIRO-$size-sol-linear.json")
