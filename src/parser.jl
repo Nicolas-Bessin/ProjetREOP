@@ -89,6 +89,78 @@ function read_instance(filename :: String) :: Instance
     return instance
 end
 
+function write_instance(instance :: Instance, filename :: String)
+    data = Dict()
+    data[GEN_PARAMETERS] = Dict(
+        CURTAILING_COST => instance.curtailingCost,
+        CURTAILING_PENA => instance.curtailingPenalty,
+        MAX_CURTAILING => instance.maxCurtailment,
+        FIX_COST_CABLE => instance.fixedCostCable,
+        VAR_COST_CABLE => instance.variableCostCable,
+        MAX_POWER => instance.maximumPower,
+        MAIN_LAND_STATION => Dict(
+            X => instance.mainLandSubstation.x,
+            Y => instance.mainLandSubstation.y
+        )
+    )
+
+    data[SUBSTATION_LOCATION] = [
+        Dict(
+            ID => substation.id,
+            X => substation.x,
+            Y => substation.y
+        ) for substation in instance.substationLocations
+    ]
+
+    data[LAND_SUB_CABLE_TYPES] = [
+        Dict(
+            ID => cable.id,
+            FIX_COST => cable.fixed_cost,
+            VAR_COST => cable.variable_cost,
+            RATING => cable.rating,
+            PROB_FAIL => cable.probability_failure
+        ) for cable in instance.landSubstationCables
+    ]
+
+    data[SUB_SUB_CABLE_TYPES] = [
+        Dict(
+            ID => cable.id,
+            FIX_COST => cable.fixed_cost,
+            VAR_COST => cable.variable_cost,
+            RATING => cable.rating
+        ) for cable in instance.substationSubstationCables
+    ]
+
+    data[SUBSTATION_TYPES] = [
+        Dict(
+            ID => type.id,
+            COST => type.cost,
+            RATING => type.rating,
+            PROB_FAIL => type.probability_failure
+        ) for type in instance.substationTypes
+    ]
+
+    data[WIND_SCENARIOS] = [
+        Dict(
+            ID => scenario.id,
+            POWER_GENERATION => scenario.power,
+            PROBABILITY => scenario.probability
+        ) for scenario in instance.windScenarios
+    ]
+
+    data[WIND_TURBINES] = [
+        Dict(
+            ID => turbine.id,
+            X => turbine.x,
+            Y => turbine.y
+        ) for turbine in instance.windTurbine
+    ]
+
+    open(filename, "w") do f
+        JSON.print(f, data)
+    end
+end
+
 function read_solution(filename :: String)
     data = JSON.parsefile(filename)
     raw_substations = data[SUBSTATIONS]
