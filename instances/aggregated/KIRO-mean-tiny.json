@@ -1,0 +1,94 @@
+{
+    "land_substation_cable_types": [
+        {
+            "variable_cost": 20.0,
+            "rating": 500.0,
+            "probability_of_failure": 0.02,
+            "id": 1,
+            "fixed_cost": 2000.0
+        },
+        {
+            "variable_cost": 30.0,
+            "rating": 1000.0,
+            "probability_of_failure": 0.01,
+            "id": 2,
+            "fixed_cost": 3000.0
+        }
+    ],
+    "wind_turbines": [
+        {
+            "id": 1,
+            "x": -5.0,
+            "y": -5.0
+        },
+        {
+            "id": 2,
+            "x": -15.0,
+            "y": -15.0
+        },
+        {
+            "id": 3,
+            "x": -25.0,
+            "y": -25.0
+        }
+    ],
+    "wind_scenarios": [
+        {
+            "power_generation": 145.0,
+            "probability": 1.0,
+            "id": 1
+        }
+    ],
+    "substation_locations": [
+        {
+            "id": 1,
+            "x": -10.0,
+            "y": -10.0
+        },
+        {
+            "id": 2,
+            "x": -20.0,
+            "y": -20.0
+        }
+    ],
+    "substation_types": [
+        {
+            "cost": 100000.0,
+            "rating": 500.0,
+            "probability_of_failure": 0.01,
+            "id": 1
+        },
+        {
+            "cost": 200000.0,
+            "rating": 1000.0,
+            "probability_of_failure": 0.005,
+            "id": 2
+        }
+    ],
+    "general_parameters": {
+        "main_land_station": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "variable_cost_cable": 10.0,
+        "curtailing_penalty": 0.8,
+        "curtailing_cost": 0.4,
+        "fixed_cost_cable": 1000.0,
+        "maximum_power": 145.0,
+        "maximum_curtailing": 50000.0
+    },
+    "substation_substation_cable_types": [
+        {
+            "variable_cost": 10.0,
+            "rating": 500.0,
+            "id": 1,
+            "fixed_cost": 1000.0
+        },
+        {
+            "variable_cost": 15.0,
+            "rating": 1000.0,
+            "id": 2,
+            "fixed_cost": 1500.0
+        }
+    ]
+}

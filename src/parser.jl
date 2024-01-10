@@ -157,7 +157,7 @@ function write_instance(instance :: Instance, filename :: String)
     ]
 
     open(filename, "w") do f
-        JSON.print(f, data)
+        JSON.print(f, data, 4)
     end
 end
 
@@ -218,7 +218,7 @@ function writeSolution(solution :: Solution, path :: String)
         )
     end
     open(path, "w") do f
-        JSON.print(f, data)
+        JSON.print(f, data, 4)
     end
 end
 

@@ -26,14 +26,13 @@ function meanPowerScenario(instance :: Instance)
     )
 end
 
-function aggregateMeanInstance()
+function aggregateInstances(outputFormat :: String, aggregationFunction :: Function)
     for size in sizes
         inputFile = "instances/KIRO-$size.json"
-        outputFile = "instances/aggregated/KIRO-$size-mean.json"
         originalInstance = read_instance(inputFile)
-        meanInstance = meanPowerScenario(originalInstance)
-        write_instance(meanInstance, outputFile)
+        newInstance = aggregationFunction(originalInstance)
+        write_instance(newInstance, outputFormat * "-$size.json")
     end
 end
 
-aggregateMeanInstance()
+aggregateInstances("instances/aggregated/KIRO-mean", meanPowerScenario)
