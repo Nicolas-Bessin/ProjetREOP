@@ -16,12 +16,43 @@ function meanPowerScenario(instance :: Instance)
         instance.fixedCostCable,
         instance.variableCostCable,
         instance.mainLandSubstation,
-        meanPower,
+        instance.maximumPower,
         instance.landSubstationCables,
         instance.substationSubstationCables,
         instance.substationLocations,
         instance.substationTypes,
         [meanScenario],
+        instance.windTurbine,
+    )
+end
+
+function quartersPowerScenario(instance :: Instance)
+    # We split the power into 4 quarters
+    powerScenarios = sort(instance.windScenarios, by = x -> x.power)
+    n = length(powerScenarios)
+    firstQuarter = sum([w.power * w.probability for w in powerScenarios[1:floor(Int, n/4)]])
+    secondQuarter = sum([w.power * w.probability for w in powerScenarios[floor(Int, n/4)+1:floor(Int, n/2)]])
+    thirdQuarter = sum([w.power * w.probability for w in powerScenarios[floor(Int, n/2)+1:floor(Int, 3*n/4)]])
+    fourthQuarter = sum([w.power * w.probability for w in powerScenarios[floor(Int, 3*n/4)+1:n]])
+    scenarios = [
+        WindScenario(1, firstQuarter, 0.25),
+        WindScenario(2, secondQuarter, 0.25),
+        WindScenario(3, thirdQuarter, 0.25),
+        WindScenario(4, fourthQuarter, 0.25)
+    ]
+    return Instance(
+        instance.curtailingCost,
+        instance.curtailingPenalty,
+        instance.maxCurtailment,
+        instance.fixedCostCable,
+        instance.variableCostCable,
+        instance.mainLandSubstation,
+        instance.maximumPower,
+        instance.landSubstationCables,
+        instance.substationSubstationCables,
+        instance.substationLocations,
+        instance.substationTypes,
+        scenarios,
         instance.windTurbine,
     )
 end
@@ -35,4 +66,4 @@ function aggregateInstances(outputFormat :: String, aggregationFunction :: Funct
     end
 end
 
-aggregateInstances("instances/aggregated/KIRO-mean", meanPowerScenario)
+aggregateInstances("instances/aggregated/KIRO-quarters", quartersPowerScenario)
