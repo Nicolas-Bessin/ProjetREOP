@@ -8,11 +8,11 @@ include("agregator.jl")
 # Optimal value for mean scenario : 3.111073854492e+04
 
 size = "small"
-aggregationMethod = ""
-aggrFunction = idem
+aggregationMethod = "onlyFurthestSites"
+aggrFunction = onlyFurthestSites
 
 trueInstanceFile = "instances/KIRO-$size.json"
-outputFile = "solutions/aggregated/KIRO$aggregationMethod-$size.json"
+outputFile = "solutions/aggregated/KIRO-$aggregationMethod-$size.json"
 
 trueInstance = read_instance(trueInstanceFile)
 instance = aggrFunction(trueInstance)
@@ -20,7 +20,7 @@ instance = aggrFunction(trueInstance)
 solution = linearSolver(instance)
 writeSolution(solution, outputFile)
 figure = plotSolution(solution, trueInstance)
-save("plots/instance-$size$aggregationMethod.png", f)
+save("plots/instance-$size-$aggregationMethod.png", f)
 
 falseCost = costOfSolution(instance, solution)
 cost = costOfSolution(trueInstance, solution)

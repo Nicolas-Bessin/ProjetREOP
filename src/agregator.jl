@@ -59,7 +59,7 @@ function quartersPowerScenario(instance :: Instance)
     )
 end
 
-function onlyFurthestSites(instance :: Instance, nbCoordinates :: Int64 = 2)
+function onlyFurthestSites(instance :: Instance, nbCoordinates :: Int64 = 1)
     # We only keep the substation sites closest to the turbines
     # All the instances have the turbines in X > 0, furthest away from the main substation (in X = 0)
     Xpos = unique([site.x for site in instance.substationLocations])
