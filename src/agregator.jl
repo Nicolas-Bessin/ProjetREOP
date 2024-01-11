@@ -30,10 +30,14 @@ function quartersPowerScenario(instance :: Instance)
     # We split the power into 4 quarters
     powerScenarios = sort(instance.windScenarios, by = x -> x.power)
     n = length(powerScenarios)
-    firstQuarter = sum([w.power * w.probability for w in powerScenarios[1:floor(Int, n/4)]])
-    secondQuarter = sum([w.power * w.probability for w in powerScenarios[floor(Int, n/4)+1:floor(Int, n/2)]])
-    thirdQuarter = sum([w.power * w.probability for w in powerScenarios[floor(Int, n/2)+1:floor(Int, 3*n/4)]])
-    fourthQuarter = sum([w.power * w.probability for w in powerScenarios[floor(Int, 3*n/4)+1:n]])
+    firstQuarterWeight = sum([w.probability for w in powerScenarios[1:floor(Int, n/4)]])
+    firstQuarter = sum([w.power * w.probability / firstQuarterWeight for w in powerScenarios[1:floor(Int, n/4)]])
+    secondQuarterWeight = sum([w.probability for w in powerScenarios[floor(Int, n/4)+1:floor(Int, n/2)]])
+    secondQuarter = sum([w.power * w.probability / secondQuarterWeight for w in powerScenarios[floor(Int, n/4)+1:floor(Int, n/2)]])
+    thirdQuarterWeight = sum([w.probability for w in powerScenarios[floor(Int, n/2)+1:floor(Int, 3n/4)]])
+    thirdQuarter = sum([w.power * w.probability / thirdQuarterWeight for w in powerScenarios[floor(Int, n/2)+1:floor(Int, 3n/4)]])
+    fourthQuarterWeight = sum([w.probability for w in powerScenarios[floor(Int, 3n/4)+1:n]])
+    fourthQuarter = sum([w.power * w.probability / fourthQuarterWeight for w in powerScenarios[floor(Int, 3n/4)+1:n]])
     scenarios = [
         WindScenario(1, firstQuarter, 0.25),
         WindScenario(2, secondQuarter, 0.25),
@@ -64,6 +68,10 @@ function aggregateInstances(outputFormat :: String, aggregationFunction :: Funct
         newInstance = aggregationFunction(originalInstance)
         write_instance(newInstance, outputFormat * "-$size.json")
     end
+end
+
+function idem(instance :: Instance)
+    return instance
 end
 
 aggregateInstances("instances/aggregated/KIRO-quarters", quartersPowerScenario)

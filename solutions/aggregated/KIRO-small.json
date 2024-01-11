@@ -2,19 +2,14 @@
     "substation_substation_cables": [],
     "substations": [
         {
-            "substation_type": 17,
+            "substation_type": 18,
             "id": 3,
-            "land_cable_type": 17
+            "land_cable_type": 18
         },
         {
-            "substation_type": 17,
-            "id": 6,
-            "land_cable_type": 17
-        },
-        {
-            "substation_type": 17,
-            "id": 12,
-            "land_cable_type": 17
+            "substation_type": 18,
+            "id": 9,
+            "land_cable_type": 18
         },
         {
             "substation_type": 17,
@@ -101,167 +96,167 @@
         },
         {
             "id": 20,
-            "substation_id": 6
+            "substation_id": 3
         },
         {
             "id": 21,
-            "substation_id": 6
+            "substation_id": 3
         },
         {
             "id": 22,
-            "substation_id": 6
+            "substation_id": 3
         },
         {
             "id": 23,
-            "substation_id": 6
+            "substation_id": 3
         },
         {
             "id": 24,
-            "substation_id": 6
+            "substation_id": 3
         },
         {
             "id": 25,
-            "substation_id": 6
+            "substation_id": 3
         },
         {
             "id": 26,
-            "substation_id": 6
+            "substation_id": 9
         },
         {
             "id": 27,
-            "substation_id": 6
+            "substation_id": 3
         },
         {
             "id": 28,
-            "substation_id": 6
+            "substation_id": 3
         },
         {
             "id": 29,
-            "substation_id": 6
+            "substation_id": 3
         },
         {
             "id": 30,
-            "substation_id": 6
+            "substation_id": 3
         },
         {
             "id": 31,
-            "substation_id": 6
+            "substation_id": 9
         },
         {
             "id": 32,
-            "substation_id": 6
+            "substation_id": 9
         },
         {
             "id": 33,
-            "substation_id": 6
+            "substation_id": 9
         },
         {
             "id": 34,
-            "substation_id": 6
+            "substation_id": 9
         },
         {
             "id": 35,
-            "substation_id": 6
+            "substation_id": 9
         },
         {
             "id": 36,
-            "substation_id": 6
+            "substation_id": 9
         },
         {
             "id": 37,
-            "substation_id": 6
+            "substation_id": 9
         },
         {
             "id": 38,
-            "substation_id": 6
+            "substation_id": 9
         },
         {
             "id": 39,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 40,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 41,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 42,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 43,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 44,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 45,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 46,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 47,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 48,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 49,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 50,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 51,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 52,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 53,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 54,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 55,
-            "substation_id": 12
+            "substation_id": 9
         },
         {
             "id": 56,
-            "substation_id": 12
+            "substation_id": 15
         },
         {
             "id": 57,
-            "substation_id": 12
+            "substation_id": 15
         },
         {
             "id": 58,
-            "substation_id": 15
+            "substation_id": 9
         },
         {
             "id": 59,
-            "substation_id": 15
+            "substation_id": 9
         },
         {
             "id": 60,
-            "substation_id": 15
+            "substation_id": 9
         },
         {
             "id": 61,

@@ -813,22 +813,22 @@
     ],
     "wind_scenarios": [
         {
-            "power_generation": 0.5414855400000002,
+            "power_generation": 2.285617069773332,
             "probability": 0.25,
             "id": 1
         },
         {
-            "power_generation": 1.71755766,
+            "power_generation": 6.762304263947401,
             "probability": 0.25,
             "id": 2
         },
         {
-            "power_generation": 2.9200116600000006,
+            "power_generation": 11.234703012581278,
             "probability": 0.25,
             "id": 3
         },
         {
-            "power_generation": 3.9190121999999996,
+            "power_generation": 15.72700429391228,
             "probability": 0.25,
             "id": 4
         }
