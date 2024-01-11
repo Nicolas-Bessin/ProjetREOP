@@ -7,15 +7,16 @@ include("costCompute.jl")
 # Optimal value for mean scenario : 3.111073854492e+04
 
 size = "small"
-inputFile = "instances/aggregated/KIRO-$size-mean.json"
+aggrType = "quarters"
+inputFile = "instances/aggregated/KIRO-$aggrType-$size.json"
 trueInstanceFile = "instances/KIRO-$size.json"
-outputFile = "solutions/aggregated/KIRO-$size-mean.json"
+outputFile = "solutions/aggregated/KIRO-$aggrType-$size.json"
 instance = read_instance(inputFile)
 trueInstance = read_instance(trueInstanceFile)
 
 solution = linearSolver(instance)
 writeSolution(solution, outputFile)
 figure = plotSolution(solution, trueInstance)
-save("plots/instance-$size-linear-mean.png", f)
+save("plots/instance-$size-$aggrType-mean.png", f)
 
 cost = costOfSolution(trueInstance, solution)
