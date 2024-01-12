@@ -4,7 +4,7 @@ include("utils.jl")
 include("costCompute.jl")
 include("agregator.jl")
 
-size = "small"
+size = "medium"
 aggregationMethod = "onlyFurthestSites+ninetyFivePercentWorse"
 
 trueInstanceFile = "instances/KIRO-$size.json"
