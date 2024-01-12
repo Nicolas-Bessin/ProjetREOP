@@ -64,7 +64,14 @@ function onlyFurthestSites(instance :: Instance, nbCoordinates :: Int64 = 1)
     # All the instances have the turbines in X > 0, furthest away from the main substation (in X = 0)
     Xpos = unique([site.x for site in instance.substationLocations])
     sort!(Xpos, rev = true)
-    locations = [site for site in instance.substationLocations if site.x in Xpos[1:nbCoordinates]]
+    kept_locations = [site for site in instance.substationLocations if site.x in Xpos[1:nbCoordinates]]
+    locations = [
+        Location(
+            i,
+            site.x,
+            site.y)
+        for (i, site) in enumerate(kept_locations)
+    ]
     return Instance(
         instance.curtailingCost,
         instance.curtailingPenalty,
@@ -82,6 +89,45 @@ function onlyFurthestSites(instance :: Instance, nbCoordinates :: Int64 = 1)
     )
 end
 
+function deAggregateReducedSiteSolution(trueInstance :: Instance, aggregInstance :: Instance, solution :: Solution)
+    # We need to find the true substation locations from the aggregated instance (because the ids are different)
+    # We compute a dictionnary to associate each substation id in the aggregated instance to the id in the true instance
+    idCorrespondance = Dict()
+    for siteInAggregatedInstance in aggregInstance.substationLocations
+        indexInTrueInstance = findfirst(
+            site -> site.x == siteInAggregatedInstance.x && site.y == siteInAggregatedInstance.y,
+            trueInstance.substationLocations
+        )
+        idCorrespondance[siteInAggregatedInstance.id] = trueInstance.substationLocations[indexInTrueInstance].id
+    end
+    # Change the ids in the substations objects of the solution to reflect the true ids in the initial instance
+    trueSubstations = [
+        Substation(
+            idCorrespondance[substation.id_loc],
+            substation.id_type,
+            substation.id_cable
+        )
+        for substation in solution.substations
+    ]
+    # Change the ids in the cables objects of the solution to reflect the true ids in the initial instance
+    trueCables = [
+        Cable(
+            cable.id_type,
+            idCorrespondance[cable.id_sub1],
+            idCorrespondance[cable.id_sub2]
+        )
+        for cable in solution.cables
+    ]
+    # Change the ids in the turbines objects of the solution to reflect the true ids in the initial instance
+    trueTurbines = [
+        WindTurbine(
+            turbine.id_loc,
+            idCorrespondance[turbine.id_sub]
+        )
+        for turbine in solution.windTurbines
+    ]
+    return Solution(trueSubstations, trueCables, trueTurbines)
+end
 
 function aggregateInstances(outputFormat :: String, aggregationFunction :: Function)
     sizes = ["small", "medium", "large", "huge"]
