@@ -11,8 +11,8 @@ include("agregator.jl")
 #####################
 # To use the original instance && compute the full MILP, use :
 # aggregationMethod = ""
-size = "medium"
-aggregationMethod = "onlyFurthestSites+ninetyFivePercentWorse"
+size = "tiny"
+aggregationMethod = ""
 #####################
 
 trueInstanceFile = "instances/KIRO-$size.json"
@@ -31,7 +31,7 @@ trueInstance = read_instance(trueInstanceFile)
 #####################################################
 # To use the original instance && compute the full MILP, use :
 # instance = trueInstance
-instance = xPercentWorseScenario(onlyFurthestSites(trueInstance), 0.95)
+instance = trueInstance
 #####################################################
 
 if aggregationMethod != ""
@@ -46,7 +46,7 @@ solution, time = linearSolver(instance)
 ###################################################################
 # To use the original instance && compute the full MILP, use :
 # trueSolution = solution
-trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, solution)
+trueSolution = solution
 ###################################################################
 
 writeSolution(trueSolution, "solutions/$outputFormat.json")
@@ -56,4 +56,4 @@ save("plots/$outputFormat.png", figure)
 falseCost = costOfSolution(instance, solution)
 cost = costOfSolution(trueInstance, trueSolution)
 
-appendCostToFile("solutions/costs.json", cost, aggregationMethod, size, time)
+appendCostToFile("solutions/costs.json", cost, outputFormat, time)
