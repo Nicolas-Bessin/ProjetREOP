@@ -4,10 +4,7 @@ include("utils.jl")
 include("costCompute.jl")
 include("agregator.jl")
 
-# Optimal value for linear : 3.181693050869e+04
-# Optimal value for mean scenario : 3.111073854492e+04
-
-size = "medium"
+size = "large"
 aggregationMethod = "onlyFurthestSites+worstCaseScenario"
 subLocAgregator = onlyFurthestSites
 scenarioAgregator = worstCaseScenario
@@ -23,7 +20,7 @@ solution = linearSolver(instance)
 trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, solution)
 writeSolution(trueSolution, outputFile)
 figure = plotSolution(trueSolution, trueInstance)
-save("plots/$aggregationMethod-$size.png", figure)
+save("pltots/$aggregationMethod-$size.png", figure)
 
 falseCost = costOfSolution(instance, solution)
 cost = costOfSolution(trueInstance, trueSolution)

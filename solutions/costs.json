@@ -1,4 +1,9 @@
 {
+    "onlyFurthestSites+worstCaseScenario-small": {
+        "operationnal": 16.690438356164385,
+        "total": 3360.0285126020167,
+        "construction": 3343.338074245852
+    },
     "onlyFurthestSites+worstCaseScenario-medium": {
         "operationnal": 91.06308493150689,
         "total": 6487.188127219001,

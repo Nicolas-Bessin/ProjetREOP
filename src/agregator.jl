@@ -82,8 +82,27 @@ function worstCaseScenario(instance :: Instance)
     
 end
 
-function 90percentWorstScenario(instance :: Instance)
-    return instance
+function ninetyPercentWorss(instance :: Instance)
+    sortedScenarios = sort(instance.windScenarios, by = x -> x.power)
+    minPower = sortedScenarios[1].power
+    maxPower = sortedScenarios[end].power
+    ninetyPercentWorsePower = minPower + 0.9 * (maxPower - minPower)
+    ninetyPercentWorseScenario = WindScenario(1, ninetyPercentWorsePower, 1.0)
+    return Instance(
+        instance.curtailingCost,
+        instance.curtailingPenalty,
+        instance.maxCurtailment,
+        instance.fixedCostCable,
+        instance.variableCostCable,
+        instance.mainLandSubstation,
+        instance.maximumPower,
+        instance.landSubstationCables,
+        instance.substationSubstationCables,
+        instance.substationLocations,
+        instance.substationTypes,
+        [ninetyPercentWorseScenario],
+        instance.windTurbine,
+    )
 end
 
 function onlyFurthestSites(instance :: Instance, nbCoordinates :: Int64 = 1)
