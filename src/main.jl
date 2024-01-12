@@ -5,20 +5,28 @@ include("costCompute.jl")
 include("agregator.jl")
 
 size = "small"
-aggregationMethod = ""
+aggregationMethod = "onlyFurthestSites+ninetyFivePercentWorse"
 
 trueInstanceFile = "instances/KIRO-$size.json"
-outputFile = "solutions/aggregated/$aggregationMethod-$size.json"
+
+if aggregationMethod == ""
+    outputFormat = "$size"
+else
+    outputFormat = "$size-$aggregationMethod"
+end
 
 trueInstance = read_instance(trueInstanceFile)
-instance = trueInstance
-write_instance(instance, "instances/aggregated/$aggregationMethod-$size.json")
+instance = xPercentWorseScenario(onlyFurthestSites(trueInstance), 0.95)
+
+if aggregationMethod != ""
+    write_instance(instance, "instances/aggregated/$outputFormat.json")
+end 
 
 solution, time = linearSolver(instance)
 trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, solution)
-writeSolution(trueSolution, outputFile)
+writeSolution(trueSolution, "solutions/$outputFormat.json")
 figure = plotSolution(trueSolution, trueInstance)
-save("plots/$aggregationMethod-$size.png", figure)
+save("plots/$outputFormat.png", figure)
 
 falseCost = costOfSolution(instance, solution)
 cost = costOfSolution(trueInstance, trueSolution)
