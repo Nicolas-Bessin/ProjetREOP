@@ -5,9 +5,12 @@ include("costCompute.jl")
 include("agregator.jl")
 
 #PARMETERS TO CHANGE#
-# Example :
+# Example : for small, onlyFurthestSites+ninetyFivePercentWorse agragations, use :
 # size = "small"
 # aggregationMethod = "onlyFurthestSites+ninetyFivePercentWorse"
+#####################
+# To use the original instance && compute the full MILP, use :
+# aggregationMethod = ""
 size = "medium"
 aggregationMethod = "onlyFurthestSites+ninetyFivePercentWorse"
 #####################
@@ -23,8 +26,11 @@ end
 trueInstance = read_instance(trueInstanceFile)
 
 # CHANGE THIS LINE TO CHANGE THE AGGREGATION METHOD #
-# Example :
+# Example : for small, onlyFurthestSites+ninetyFivePercentWorse agragations, use :
 # instance = xPercentWorseScenario(onlyFurthestSites(trueInstance), 0.95)
+#####################################################
+# To use the original instance && compute the full MILP, use :
+# instance = trueInstance
 instance = xPercentWorseScenario(onlyFurthestSites(trueInstance), 0.95)
 #####################################################
 
@@ -35,8 +41,11 @@ end
 solution, time = linearSolver(instance)
 
 # CHANGE THIS LINE IF USING A METHOD THAT REQUIRES DE-AGGREGATION #
-# Example :
+# Example : for small, onlyFurthestSites+ninetyFivePercentWorse agragations, use :
 # trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, solution)
+###################################################################
+# To use the original instance && compute the full MILP, use :
+# trueSolution = solution
 trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, solution)
 ###################################################################
 
