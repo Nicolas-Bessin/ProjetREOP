@@ -59,6 +59,29 @@ function quartersPowerScenario(instance :: Instance)
     )
 end
 
+function worstCaseScenario(instance :: Instance)
+    # We take the worst case scenario - that is we return an instance with only one scenario, the worst one
+    worstPower = sort(instance.windScenarios, by = x -> x.power)[end].power
+    worstScenario = WindScenario(1, worstPower, 1.0)
+    return Instance(
+        instance.curtailingCost,
+        instance.curtailingPenalty,
+        instance.maxCurtailment,
+        instance.fixedCostCable,
+        instance.variableCostCable,
+        instance.mainLandSubstation,
+        instance.maximumPower,
+        instance.landSubstationCables,
+        instance.substationSubstationCables,
+        instance.substationLocations,
+        instance.substationTypes,
+        [worstScenario],
+        instance.windTurbine,
+    )
+
+    
+end
+
 function onlyFurthestSites(instance :: Instance, nbCoordinates :: Int64 = 1)
     # We only keep the substation sites closest to the turbines
     # All the instances have the turbines in X > 0, furthest away from the main substation (in X = 0)

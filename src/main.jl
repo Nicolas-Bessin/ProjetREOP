@@ -8,20 +8,21 @@ include("agregator.jl")
 # Optimal value for mean scenario : 3.111073854492e+04
 
 size = "small"
-aggregationMethod = "onlyFurthestSites"
-aggrFunction = onlyFurthestSites
+aggregationMethod = "onlyFurthestSites+worstCaseScenario"
+subLocAgregator = onlyFurthestSites
+scenarioAgregator = worstCaseScenario
 
 trueInstanceFile = "instances/KIRO-$size.json"
 outputFile = "solutions/aggregated/KIRO-$aggregationMethod-$size.json"
 
 trueInstance = read_instance(trueInstanceFile)
-instance = aggrFunction(trueInstance)
+instance = scenarioAgregator(subLocAgregator(trueInstance))
 
 solution = linearSolver(instance)
 trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, solution)
 writeSolution(trueSolution, outputFile)
 figure = plotSolution(trueSolution, trueInstance)
-save("plots/instance-$size-$aggregationMethod.png", figure)
+save("plots/$aggregationMethod-$size.png", figure)
 
 falseCost = costOfSolution(instance, solution)
 cost = costOfSolution(trueInstance, trueSolution)
