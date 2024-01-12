@@ -4,8 +4,6 @@ include("parser.jl")
 
 using GLMakie
 
-sizes = ["tiny", "small", "medium", "large", "huge"]
-
 function plotInstance(instance::Instance; legendpos=:lt)
     X_stations = [l.x for l in instance.substationLocations]
     Y_stations = [l.y for l in instance.substationLocations]
@@ -82,4 +80,38 @@ function plotAllInstances(namingFormat :: String = "KIRO")
     end
 end
 
-# plotAllInstances("onlyFurthestSites")
+function plotPowerProba(instance::Instance)
+    Y_power = [l.power for l in instance.windScenarios]
+    X_proba = [l.probability for l in instance.windScenarios]    
+    f = Figure()
+    ax = Axis(f[1, 1]; title="scenarios", xlabel="proba", ylabel="power")#, aspect=DataAspect())
+    scatter!(ax, X_proba, Y_power; label = "Scenarios", color=:green, markersize=20)
+    return f
+end
+
+function plotLandCable(instance::Instance)
+    fixedCosts = [c.fixed_cost for c in instance.landSubstationCables]
+    variableCosts = [c.variable_cost for c in instance.landSubstationCables]
+    failureProbas = [c.probability_failure for c in instance.landSubstationCables]
+    ratings = [c.rating for c in instance.landSubstationCables]
+    f = Figure()
+    ax2 = Axis(f[1, 1]; title="Land cables", xlabel="rating", ylabel="cost")
+    scatter!(ax2, failureProbas, ratings, color=variableCosts, markersize=20)
+    Colorbar(f[1, 2], limits = (minimum(variableCosts), maximum(variableCosts)), label = "variable cost")
+    # ax1 = Axis(f[2, 1]; title="Land cables", xlabel="Probability of failure", ylabel="Rating")
+    # scatter!(ax1, failureProbas, ratings, color=fixedCosts, markersize=20)
+    # Colorbar(f[2, 2], limits = (minimum(fixedCosts), maximum(fixedCosts)), label = "fixed cost")
+    return f
+end
+
+function plotSubstationTypes(instance :: Instance)
+    costs = [s.cost for s in instance.substationTypes]
+    ratings = [s.rating for s in instance.substationTypes]
+    failureProbas = [s.probability_failure for s in instance.substationTypes]
+    f = Figure()
+    ax2 = Axis(f[1, 1]; title="Substation types", xlabel="Probability of failure", ylabel="Rating")
+    scatter!(ax2, failureProbas, ratings, color=costs, markersize=20)
+    Colorbar(f[1, 2], limits = (minimum(costs), maximum(costs)), label = "cost")
+    return f
+end
+
