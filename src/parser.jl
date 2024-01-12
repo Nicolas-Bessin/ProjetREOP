@@ -222,13 +222,14 @@ function writeSolution(solution :: Solution, path :: String)
     end
 end
 
-function appendCostToFile(path :: String, cost :: Tuple{Float64, Float64, Float64}, aggregationType :: String, size :: String)
+function appendCostToFile(path :: String, cost :: Tuple{Float64, Float64, Float64}, aggregationType :: String, size :: String, time :: Float64)
     data = JSON.parsefile(path)
     cons, ope, total = cost
     data[aggregationType * "-" * size] = Dict(
         "construction"=> cons,
         "operationnal" => ope,
-        "total" => total
+        "total" => total,
+        "time" => time
     )
     open(path, "w") do f
         JSON.print(f, data, 4)

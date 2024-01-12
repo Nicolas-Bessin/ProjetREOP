@@ -82,4 +82,4 @@ function plotAllInstances(namingFormat :: String = "KIRO")
     end
 end
 
-plotAllInstances("onlyFurthestSites")
+# plotAllInstances("onlyFurthestSites")

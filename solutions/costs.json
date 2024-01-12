@@ -1,11 +1,19 @@
 {
     "onlyFurthestSites+worstCaseScenario-small": {
         "operationnal": 16.690438356164385,
+        "time": 3.049710988998413,
         "total": 3360.0285126020167,
         "construction": 3343.338074245852
     },
+    "onlyFurthestSites+ninetyPercentWorse-small": {
+        "operationnal": 58.51731616438358,
+        "time": 4.831736087799072,
+        "total": 3268.0752937185803,
+        "construction": 3209.557977554197
+    },
     "onlyFurthestSites+worstCaseScenario-medium": {
         "operationnal": 91.06308493150689,
+        "time": 131.670725107193,
         "total": 6487.188127219001,
         "construction": 6396.125042287495
     }

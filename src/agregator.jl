@@ -82,7 +82,7 @@ function worstCaseScenario(instance :: Instance)
     
 end
 
-function ninetyPercentWorss(instance :: Instance)
+function ninetyPercentWorseScenario(instance :: Instance)
     sortedScenarios = sort(instance.windScenarios, by = x -> x.power)
     minPower = sortedScenarios[1].power
     maxPower = sortedScenarios[end].power
@@ -189,5 +189,5 @@ function idem(instance :: Instance)
     return instance
 end
 
-aggregateInstances("instances/aggregated/onlyFurthestSites", onlyFurthestSites)
+# aggregateInstances("instances/aggregated/onlyFurthestSites", onlyFurthestSites)
 

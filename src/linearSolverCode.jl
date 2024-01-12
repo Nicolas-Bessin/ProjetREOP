@@ -307,6 +307,8 @@ function linearSolver(instance :: Instance)
 
     optimize!(model)
 
+    time = solve_time(model)
+
     solution = toSolution(value.(x), value.(yland), value.(ysub), value.(z), instance)
-    return solution
+    return solution, time
 end
