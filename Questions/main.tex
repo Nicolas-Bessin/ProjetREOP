@@ -30,6 +30,9 @@
 %Facilement
 \usepackage[margin=2cm]{geometry}
 
+%Commentaire sur plusieurs lignes
+\usepackage{verbatim}
+
 %Précisément
 %\usepackage[left=2cm , right=2cm, bottom=2cm, top=2cm, headheight=2cm]{geometry} 
 %header c'est l'en-tête pas la marge supérieure
@@ -109,7 +112,6 @@
         \end{cases}
     \end{equation*}
     }
-\\
 \item {
     Les contraintes suivantes sur $\mu$ et $\alpha$ permettent la linéarisation de $\mu = [\beta]^{+}$ avec $\beta \in \lbrack -M, M \rbrack$ : 
     \begin{equation*}
@@ -142,33 +144,30 @@
     On introduit les variables binaires $y_\alpha$ et $y_\beta$, et la variable continue $y$.
     Le problème s'écrit alors :
     \begin{equation}
-        \begin{aligned}
+        \begin{alignedat}{2}
             \min _{\alpha, \beta, y_\alpha, y_\beta, y} & y \\
             \text{ s.c. } 
-            &y \leq &\alpha \\
-            &y \leq &\beta \\
-            &y \geq &\alpha - 2M y_\alpha \\
-            &y \geq &\beta - 2M y_\beta \\
-            &y_\alpha + y_\beta &= 1 \\
-        \end{aligned}
+            &y \geq \alpha - 2M y_\alpha, & \quad& y \geq \beta - 2M y_\beta \\
+            &y_\alpha + y_\beta = 1 \\
+        \end{alignedat}
     \end{equation}
-    La contrainte $y_\alpha + y_\beta = 1$ assure que l'un des $y_\alpha$ ou $y_\beta$ vaut zéro,
-     c'est-à-dire que l'on a bien $y$ qui prend la valeur $\alpha$ ou $\beta$.
+    La contrainte $y_\alpha + y_\beta = 1$ assure  $y = \alpha$ ou $y = \beta$.
     De plus, puisque c'est un problème de minimisation, on a bien $y = min(\alpha, \beta)$. \\
-    \textit{N.B. : Nous avons trouvé cette élégante méthode à \underline{\href{https://doi.org/10.3390/math10020283L}{ce lien}}.}
+    %\textit{N.B. : Nous avons trouvé cette élégante méthode à \underline{\href{https://doi.org/10.3390/math10020283}{ce lien}}.}
 }
-\\
 \item {
-    On a le problème suivant : 
-    \begin{equation}
-        \begin{aligned}
-            \min _{\alpha, \beta, \gamma} & \max (\alpha, \beta) + \gamma \\
-            \text{ s.c. } & A(\alpha, \beta, \gamma)^T \leq b \\
-        \end{aligned}
-    \end{equation}
+    \begin{comment}
+        On a le problème suivant : 
+        \begin{equation}
+            \begin{aligned}
+                \min _{\alpha, \beta, \gamma} & \max (\alpha, \beta) + \gamma \\
+                \text{ s.c. } & A(\alpha, \beta, \gamma)^T \leq b \\
+            \end{aligned}
+        \end{equation}
+    \end{comment}
+
     On introduit la variable continue $\delta$ et les contraintes suivantes :
-    $$ \delta \geq \alpha $$
-    $$ \delta \geq \beta $$
+    $$ \delta \geq \alpha, \qquad \delta \geq \beta $$
     Le problème initial s'écrit alors :
     \begin{equation}
         \begin{aligned}
@@ -202,13 +201,11 @@
         \begin{aligned}
             \min _{a, b, c, d, e} d \\
             \text{ s.c. }
-            d &\geq 0 \\
-            d &\geq a + e \\
-            e &\geq -b \\
-            e &\geq -c \\   
+            d &\geq 0 & \quad& d \geq a + e \\
+            e &\geq -b & \quad& e \geq -c \\   
         \end{aligned}
     \end{equation}
-
+    
 
     Pour linéariser les termes $p_f(v, x, y) c^c(C^f(v, x, y, z ,\omega))$, on doit distribuer la multiplication
     (On sait linéariser les multiplications de variables binaires et de variables continues). On a donc :
