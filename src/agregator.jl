@@ -82,12 +82,12 @@ function worstCaseScenario(instance :: Instance)
     
 end
 
-function ninetyPercentWorseScenario(instance :: Instance)
+function xPercentWorseScenario(instance :: Instance, x :: Float64)
     sortedScenarios = sort(instance.windScenarios, by = x -> x.power)
     minPower = sortedScenarios[1].power
     maxPower = sortedScenarios[end].power
-    ninetyPercentWorsePower = minPower + 0.9 * (maxPower - minPower)
-    ninetyPercentWorseScenario = WindScenario(1, ninetyPercentWorsePower, 1.0)
+    xPercentWorsePower = minPower + x * (maxPower - minPower)
+    xPercentWorseScenario = WindScenario(1, xPercentWorsePower, 1.0)
     return Instance(
         instance.curtailingCost,
         instance.curtailingPenalty,
@@ -100,7 +100,7 @@ function ninetyPercentWorseScenario(instance :: Instance)
         instance.substationSubstationCables,
         instance.substationLocations,
         instance.substationTypes,
-        [ninetyPercentWorseScenario],
+        [xPercentWorseScenario],
         instance.windTurbine,
     )
 end

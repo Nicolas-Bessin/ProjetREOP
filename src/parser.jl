@@ -225,7 +225,7 @@ end
 function appendCostToFile(path :: String, cost :: Tuple{Float64, Float64, Float64}, aggregationType :: String, size :: String, time :: Float64)
     data = JSON.parsefile(path)
     cons, ope, total = cost
-    data[aggregationType * "-" * size] = Dict(
+    data[size * "-" * aggregationType] = Dict(
         "construction"=> cons,
         "operationnal" => ope,
         "total" => total,

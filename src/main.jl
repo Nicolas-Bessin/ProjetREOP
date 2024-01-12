@@ -5,15 +5,13 @@ include("costCompute.jl")
 include("agregator.jl")
 
 size = "small"
-aggregationMethod = "onlyFurthestSites+ninetyPercentWorse"
-subLocAgregator = onlyFurthestSites
-scenarioAgregator = ninetyPercentWorseScenario
+aggregationMethod = ""
 
 trueInstanceFile = "instances/KIRO-$size.json"
 outputFile = "solutions/aggregated/$aggregationMethod-$size.json"
 
 trueInstance = read_instance(trueInstanceFile)
-instance = scenarioAgregator(subLocAgregator(trueInstance))
+instance = trueInstance
 write_instance(instance, "instances/aggregated/$aggregationMethod-$size.json")
 
 solution, time = linearSolver(instance)

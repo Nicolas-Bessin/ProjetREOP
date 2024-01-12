@@ -1,20 +1,38 @@
 {
-    "onlyFurthestSites+worstCaseScenario-small": {
-        "operationnal": 16.690438356164385,
-        "time": 3.049710988998413,
-        "total": 3360.0285126020167,
-        "construction": 3343.338074245852
+    "medium-onlyFurthestSites+ninetyPercentWorse": {
+        "construction": 6134.843720498646,
+        "operationnal": 485.3598345863016,
+        "time": 1968.409038066864,
+        "total": 6620.203555084948
     },
-    "onlyFurthestSites+ninetyPercentWorse-small": {
-        "operationnal": 58.51731616438358,
-        "time": 4.831736087799072,
-        "total": 3268.0752937185803,
-        "construction": 3209.557977554197
-    },
-    "onlyFurthestSites+worstCaseScenario-medium": {
+    "medium-onlyFurthestSites+worstCaseScenario": {
+        "construction": 6396.125042287495,
         "operationnal": 91.06308493150689,
         "time": 131.670725107193,
-        "total": 6487.188127219001,
-        "construction": 6396.125042287495
+        "total": 6487.188127219001
+    },
+    "small-": {
+        "construction": 3209.5799207916425,
+        "operationnal": 37.6208978630137,
+        "time": 1140.456465959549,
+        "total": 3247.2008186546564
+    },
+    "small-onlyFurthestSites+ninetyFivePercentWorse": {
+        "construction": 3209.5799207916425,
+        "operationnal": 37.6208978630137,
+        "time": 1.2054648399353027,
+        "total": 3247.2008186546564
+    },
+    "small-onlyFurthestSites+ninetyPercentWorse": {
+        "construction": 3209.557977554197,
+        "operationnal": 58.51731616438358,
+        "time": 4.831736087799072,
+        "total": 3268.0752937185803
+    },
+    "small-onlyFurthestSites+worstCaseScenario": {
+        "construction": 3343.338074245852,
+        "operationnal": 16.690438356164385,
+        "time": 3.049710988998413,
+        "total": 3360.0285126020167
     }
 }
