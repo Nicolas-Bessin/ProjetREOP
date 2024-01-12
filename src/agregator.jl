@@ -82,6 +82,10 @@ function worstCaseScenario(instance :: Instance)
     
 end
 
+function 90percentWorstScenario(instance :: Instance)
+    return instance
+end
+
 function onlyFurthestSites(instance :: Instance, nbCoordinates :: Int64 = 1)
     # We only keep the substation sites closest to the turbines
     # All the instances have the turbines in X > 0, furthest away from the main substation (in X = 0)
