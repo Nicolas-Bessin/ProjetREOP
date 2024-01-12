@@ -141,13 +141,5 @@ end
 function costOfSolution(instance :: Instance, solution :: Solution)
     conCost = constructionCost(instance, solution)
     opeCost = operationalCost(instance, solution)
-    print("Julia")
-    print("Operational cost is : $opeCost")
-    print("Construction cost  is : $conCost")
-    print("Total cost is : $(opeCost + conCost)")
-    return  Dict(
-        "Ope" => opeCost,
-        "Cons" => conCost,
-        "Total" => opeCost + conCost
-    )
+    return (conCost, opeCost, conCost + opeCost)
 end

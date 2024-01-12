@@ -39,7 +39,7 @@
             "id": 1
         },
         {
-            "power_generation": 10.0,
+            "power_generation": 100.0,
             "probability": 0.25,
             "id": 2
         },
@@ -49,7 +49,7 @@
             "id": 3
         },
         {
-            "power_generation": 135.0,
+            "power_generation": 150.0,
             "probability": 0.25,
             "id": 4
         }

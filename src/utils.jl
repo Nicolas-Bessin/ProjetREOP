@@ -73,15 +73,13 @@ function plotSolution(solution::Solution, instance::Instance)
     return f
 end
 
-# for size ∈ sizes
-#     instance = read_instance("instances/KIRO-$size.json")
-#     f = plotInstance(instance)
-#     save("plots/instance-$size.png", f)
-# end
+function plotAllInstances(namingFormat :: String = "KIRO")
+    sizes = ["small", "medium", "large", "huge"]
+    for size ∈ sizes
+        instance = read_instance("instances/aggregated/$namingFormat-$size.json")
+        f = plotInstance(instance)
+        save("plots/$namingFormat-$size.png", f)
+    end
+end
 
-size = "small"
-
-instance = read_instance("instances/KIRO-$size.json")
-solution = read_solution("solutions/KIRO-$size-sol-linear.json")
-f = plotSolution(solution, instance)
-save("plots/instance-$size-linearized.png", f)
+plotAllInstances("onlyFurthestSites")
