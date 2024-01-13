@@ -95,14 +95,22 @@ function plotLandCable(instance::Instance)
     failureProbas = [c.probability_failure for c in instance.landSubstationCables]
     ratings = [c.rating for c in instance.landSubstationCables]
     f = Figure()
-    ax2 = Axis(f[1, 1]; title="Land cables", xlabel="rating", ylabel="cost")
+    ax2 = Axis(f[1, 1]; title="Land cables", xlabel="Probability of failure", ylabel="Rating")
     scatter!(ax2, failureProbas, ratings, color=variableCosts, markersize=20)
     Colorbar(f[1, 2], limits = (minimum(variableCosts), maximum(variableCosts)), label = "variable cost")
-    # ax1 = Axis(f[2, 1]; title="Land cables", xlabel="Probability of failure", ylabel="Rating")
-    # scatter!(ax1, failureProbas, ratings, color=fixedCosts, markersize=20)
-    # Colorbar(f[2, 2], limits = (minimum(fixedCosts), maximum(fixedCosts)), label = "fixed cost")
     return f
 end
+
+function plotUsedLandCable(instance :: Instance, solution :: Solution)
+    usedCables = [instance.landSubstationCables[sub.id_cable] for sub in solution.substations]
+    probas = [c.probability_failure for c in usedCables]
+    ratings = [c.rating for c in usedCables]
+    f = plotLandCable(instance)
+    ax = f[1, 1]
+    scatter!(ax, probas, ratings; color=:red, markersize=15, marker = :cross)
+    return f
+end
+
 
 function plotSubstationTypes(instance :: Instance)
     costs = [s.cost for s in instance.substationTypes]
@@ -112,6 +120,42 @@ function plotSubstationTypes(instance :: Instance)
     ax2 = Axis(f[1, 1]; title="Substation types", xlabel="Probability of failure", ylabel="Rating")
     scatter!(ax2, failureProbas, ratings, color=costs, markersize=20)
     Colorbar(f[1, 2], limits = (minimum(costs), maximum(costs)), label = "cost")
+    return f
+end
+
+function plotUsedSubstationTypes(instance :: Instance, solution :: Solution)
+    usedSubstations = [instance.substationTypes[sub.id_type] for sub in solution.substations]
+    probas = [s.probability_failure for s in usedSubstations]
+    ratings = [s.rating for s in usedSubstations]
+    f = plotSubstationTypes(instance)
+    ax = f[1, 1]
+    scatter!(ax, probas, ratings; color=:red, markersize=15, marker = :cross)
+    return f
+end
+
+function plotUsedTypes(instance :: Instance, solution :: Solution)
+    f = Figure()
+    varCostCable = [c.variable_cost for c in instance.landSubstationCables]
+    probCable = [c.probability_failure for c in instance.landSubstationCables]
+    ratingCable = [c.rating for c in instance.landSubstationCables]
+    varCostSub = [s.cost for s in instance.substationTypes]
+    probSub = [s.probability_failure for s in instance.substationTypes]
+    ratingSub = [s.rating for s in instance.substationTypes]
+
+    ax1 = Axis(f[1, 1]; title="Land cables", xlabel="Probability of failure", ylabel="Rating")
+    scatter!(ax1, probCable, ratingCable; color=varCostCable, markersize=20)
+    Colorbar(f[1, 2], limits = (minimum(varCostCable), maximum(varCostCable)), label = "Variable cost")
+
+    ax2 = Axis(f[1, 3]; title="Substation types", xlabel="Probability of failure", ylabel="Rating")
+    scatter!(ax2, probSub, ratingSub; color=varCostSub, markersize=20)
+    Colorbar(f[1, 4], limits = (minimum(varCostSub), maximum(varCostSub)), label = "Variable cost")
+
+    usedCables = [instance.landSubstationCables[sub.id_cable].id for sub in solution.substations]
+    scatter!(ax1, probCable[usedCables], ratingCable[usedCables]; color=:red, markersize=15, marker = :cross)
+
+    usedSubstations = [instance.substationTypes[sub.id_type].id for sub in solution.substations]
+    scatter!(ax2, probSub[usedSubstations], ratingSub[usedSubstations]; color=:red, markersize=15, marker = :cross)
+
     return f
 end
 
