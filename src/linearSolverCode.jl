@@ -118,7 +118,7 @@ function linearSolver(instance :: Instance,  filename :: String = "")
         end
     end
 
-    # Variables for power sent from v1 to v2 under scenario ω and failure of v2
+    # Variables for power sent from v1 to v2 under scenario ω and failure of v1
     # This is a min term, so we will need to linearize it
 
     @variable(model, powerSentUnderOtherFailure[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios])
@@ -132,8 +132,6 @@ function linearSolver(instance :: Instance,  filename :: String = "")
                 @constraint(model, minIsPowerSent[v1, v2, ω] + minIsCableCapa[v1, v2, ω] == 1)
                 power_sent = instance.windScenarios[ω].power * nbTurbinesLinked[v1]
                 cable_capa = sum(instance.substationSubstationCables[i].rating * ysub[v1, v2, i] for i in 1:nbSubCableTypes)
-                @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] <= power_sent)
-                @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] <= cable_capa)
                 @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] >= power_sent - minIsCableCapa[v1, v2, ω] * max_power)
                 @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] >= cable_capa - minIsPowerSent[v1, v2, ω] * max_power)
             end

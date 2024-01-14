@@ -1,62 +1,74 @@
 {
-    "tiny": {
-        "operationnal": 3.4799999999999995,
-        "time": 0.008774995803833008,
-        "total": 105498.4547468306,
-        "construction": 105494.9747468306
-    },
-    "medium-onlyFurthestSites+worstCaseScenario": {
-        "operationnal": 91.06308493150689,
-        "time": 131.670725107193,
-        "total": 6487.188127219001,
-        "construction": 6396.125042287495
-    },
     "large-onlyFurthestSites+ninetyFivePercentWorse": {
+        "construction": 2806.000505385774,
         "operationnal": 3.8343564000000048,
         "time": 2179.4236719608307,
-        "total": 2809.834861785774,
-        "construction": 2806.000505385774
-    },
-    "small-onlyFurthestSites+worstCaseScenario": {
-        "operationnal": 16.690438356164385,
-        "time": 3.049710988998413,
-        "total": 3360.0285126020167,
-        "construction": 3343.338074245852
-    },
-    "small-onlyFurthestSites+ninetyFivePercentWorse": {
-        "operationnal": 37.6208978630137,
-        "time": 0.8976800441741943,
-        "total": 3247.2008186546564,
-        "construction": 3209.5799207916425
-    },
-    "small-onlyFurthestSites+ninetyFivePercentWorse+quadratic": {
-        "operationnal": 235376.3379123287,
-        "time": 0.045699119567871094,
-        "total": 238371.03589655703,
-        "construction": 2994.697984228346
-    },
-    "small": {
-        "operationnal": 37.6208978630137,
-        "time": 1140.456465959549,
-        "total": 3247.2008186546564,
-        "construction": 3209.5799207916425
+        "total": 2809.834861785774
     },
     "medium-onlyFurthestSites+ninetyFivePercentWorse": {
+        "construction": 6306.755851581411,
         "operationnal": 189.76908368219182,
         "time": 468.6307849884033,
-        "total": 6496.524935263603,
-        "construction": 6306.755851581411
+        "total": 6496.524935263603
     },
-    "small-onlyFurthestSites+ninetyPercentWorse": {
-        "operationnal": 58.51731616438358,
-        "time": 4.831736087799072,
-        "total": 3268.0752937185803,
-        "construction": 3209.557977554197
+    "medium-onlyFurthestSites+ninetyFivePercentWorse+quadratic": {
+        "construction": 6306.755851581411,
+        "operationnal": 189.76908368219182,
+        "time": 883.4570698738098,
+        "total": 6496.524935263603
     },
     "medium-onlyFurthestSites+ninetyPercentWorse": {
+        "construction": 6134.843720498646,
         "operationnal": 485.3598345863016,
         "time": 1968.409038066864,
-        "total": 6620.203555084948,
-        "construction": 6134.843720498646
+        "total": 6620.203555084948
+    },
+    "medium-onlyFurthestSites+worstCaseScenario": {
+        "construction": 6396.125042287495,
+        "operationnal": 91.06308493150689,
+        "time": 40.022510051727295,
+        "total": 6487.188127219001
+    },
+    "medium-onlyFurthestSites+worstCaseScenario+quadratic": {
+        "construction": 6396.125042287495,
+        "operationnal": 91.06308493150689,
+        "time": 178.6106448173523,
+        "total": 6487.188127219001
+    },
+    "small": {
+        "construction": 3209.5799207916425,
+        "operationnal": 37.6208978630137,
+        "time": 1140.456465959549,
+        "total": 3247.2008186546564
+    },
+    "small-onlyFurthestSites+ninetyFivePercentWorse": {
+        "construction": 3209.5799207916425,
+        "operationnal": 37.6208978630137,
+        "time": 0.8976800441741943,
+        "total": 3247.2008186546564
+    },
+    "small-onlyFurthestSites+ninetyFivePercentWorse+quadratic": {
+        "construction": 3209.5799207916425,
+        "operationnal": 37.6208978630137,
+        "time": 0.9542889595031738,
+        "total": 3247.2008186546564
+    },
+    "small-onlyFurthestSites+ninetyPercentWorse": {
+        "construction": 3209.557977554197,
+        "operationnal": 58.51731616438358,
+        "time": 4.831736087799072,
+        "total": 3268.0752937185803
+    },
+    "small-onlyFurthestSites+worstCaseScenario": {
+        "construction": 3343.338074245852,
+        "operationnal": 16.690438356164385,
+        "time": 3.049710988998413,
+        "total": 3360.0285126020167
+    },
+    "tiny": {
+        "construction": 105494.9747468306,
+        "operationnal": 3.4799999999999995,
+        "time": 0.008774995803833008,
+        "total": 105498.4547468306
     }
 }

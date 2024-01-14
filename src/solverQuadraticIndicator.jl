@@ -133,9 +133,9 @@ function QuadraticSolver(instance :: Instance,  filename :: String = "")
                 power_sent = instance.windScenarios[ω].power * nbTurbinesLinked[v1]
                 cable_capa = sum(instance.substationSubstationCables[i].rating * ysub[v1, v2, i] for i in 1:nbSubCableTypes)
                 # If the min is the power sent, then the minIsPowerSent variable is 1
-                @constraint(model, powerCapaBound * minIsPowerSent[v1, v2, ω] >= power_sent - cable_capa)
+                @constraint(model, powerCapaBound * minIsPowerSent[v1, v2, ω] >= cable_capa - power_sent)
                 # If the min is the cable capacity, then the minIsPowerSent variable is 0
-                @constraint(model, powerCapaBound * (1 - minIsPowerSent[v1, v2, ω]) >= cable_capa - power_sent)
+                @constraint(model, powerCapaBound * (1 - minIsPowerSent[v1, v2, ω]) >= power_sent - cable_capa)
                 # The power sent is the actual power sent if the minIsPowerSent variable is 1
                 @constraint(model, minIsPowerSent[v1, v2, ω] --> {powerSentUnderV1Failure[v1, v2, ω] == power_sent})
                 # The power sent is the cable capacity if the minIsPowerSent variable is 0

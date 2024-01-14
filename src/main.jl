@@ -12,8 +12,8 @@ include("agregator.jl")
 #####################
 # To use the original instance && compute the full MILP, use :
 # aggregationMethod = ""
-size = "small"
-aggregationMethod = "onlyFurthestSites+ninetyFivePercentWorse+quadratic"
+size = "medium"
+aggregationMethod = "onlyFurthestSites+worstCaseScenario"
 #####################
 
 trueInstanceFile = "instances/KIRO-$size.json"
@@ -32,7 +32,7 @@ trueInstance = read_instance(trueInstanceFile)
 #####################################################
 # To use the original instance && compute the full MILP, use :
 # instance = trueInstance
-instance = xPercentWorseScenario(onlyFurthestSites(trueInstance), 0.95)
+instance = worstCaseScenario(onlyFurthestSites(trueInstance))
 #####################################################
 
 if aggregationMethod != ""
@@ -41,7 +41,8 @@ end
 
 # Raw data dump file for the MILP
 # If you don't want to save the raw data, just set rawDataDump to ""
-rawDataDump = "solutions/rawData/$outputFormat.json"
+# Example : rawDataDump = "solutions/rawData/$outputFormat.json"
+rawDataDump = ""
 # Add the raw data dump filename if you want to save the raw data
 
 # CHANGE THIS LINE TO CHANGE THE SOLVER METHOD #
@@ -50,7 +51,7 @@ rawDataDump = "solutions/rawData/$outputFormat.json"
 # To use the pure linear solver, use :
 # solution, time = linearSolver(instance, rawDataDump)
 #################################################
-solution, time = QuadraticSolver(instance, rawDataDump)
+solution, time = linearSolver(instance, rawDataDump)
 
 # CHANGE THIS LINE IF USING A METHOD THAT REQUIRES DE-AGGREGATION #
 # Example : for small, onlyFurthestSites+ninetyFivePercentWorse agregations, use :
