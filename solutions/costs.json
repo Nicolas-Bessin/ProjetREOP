@@ -20,7 +20,7 @@
     "medium-onlyFurthestSites+ninetyPercentWorse": {
         "construction": 6134.843720498646,
         "operationnal": 485.3598345863016,
-        "time": 1968.409038066864,
+        "time": 569.7751898765564,
         "total": 6620.203555084948
     },
     "medium-onlyFurthestSites+worstCaseScenario": {
@@ -39,6 +39,13 @@
         "construction": 3209.5799207916425,
         "operationnal": 37.6208978630137,
         "time": 1140.456465959549,
+        "total": 3247.2008186546564
+    
+    },
+    "small-FurthestSites+95%Worse+SubTypes+LandCables": {
+        "construction": 3209.5799207916425,
+        "operationnal": 37.6208978630137,
+        "time": 0.395035982131958,
         "total": 3247.2008186546564
     },
     "small-onlyFurthestSites+ninetyFivePercentWorse": {

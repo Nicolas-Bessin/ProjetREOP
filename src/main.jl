@@ -12,8 +12,8 @@ include("agregator.jl")
 #####################
 # To use the original instance && compute the full MILP, use :
 # aggregationMethod = ""
-size = "medium"
-aggregationMethod = "onlyFurthestSites+worstCaseScenario"
+size = "small"
+aggregationMethod = "FurthestSites+95%Worse+SubTypes+LandCables"
 #####################
 
 trueInstanceFile = "instances/KIRO-$size.json"
@@ -32,7 +32,15 @@ trueInstance = read_instance(trueInstanceFile)
 #####################################################
 # To use the original instance && compute the full MILP, use :
 # instance = trueInstance
-instance = worstCaseScenario(onlyFurthestSites(trueInstance))
+instance = onlyHighestProbaLandCables(
+    onlyHighestProbaSubs(
+        onlyFurthestSites(
+            xPercentWorseScenario(
+                trueInstance, 0.95
+            )
+        )
+    )
+)
 #####################################################
 
 if aggregationMethod != ""
@@ -51,7 +59,7 @@ rawDataDump = ""
 # To use the pure linear solver, use :
 # solution, time = linearSolver(instance, rawDataDump)
 #################################################
-solution, time = QuadraticSolver(instance, rawDataDump)
+solution, time = linearSolver(instance, rawDataDump)
 
 # CHANGE THIS LINE IF USING A METHOD THAT REQUIRES DE-AGGREGATION #
 # Example : for small, onlyFurthestSites+ninetyFivePercentWorse agregations, use :
@@ -59,7 +67,11 @@ solution, time = QuadraticSolver(instance, rawDataDump)
 ###################################################################
 # To use the original instance && compute the full MILP, use :
 # trueSolution = solution
-trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, solution)
+trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, 
+    deAggregateReducedSubstationTypes(trueInstance, instance, 
+        deAggregateReducedLandCables(trueInstance, instance, solution)
+    )
+)
 ###################################################################
 
 writeSolution(trueSolution, "solutions/$outputFormat.json")

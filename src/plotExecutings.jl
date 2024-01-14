@@ -3,7 +3,7 @@ include("solution.jl")
 include("parser.jl")
 include("utils.jl")
 
-size = "medium"
+size = "small"
 outputFormat = "onlyFurthestSites+ninetyFivePercentWorse"
 inputFile = "instances/KIRO-$size.json"
 solutionFile = "solutions/$size-$outputFormat.json"

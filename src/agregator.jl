@@ -175,6 +175,122 @@ function deAggregateReducedSiteSolution(trueInstance :: Instance, aggregInstance
     return Solution(trueSubstations, trueCables, trueTurbines)
 end
 
+function onlyHighestProbaSubs(instance :: Instance)
+    # We only keep the substations with the highest probability of failure
+    # (Because they are the lowest cost ones)
+    # This comes from the fact that for small & medium, the solution only uses the substations with the highest probability of failure
+    failure_probas = [sub.probability_failure for sub in instance.substationTypes]
+    max_proba = maximum(failure_probas)
+    kept_substations = [sub for sub in instance.substationTypes if sub.probability_failure == max_proba]
+    substations = [
+        SubstationType(
+            i,
+            sub.cost,
+            sub.rating,
+            sub.probability_failure)
+        for (i, sub) in enumerate(kept_substations)
+    ]
+    return Instance(
+        instance.curtailingCost,
+        instance.curtailingPenalty,
+        instance.maxCurtailment,
+        instance.fixedCostCable,
+        instance.variableCostCable,
+        instance.mainLandSubstation,
+        instance.maximumPower,
+        instance.landSubstationCables,
+        instance.substationSubstationCables,
+        instance.substationLocations,
+        substations,
+        instance.windScenarios,
+        instance.windTurbine,
+    )
+
+end
+
+function deAggregateReducedSubstationTypes(trueInstance :: Instance, instance :: Instance, solution :: Solution)
+    # We need to find the true substation types from the aggregated instance (because the ids are different)
+    # We compute a dictionnary to associate each substation id in the aggregated instance to the id in the true instance
+    idCorrespondance = Dict()
+    for subInAggregatedInstance in instance.substationTypes
+        indexInTrueInstance = findfirst(
+            sub -> sub.rating == subInAggregatedInstance.rating && sub.probability_failure == subInAggregatedInstance.probability_failure,
+            trueInstance.substationTypes
+        )
+        idCorrespondance[subInAggregatedInstance.id] = trueInstance.substationTypes[indexInTrueInstance].id
+    end
+
+    trueSubstations = [
+        Substation(
+            substation.id_loc,
+            idCorrespondance[substation.id_type],
+            substation.id_cable
+        )
+        for substation in solution.substations
+    ]
+
+    return Solution(trueSubstations, solution.cables, solution.windTurbines)
+end
+
+function onlyHighestProbaLandCables(instance :: Instance)
+    # We only keep the cables with the highest probability of failure
+    # (Because they are the lowest cost ones)
+    # This comes from the fact that for small & medium, the solution only uses the cables with the highest probability of failure
+    failure_probas = [cable.probability_failure for cable in instance.landSubstationCables]
+    max_proba = maximum(failure_probas)
+    kept_cables = [cable for cable in instance.landSubstationCables if cable.probability_failure == max_proba]
+    cables = [
+        CableType(
+            i,
+            cable.fixed_cost,
+            cable.variable_cost,
+            cable.rating,
+            cable.probability_failure)
+        for (i, cable) in enumerate(kept_cables)
+    ]
+    return Instance(
+        instance.curtailingCost,
+        instance.curtailingPenalty,
+        instance.maxCurtailment,
+        instance.fixedCostCable,
+        instance.variableCostCable,
+        instance.mainLandSubstation,
+        instance.maximumPower,
+        cables,
+        instance.substationSubstationCables,
+        instance.substationLocations,
+        instance.substationTypes,
+        instance.windScenarios,
+        instance.windTurbine,
+    )
+end
+
+function deAggregateReducedLandCables(trueInstance :: Instance, instance :: Instance, solution :: Solution)
+    # We need to find the true cable types from the aggregated instance (because the ids are different)
+    # We compute a dictionnary to associate each cable id in the aggregated instance to the id in the true instance
+    idCorrespondance = Dict()
+    for cableInAggregatedInstance in instance.landSubstationCables
+        indexInTrueInstance = findfirst(
+            cable -> cable.rating == cableInAggregatedInstance.rating && cable.probability_failure == cableInAggregatedInstance.probability_failure,
+            trueInstance.landSubstationCables
+        )
+        idCorrespondance[cableInAggregatedInstance.id] = trueInstance.landSubstationCables[indexInTrueInstance].id
+    end
+
+    trueSubstations = [
+        Substation(
+            substation.id_loc,
+            substation.id_type,
+            idCorrespondance[substation.id_cable]
+        )
+        for substation in solution.substations
+    ]
+
+    return Solution(trueSubstations, solution.cables, solution.windTurbines)
+end
+    
+    
+
 function aggregateInstances(outputFormat :: String, aggregationFunction :: Function)
     sizes = ["small", "medium", "large", "huge"]
     for size in sizes
@@ -184,6 +300,7 @@ function aggregateInstances(outputFormat :: String, aggregationFunction :: Funct
         write_instance(newInstance, outputFormat * "-$size.json")
     end
 end
+
 
 function idem(instance :: Instance)
     return instance
