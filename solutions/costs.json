@@ -1,4 +1,10 @@
 {
+    "large-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
+        "construction": 8106.863372469561,
+        "operationnal": 528.8043845053693,
+        "time": 12.102035999298096,
+        "total": 8635.66775697493
+    },
     "large-FurthestSites+95%Worse+SubTypes+LandCables": {
         "construction": 8106.863372469561,
         "operationnal": 528.8043845053693,
@@ -10,6 +16,18 @@
         "operationnal": 3.8343564000000048,
         "time": 2179.4236719608307,
         "total": 2809.834861785774
+    },
+    "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
+        "construction": 6306.755851581411,
+        "operationnal": 189.76908368219182,
+        "time": 1.2124769687652588,
+        "total": 6496.524935263603
+    },
+    "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+NoSubSub": {
+        "construction": 6243.081884470472,
+        "operationnal": 775.1317466958902,
+        "time": 0.9163351058959961,
+        "total": 7018.213631166362
     },
     "medium-FurthestSites+95%Worse+SubTypes+LandCables": {
         "construction": 6306.755851581411,

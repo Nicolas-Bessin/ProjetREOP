@@ -133,12 +133,12 @@ function plotUsedSubstationTypes(instance :: Instance, solution :: Solution)
     return f
 end
 
-function plotUsedTypes(instance :: Instance, solution :: Solution)
+function plotUsedTypes(instance :: Instance, reducedInstance :: Instance, solution :: Solution)
     f = Figure()
     varCostCable = [c.variable_cost for c in instance.landSubstationCables]
     probCable = [c.probability_failure for c in instance.landSubstationCables]
     ratingCable = [c.rating for c in instance.landSubstationCables]
-    varCostSub = [s.cost for s in instance.substationTypes]
+    CostSub = [s.cost for s in instance.substationTypes]
     probSub = [s.probability_failure for s in instance.substationTypes]
     ratingSub = [s.rating for s in instance.substationTypes]
 
@@ -147,14 +147,22 @@ function plotUsedTypes(instance :: Instance, solution :: Solution)
     Colorbar(f[1, 2], limits = (minimum(varCostCable), maximum(varCostCable)), label = "Variable cost")
 
     ax2 = Axis(f[1, 3]; title="Substation types", xlabel="Probability of failure", ylabel="Rating")
-    scatter!(ax2, probSub, ratingSub; color=varCostSub, markersize=20)
-    Colorbar(f[1, 4], limits = (minimum(varCostSub), maximum(varCostSub)), label = "Variable cost")
+    scatter!(ax2, probSub, ratingSub; color=CostSub, markersize=20)
+    Colorbar(f[1, 4], limits = (minimum(CostSub), maximum(CostSub)), label = "Cost")
 
     usedCables = [instance.landSubstationCables[sub.id_cable].id for sub in solution.substations]
     scatter!(ax1, probCable[usedCables], ratingCable[usedCables]; color=:red, markersize=15, marker = :cross)
 
     usedSubstations = [instance.substationTypes[sub.id_type].id for sub in solution.substations]
     scatter!(ax2, probSub[usedSubstations], ratingSub[usedSubstations]; color=:red, markersize=15, marker = :cross)
+
+    redProbCable = [c.probability_failure for c in reducedInstance.landSubstationCables]
+    redRatingCable = [c.rating for c in reducedInstance.landSubstationCables]
+    redProbSub = [s.probability_failure for s in reducedInstance.substationTypes]
+    redRatingSub = [s.rating for s in reducedInstance.substationTypes]
+
+    scatter!(ax1, redProbCable, redRatingCable; color=:blue, markersize=15, marker = :xcross)
+    scatter!(ax2, redProbSub, redRatingSub; color=:blue, markersize=15, marker = :xcross)
 
     return f
 end

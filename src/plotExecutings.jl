@@ -3,10 +3,12 @@ include("solution.jl")
 include("parser.jl")
 include("utils.jl")
 
-size = "small"
-outputFormat = "onlyFurthestSites+ninetyFivePercentWorse"
+size = "large"
+outputFormat = "FurthestSites+95%Worse+SubTypes+LandCables"
 inputFile = "instances/KIRO-$size.json"
+reducedInput = "instances/aggregated/$size-$outputFormat.json"
 solutionFile = "solutions/$size-$outputFormat.json"
 instance = read_instance(inputFile)
+reducedInstance = read_instance(reducedInput)
 solution = read_solution(solutionFile)
-plotUsedTypes(instance, solution)
+plotUsedTypes(instance, reducedInstance, solution)

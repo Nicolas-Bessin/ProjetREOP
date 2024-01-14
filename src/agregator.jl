@@ -175,13 +175,12 @@ function deAggregateReducedSiteSolution(trueInstance :: Instance, aggregInstance
     return Solution(trueSubstations, trueCables, trueTurbines)
 end
 
-function onlyHighestProbaSubs(instance :: Instance)
+function onlyHighestProbaSubs(instance :: Instance, nbSubs :: Int64 = 1)
     # We only keep the substations with the highest probability of failure
     # (Because they are the lowest cost ones)
     # This comes from the fact that for small & medium, the solution only uses the substations with the highest probability of failure
-    failure_probas = [sub.probability_failure for sub in instance.substationTypes]
-    max_proba = maximum(failure_probas)
-    kept_substations = [sub for sub in instance.substationTypes if sub.probability_failure == max_proba]
+    failure_probas = sort([sub.probability_failure for sub in instance.substationTypes], rev = true)
+    kept_substations = [sub for sub in instance.substationTypes if sub.probability_failure in failure_probas[1:nbSubs]]
     substations = [
         SubstationType(
             i,
@@ -208,7 +207,40 @@ function onlyHighestProbaSubs(instance :: Instance)
 
 end
 
+function onlyLowerCostSubTypes(instance :: Instance, nbSubs :: Int64 = 4)
+    # We only keep the substations with cost in the three lowest costs
+    # Because this is empirically what happens in the solutions for small & medium
+    costs = [sub.cost for sub in instance.substationTypes]
+    sorted_costs = sort(costs)
+    kept_substations = [sub for sub in instance.substationTypes if sub.cost in sorted_costs[1:nbSubs]]
+    substations = [
+        SubstationType(
+            i,
+            sub.cost,
+            sub.rating,
+            sub.probability_failure)
+        for (i, sub) in enumerate(kept_substations)
+    ]
+    return Instance(
+        instance.curtailingCost,
+        instance.curtailingPenalty,
+        instance.maxCurtailment,
+        instance.fixedCostCable,
+        instance.variableCostCable,
+        instance.mainLandSubstation,
+        instance.maximumPower,
+        instance.landSubstationCables,
+        instance.substationSubstationCables,
+        instance.substationLocations,
+        substations,
+        instance.windScenarios,
+        instance.windTurbine,
+    )
+end
+
 function deAggregateReducedSubstationTypes(trueInstance :: Instance, instance :: Instance, solution :: Solution)
+    # We only need one de-agregator for every agregator for substation types
+    # Because we don't change the ratings & probabilities of failure of the substations in the modified instances
     # We need to find the true substation types from the aggregated instance (because the ids are different)
     # We compute a dictionnary to associate each substation id in the aggregated instance to the id in the true instance
     idCorrespondance = Dict()
@@ -232,13 +264,44 @@ function deAggregateReducedSubstationTypes(trueInstance :: Instance, instance ::
     return Solution(trueSubstations, solution.cables, solution.windTurbines)
 end
 
-function onlyHighestProbaLandCables(instance :: Instance)
+function onlyHighestProbaLandCables(instance :: Instance, nbCables :: Int64 = 1)
     # We only keep the cables with the highest probability of failure
     # (Because they are the lowest cost ones)
     # This comes from the fact that for small & medium, the solution only uses the cables with the highest probability of failure
-    failure_probas = [cable.probability_failure for cable in instance.landSubstationCables]
-    max_proba = maximum(failure_probas)
-    kept_cables = [cable for cable in instance.landSubstationCables if cable.probability_failure == max_proba]
+    failure_probas = sort([cable.probability_failure for cable in instance.landSubstationCables], rev = true)
+    kept_cables = [cable for cable in instance.landSubstationCables if cable.probability_failure in failure_probas[1:nbCables]]
+    cables = [
+        CableType(
+            i,
+            cable.fixed_cost,
+            cable.variable_cost,
+            cable.rating,
+            cable.probability_failure)
+        for (i, cable) in enumerate(kept_cables)
+    ]
+    return Instance(
+        instance.curtailingCost,
+        instance.curtailingPenalty,
+        instance.maxCurtailment,
+        instance.fixedCostCable,
+        instance.variableCostCable,
+        instance.mainLandSubstation,
+        instance.maximumPower,
+        cables,
+        instance.substationSubstationCables,
+        instance.substationLocations,
+        instance.substationTypes,
+        instance.windScenarios,
+        instance.windTurbine,
+    )
+end
+
+function onlyLowerCostLandCables(instance :: Instance, nbCables :: Int64 = 4)
+    # We only keep the cables with cost in the three lowest costs
+    # Because this is empirically what happens in the solutions for small & medium
+    costs = [cable.variable_cost for cable in instance.landSubstationCables]
+    sorted_costs = sort(costs)
+    kept_cables = [cable for cable in instance.landSubstationCables if cable.variable_cost in sorted_costs[1:nbCables]]
     cables = [
         CableType(
             i,
@@ -266,6 +329,8 @@ function onlyHighestProbaLandCables(instance :: Instance)
 end
 
 function deAggregateReducedLandCables(trueInstance :: Instance, instance :: Instance, solution :: Solution)
+    # We only need one de-agregator for every agregator for land cables
+    # Because we don't change the ratings & probabilities of failure of the cables in the modified instances
     # We need to find the true cable types from the aggregated instance (because the ids are different)
     # We compute a dictionnary to associate each cable id in the aggregated instance to the id in the true instance
     idCorrespondance = Dict()
@@ -287,6 +352,25 @@ function deAggregateReducedLandCables(trueInstance :: Instance, instance :: Inst
     ]
 
     return Solution(trueSubstations, solution.cables, solution.windTurbines)
+end
+
+function noSubSubCables(instance :: Instance)
+    # We remove the substation - substation cables
+    return Instance(
+        instance.curtailingCost,
+        instance.curtailingPenalty,
+        instance.maxCurtailment,
+        instance.fixedCostCable,
+        instance.variableCostCable,
+        instance.mainLandSubstation,
+        instance.maximumPower,
+        instance.landSubstationCables,
+        [],
+        instance.substationLocations,
+        instance.substationTypes,
+        instance.windScenarios,
+        instance.windTurbine,
+    )
 end
     
     

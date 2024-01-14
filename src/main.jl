@@ -1,6 +1,7 @@
 include("parser.jl")
 include("linearSolverCode.jl")
 include("solverQuadraticIndicator.jl")
+include("solverNoSubSub.jl")
 include("utils.jl")
 include("costCompute.jl")
 include("agregator.jl")
@@ -12,8 +13,8 @@ include("agregator.jl")
 #####################
 # To use the original instance && compute the full MILP, use :
 # aggregationMethod = ""
-size = "huge"
-aggregationMethod = "FurthestSites+95%Worse+SubTypes+LandCables"
+size = "small"
+aggregationMethod = "FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+NoSubSub"
 #####################
 
 trueInstanceFile = "instances/KIRO-$size.json"
@@ -32,11 +33,17 @@ trueInstance = read_instance(trueInstanceFile)
 #####################################################
 # To use the original instance && compute the full MILP, use :
 # instance = trueInstance
-instance = onlyHighestProbaLandCables(
-    onlyHighestProbaSubs(
-        onlyFurthestSites(
-            xPercentWorseScenario(
-                trueInstance, 0.95
+#NOTA BENE : those agregation do not commute, so the order matters
+#This because taking the lowest cost cables among the highest probability cables
+#is not the same as taking the highest probability cables among the lowest cost cables
+# For the no sub sub, no agregation is needed, the absence of sub sub cables is considered in the solver
+instance = onlyFurthestSites(
+    onlyLowerCostLandCables(
+        onlyLowerCostSubTypes(
+            onlyHighestProbaSubs(
+                onlyHighestProbaLandCables(
+                    xPercentWorseScenario(trueInstance, 0.95)
+                )
             )
         )
     )
@@ -58,8 +65,10 @@ rawDataDump = ""
 # solution, time = linearQuadraticSolver(instance, rawDataDump)
 # To use the pure linear solver, use :
 # solution, time = linearSolver(instance, rawDataDump)
+# To use the solver without sub sub cables, use :
+# solution, time = linearSolverNoSubSub(instance, rawDataDump)
 #################################################
-solution, time = linearSolver(instance, rawDataDump)
+solution, time = linearSolverNoSubSub(instance, rawDataDump)
 
 # CHANGE THIS LINE IF USING A METHOD THAT REQUIRES DE-AGGREGATION #
 # Example : for small, onlyFurthestSites+ninetyFivePercentWorse agregations, use :
