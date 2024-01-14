@@ -354,8 +354,8 @@ function deAggregateReducedLandCables(trueInstance :: Instance, instance :: Inst
     return Solution(trueSubstations, solution.cables, solution.windTurbines)
 end
 
-function noSubSubCables(instance :: Instance)
-    # We remove the substation - substation cables
+function DummySubSubCables(instance :: Instance)
+    # We remove the substation - substation cables and replace them with a dummy cable type
     return Instance(
         instance.curtailingCost,
         instance.curtailingPenalty,
@@ -365,14 +365,82 @@ function noSubSubCables(instance :: Instance)
         instance.mainLandSubstation,
         instance.maximumPower,
         instance.landSubstationCables,
-        [],
+        [CableType(1, 100, 100, 0.0, 0.0)],
         instance.substationLocations,
         instance.substationTypes,
         instance.windScenarios,
         instance.windTurbine,
     )
 end
+
+function TurbineAgregator(instance :: Instance)
+    # We aggregate the turbines by rows (i.e. by Y coordinate)
+    # This works because each the same number of turbines in each row (i.e. each Y coordinate)
+    # To compensate, we multiply the power of each scenario by the number of turbines in each row
+    # We also multiply the fixed and variable costs of the cables by the number of turbines in each row
+    # Because each turbine in the new instance represents a row of turbines in the original instance,
+    # Meaning there are numberByRow more cables in the true solution than in the reduced solution
+
+    Ycoords = unique([turbine.y for turbine in instance.windTurbine])
+    Xcoords = unique([turbine.x for turbine in instance.windTurbine])
+    numberByRow = length(Xcoords)
+    meanX = sum(Xcoords) / numberByRow
+    scenarios = [
+        WindScenario(
+            scenario.id,
+            scenario.power * numberByRow,
+            scenario.probability
+        )
+        for scenario in instance.windScenarios
+    ]
+    turbines = [
+        Location(
+            i,
+            meanX,
+            Y
+        ) for (i, Y) in enumerate(Ycoords)
+    ]
+    return Instance(
+        instance.curtailingCost,
+        instance.curtailingPenalty,
+        instance.maxCurtailment,
+        instance.fixedCostCable * numberByRow,
+        instance.variableCostCable * numberByRow,
+        instance.mainLandSubstation,
+        instance.maximumPower * numberByRow,
+        instance.landSubstationCables,
+        instance.substationSubstationCables,
+        instance.substationLocations,
+        instance.substationTypes,
+        scenarios,
+        turbines,
+    )
+
+end
+
+function deAggregateReducedTurbines(trueInstance :: Instance, instance :: Instance, solution :: Solution)
+    # We de-aggregate the turbines by rows (i.e. by Y coordinate)
+    # For each turbine in the original instance, we find the turbine in the reduced instance with the same Y coordinate
+    # We then link the turbine in the original instance to the same substation as the turbine in the reduced instance
     
+    # We first compute a dictionnary to associate each turbine Y coordinate to the id of the substation it is linked to
+    SubIdCorrespondance = Dict()
+    for turbine in solution.windTurbines
+        SubIdCorrespondance[instance.windTurbine[turbine.id_loc].y] = turbine.id_sub
+    end
+
+    # We then create the turbines in the true solution
+    trueTurbines = [
+        WindTurbine(
+            turbine.id,
+            SubIdCorrespondance[turbine.y]
+        )
+        for turbine in trueInstance.windTurbine
+    ]
+
+    return Solution(solution.substations, solution.cables, trueTurbines)
+
+end
     
 
 function aggregateInstances(outputFormat :: String, aggregationFunction :: Function)

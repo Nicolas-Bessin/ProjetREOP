@@ -143,11 +143,11 @@
         },
         {
             "id": 28,
-            "substation_id": 3
+            "substation_id": 8
         },
         {
             "id": 29,
-            "substation_id": 3
+            "substation_id": 8
         },
         {
             "id": 30,
@@ -251,19 +251,19 @@
         },
         {
             "id": 55,
-            "substation_id": 8
+            "substation_id": 13
         },
         {
             "id": 56,
-            "substation_id": 8
+            "substation_id": 13
         },
         {
             "id": 57,
-            "substation_id": 8
+            "substation_id": 13
         },
         {
             "id": 58,
-            "substation_id": 8
+            "substation_id": 13
         },
         {
             "id": 59,
@@ -359,27 +359,27 @@
         },
         {
             "id": 82,
-            "substation_id": 18
+            "substation_id": 13
         },
         {
             "id": 83,
-            "substation_id": 18
+            "substation_id": 13
         },
         {
             "id": 84,
-            "substation_id": 18
+            "substation_id": 13
         },
         {
             "id": 85,
-            "substation_id": 18
+            "substation_id": 13
         },
         {
             "id": 86,
-            "substation_id": 18
+            "substation_id": 13
         },
         {
             "id": 87,
-            "substation_id": 18
+            "substation_id": 13
         },
         {
             "id": 88,
@@ -467,19 +467,19 @@
         },
         {
             "id": 109,
-            "substation_id": 23
+            "substation_id": 18
         },
         {
             "id": 110,
-            "substation_id": 23
+            "substation_id": 18
         },
         {
             "id": 111,
-            "substation_id": 23
+            "substation_id": 18
         },
         {
             "id": 112,
-            "substation_id": 23
+            "substation_id": 18
         },
         {
             "id": 113,
@@ -503,11 +503,11 @@
         },
         {
             "id": 118,
-            "substation_id": 28
+            "substation_id": 23
         },
         {
             "id": 119,
-            "substation_id": 28
+            "substation_id": 23
         },
         {
             "id": 120,

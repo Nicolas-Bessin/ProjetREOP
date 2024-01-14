@@ -12,9 +12,9 @@ include("agregator.jl")
 # aggregationMethod = "onlyFurthestSites+ninetyFivePercentWorse"
 #####################
 # To use the original instance && compute the full MILP, use :
-# aggregationMethod = ""
-size = "small"
-aggregationMethod = "FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+NoSubSub"
+#aggregationMethod = ""
+size = "huge"
+aggregationMethod = "FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub+Turbines"
 #####################
 
 trueInstanceFile = "instances/KIRO-$size.json"
@@ -42,7 +42,9 @@ instance = onlyFurthestSites(
         onlyLowerCostSubTypes(
             onlyHighestProbaSubs(
                 onlyHighestProbaLandCables(
-                    xPercentWorseScenario(trueInstance, 0.95)
+                    DummySubSubCables(
+                        xPercentWorseScenario(trueInstance, 0.95)
+                    )
                 )
             )
         )
@@ -68,7 +70,7 @@ rawDataDump = ""
 # To use the solver without sub sub cables, use :
 # solution, time = linearSolverNoSubSub(instance, rawDataDump)
 #################################################
-solution, time = linearSolverNoSubSub(instance, rawDataDump)
+solution, time = linearSolver(instance, rawDataDump)
 
 # CHANGE THIS LINE IF USING A METHOD THAT REQUIRES DE-AGGREGATION #
 # Example : for small, onlyFurthestSites+ninetyFivePercentWorse agregations, use :
@@ -78,7 +80,9 @@ solution, time = linearSolverNoSubSub(instance, rawDataDump)
 # trueSolution = solution
 trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, 
     deAggregateReducedSubstationTypes(trueInstance, instance, 
-        deAggregateReducedLandCables(trueInstance, instance, solution)
+        deAggregateReducedLandCables(trueInstance, instance, 
+            deAggregateReducedTurbines(trueInstance, instance, solution)
+        )
     )
 )
 ###################################################################
