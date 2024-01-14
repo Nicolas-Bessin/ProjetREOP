@@ -3,7 +3,7 @@ include("solution.jl")
 
 using JuMP, Gurobi, JSON
 
-function linearSolver(instance :: Instance,  filename :: String = "")
+function QuadraticSolver(instance :: Instance,  filename :: String = "")
     # We need to compute an upper bound for the curtailing cost under failure (At first we can compute one for every scenario)
     nbScenarios = length(instance.windScenarios)
     max_power = maximum([instance.windScenarios[i].power for i in 1:nbScenarios]) * length(instance.windTurbine)
@@ -11,19 +11,22 @@ function linearSolver(instance :: Instance,  filename :: String = "")
 
     model = Model(Gurobi.Optimizer)
 
+    # We will use the quadratic indicator constraints, so we need to set the solver to use them
+    #set_optimizer_attribute(model, "NonConvex", 2)
+
     # Add x_vs variables
     nbSubLocations = length(instance.substationLocations)
     nbSubTypes = length(instance.substationTypes)
-    @variable(model, x[1:nbSubLocations, 1:nbSubTypes], Bin)
+    x = @variable(model, [1:nbSubLocations, 1:nbSubTypes], Bin)
 
     # Add the constraints on substation locations. (1)
-    for i in 1:nbSubLocations
-        @constraint(model, sum(x[i, :]) <= 1)
+    for v in 1:nbSubLocations
+        @constraint(model, sum(x[v, :]) <= 1)
     end
 
     # Add y_eq variables for land-substation cables
     nbLandCableTypes = length(instance.landSubstationCables)
-    @variable(model, yland[1:nbSubLocations, 1:nbLandCableTypes], Bin)
+    yland = @variable(model, [1:nbSubLocations, 1:nbLandCableTypes], Bin)
 
     # Add the constraints on the land-substation cables. (2)
     for v in 1:nbSubLocations
@@ -32,7 +35,7 @@ function linearSolver(instance :: Instance,  filename :: String = "")
 
     # Add z_vt variables
     nbTurbines = length(instance.windTurbine)
-    @variable(model, z[1:nbSubLocations, 1:nbTurbines], Bin)
+    z = @variable(model, [1:nbSubLocations, 1:nbTurbines], Bin)
 
     # Add the constraints on the wind turbines. (3)
     for t in 1:nbTurbines
@@ -44,17 +47,18 @@ function linearSolver(instance :: Instance,  filename :: String = "")
     @variable(model, ysub[1:nbSubLocations, 1:nbSubLocations, 1:nbSubCableTypes], Bin)
 
     # Add the constraints on the substation-substation cables. (4)
-    # THIS IS NOT ENOUGH
-    for v in 1:nbSubLocations
-        @constraint(model, sum(ysub[v, :, :]) <= sum(x[v, :]))
-    end
-    # We need this for undirected cables
+    # The cables are bidirectional, so we need to add symetry constraints
     for v1 in 1:nbSubLocations
         for v2 in 1:nbSubLocations
-                for i in 1:nbSubCableTypes
-                    @constraint(model, ysub[v1, v2, i] == ysub[v2, v1, i])
+            for c in 1:nbSubCableTypes
+                @constraint(model, ysub[v1, v2, c] == ysub[v2, v1, c])
             end
         end
+    end
+
+    # We then ensure only one cable connects any substation (because of the symetry constraints, we only need to add constraints one way)
+    for v1 in 1:nbSubLocations
+        @constraint(model, sum(ysub[v1, :, :]) <= sum(x[v1, :]))
     end
 
     # We will add a variable for the number of turbines linked to each substation
@@ -76,29 +80,27 @@ function linearSolver(instance :: Instance,  filename :: String = "")
 
     substation_ratings = [instance.substationTypes[i].rating for i in 1:nbSubTypes]
     landCable_ratings = [instance.landSubstationCables[i].rating for i in 1:nbLandCableTypes]
+
     for v in 1:nbSubLocations
         @constraint(model, minusCapa[v] >= - sum(substation_ratings[i] * x[v, i] for i in 1:nbSubTypes))
-        @constraint(model,minusCapa[v] >= - sum(landCable_ratings[i] * yland[v, i] for i in 1:nbLandCableTypes))
+        @constraint(model, minusCapa[v] >= - sum(landCable_ratings[i] * yland[v, i] for i in 1:nbLandCableTypes))
     end
 
     # We then add variables for the curtailing of each substation under each scenario
 
-    @variable(model, curtailing[1:nbSubLocations, 1:nbScenarios])
+    curtailing = @variable(model, curtailing[1:nbSubLocations, 1:nbScenarios] >= 0)
 
     for ω in 1:nbScenarios
         for v in 1:nbSubLocations
-            net_power = instance.windScenarios[ω].power * nbTurbinesLinked[v] + minusCapa[v]
-            @constraint(model, curtailing[v, ω] >= net_power)
-            @constraint(model, curtailing[v, ω] >= 0)
+            @constraint(model, curtailing[v, ω] >= instance.windScenarios[ω].power * nbTurbinesLinked[v] + minusCapa[v])
         end
     end
 
     # Then add the total curtailing without probability_failure
 
-    @variable(model, curtailingNoFailure[1:nbScenarios])
-    for ω in 1:nbScenarios
-        @constraint(model, curtailingNoFailure[ω] == sum(curtailing[:, ω]))
-    end
+    curtailingNoFailure = @variable(model, [1:nbScenarios])
+
+    curtailingNoFailureConstraints = @constraint(model, [ω = 1:nbScenarios], curtailingNoFailure[ω] >= sum(curtailing[:, ω]))
 
     # Then variables for the power sent from substation v1 to v2 under scenario ω
     # Here we will need to truly linearize the min(power_received by v1, capa_cable(v1, v2)) term 
@@ -107,49 +109,50 @@ function linearSolver(instance :: Instance,  filename :: String = "")
     # Curtailing of the substation v under scenario ω and failure of v 
     # (power that can't be transfered by the SubSubCables)
     # This is the positive part of [power_received - capa_cable(v1, v2)]⁺
-    @variable(model, curtailingUnderOwnFailure[1:nbSubLocations, 1:nbScenarios])
+    curtailingUnderOwnFailure = @variable(model, curtailingUnderOwnFailure[1:nbSubLocations, 1:nbScenarios] >= 0)
 
     for ω in 1:nbScenarios
-        for v in 1:nbSubLocations
-            @constraint(model, curtailingUnderOwnFailure[v, ω] >= 0)
-            power_received = instance.windScenarios[ω].power * nbTurbinesLinked[v]
-            capa_cable = sum(instance.substationSubstationCables[j].rating * ysub[v, i, j] for i in 1:nbSubLocations for j in 1:nbSubCableTypes)
-            @constraint(model, curtailingUnderOwnFailure[v, ω] >= power_received - capa_cable)
+        for v1 in 1:nbSubLocations
+            capa_cable = sum(instance.substationSubstationCables[i].rating * ysub[v1, v2, i] for v2 in 1:nbSubLocations for i in 1:nbSubCableTypes)
+            @constraint(model, curtailingUnderOwnFailure[v1, ω] >= instance.windScenarios[ω].power * nbTurbinesLinked[v1] - capa_cable)
         end
-    end
+    end 
 
-    # Variables for power sent from v1 to v2 under scenario ω and failure of v2
-    # This is a min term, so we will need to linearize it
+    # Variables for power sent from v1 to v2 under scenario ω and failure of v1
+    # This is a min term, so we will need to linearize it, using the first method described in the report, question 3
 
-    @variable(model, powerSentUnderOtherFailure[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios])
-    @variable(model, minIsPowerSent[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios], Bin)
-    @variable(model, minIsCableCapa[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios], Bin)
+    powerSentUnderV1Failure = @variable(model, powerSentUnderV1Failure[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios] >= 0)
+    powerCapaBound = max(max_power, maximum([instance.substationSubstationCables[i].rating for i in 1:nbSubCableTypes]))
+    # This is the variable that will be 1 if the min is the power sent, and 0 if the min is the cable capacity
+    minIsPowerSent = @variable(model, [1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios], Bin)
+
 
     for ω in 1:nbScenarios
         for v1 in 1:nbSubLocations
             for v2 in 1:nbSubLocations
-                # Only one is the actual min
-                @constraint(model, minIsPowerSent[v1, v2, ω] + minIsCableCapa[v1, v2, ω] == 1)
                 power_sent = instance.windScenarios[ω].power * nbTurbinesLinked[v1]
                 cable_capa = sum(instance.substationSubstationCables[i].rating * ysub[v1, v2, i] for i in 1:nbSubCableTypes)
-                @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] <= power_sent)
-                @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] <= cable_capa)
-                @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] >= power_sent - minIsCableCapa[v1, v2, ω] * max_power)
-                @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] >= cable_capa - minIsPowerSent[v1, v2, ω] * max_power)
+                # If the min is the power sent, then the minIsPowerSent variable is 1
+                @constraint(model, powerCapaBound * minIsPowerSent[v1, v2, ω] >= power_sent - cable_capa)
+                # If the min is the cable capacity, then the minIsPowerSent variable is 0
+                @constraint(model, powerCapaBound * (1 - minIsPowerSent[v1, v2, ω]) >= cable_capa - power_sent)
+                # The power sent is the actual power sent if the minIsPowerSent variable is 1
+                @constraint(model, minIsPowerSent[v1, v2, ω] --> {powerSentUnderV1Failure[v1, v2, ω] == power_sent})
+                # The power sent is the cable capacity if the minIsPowerSent variable is 0
+                @constraint(model, !minIsPowerSent[v1, v2, ω] --> {powerSentUnderV1Failure[v1, v2, ω] == cable_capa})
             end
         end
     end
 
     # Curtailing of the substation v2 under scenario ω and failure of v1
 
-    @variable(model, curtailingUnderOtherFailure[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios])
+    curtailingUnderOtherFailure = @variable(model, curtailingUnderOtherFailure[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios] >= 0)
 
     for ω in 1:nbScenarios
         for v1 in 1:nbSubLocations
             for v2 in 1:nbSubLocations
-                @constraint(model, curtailingUnderOtherFailure[v1, v2, ω] >= 0)
                 power_received_from_turbines = instance.windScenarios[ω].power * nbTurbinesLinked[v2]
-                power_received_from_other = powerSentUnderOtherFailure[v1, v2, ω]
+                power_received_from_other = powerSentUnderV1Failure[v1, v2, ω]
                 @constraint(model, curtailingUnderOtherFailure[v1, v2, ω] >= power_received_from_turbines + power_received_from_other + minusCapa[v2])
             end
         end
@@ -157,7 +160,7 @@ function linearSolver(instance :: Instance,  filename :: String = "")
 
     # Total curtailing under failure of v1 and scenario ω
 
-    @variable(model, curtailingUnderFailure[1:nbSubLocations, 1:nbScenarios])
+    curtailingUnderFailure = @variable(model, [1:nbSubLocations, 1:nbScenarios])
 
     for ω in 1:nbScenarios
         for v in 1:nbSubLocations
@@ -165,9 +168,10 @@ function linearSolver(instance :: Instance,  filename :: String = "")
         end
     end
 
+    ########################################
     # Construction cost of the substations
 
-    @variable(model, substationCost[1:nbSubLocations])
+    substationCost = @variable(model, [1:nbSubLocations])
 
     for v in 1:nbSubLocations
         substation_cost = sum(instance.substationTypes[i].cost * x[v, i] for i in 1:nbSubTypes)
@@ -176,7 +180,7 @@ function linearSolver(instance :: Instance,  filename :: String = "")
 
     # Construction cost of the land-substation cables
 
-    @variable(model, landCableCost[1:nbSubLocations])
+    landCableCost = @variable(model, [1:nbSubLocations])
 
     for v in 1:nbSubLocations
         land_cable_cost = sum(instance.landSubstationCables[i].fixed_cost * yland[v, i] for i in 1:nbLandCableTypes)
@@ -187,7 +191,7 @@ function linearSolver(instance :: Instance,  filename :: String = "")
 
     # Construction cost of the substation-substation cables
 
-    @variable(model, subCableCost[1:nbSubLocations, 1:nbSubLocations])
+    subCableCost = @variable(model, [1:nbSubLocations, 1:nbSubLocations])
 
     for v1 in 1:nbSubLocations
         for v2 in 1:nbSubLocations
@@ -218,8 +222,11 @@ function linearSolver(instance :: Instance,  filename :: String = "")
 
     @constraint(model, constructionCost == sum(substationCost) + sum(landCableCost) + sum(subCableCost) + sum(turbineCableCost))
 
-    # Cost of the curtailment per substation, per scenario (This is c^c(C^f(v, ω)))
+    ########################################
+    # Operational cost
 
+
+    
     curtailmentCostFailure = @variable(model, [1:nbSubLocations, 1:nbScenarios])
 
     for ω in 1:nbScenarios
@@ -253,16 +260,12 @@ function linearSolver(instance :: Instance,  filename :: String = "")
     for ω in 1:nbScenarios
         for v in 1:nbSubLocations
             for s in 1:nbSubTypes
-                @constraint(model, xvsTimesCurtailingCostFailure[v, s, ω] <= x[v, s] * max_cost)
-                @constraint(model, xvsTimesCurtailingCostFailure[v, s, ω] <= curtailmentCostFailure[v, ω])
-                @constraint(model, xvsTimesCurtailingCostFailure[v, s, ω] >= curtailmentCostFailure[v, ω] - (1 - x[v, s]) * max_cost)
-                @constraint(model, xvsTimesCurtailingCostFailure[v, s, ω] >= 0)
+                @constraint(model, x[v, s] --> {xvsTimesCurtailingCostFailure[v, s, ω] == curtailmentCostFailure[v, ω]})
+                @constraint(model, !x[v, s] --> {xvsTimesCurtailingCostFailure[v, s, ω] == 0})
             end
             for q in 1:nbLandCableTypes
-                @constraint(model, yeqTimesCurtailingCostFailure[v, q, ω] <= yland[v, q] * max_cost)
-                @constraint(model, yeqTimesCurtailingCostFailure[v, q, ω] <= curtailmentCostFailure[v, ω])
-                @constraint(model, yeqTimesCurtailingCostFailure[v, q, ω] >= curtailmentCostFailure[v, ω] - (1 - yland[v, q]) * max_cost)
-                @constraint(model, yeqTimesCurtailingCostFailure[v, q, ω] >= 0)
+                @constraint(model, yland[v, q] --> {yeqTimesCurtailingCostFailure[v, q, ω] == curtailmentCostFailure[v, ω]})
+                @constraint(model, !yland[v, q] --> {yeqTimesCurtailingCostFailure[v, q, ω] == 0})
             end
             @constraint(model, weightedCurtailingCostFailure[v, ω] == sum(
                 [xvsTimesCurtailingCostFailure[v, s, ω] * instance.substationTypes[s].probability_failure for s in 1:nbSubTypes])
@@ -288,16 +291,12 @@ function linearSolver(instance :: Instance,  filename :: String = "")
     for ω in 1:nbScenarios
         for v in 1:nbSubLocations
             for s in 1:nbSubTypes
-                @constraint(model, xvsTimesCurtailing[v, s, ω] <= x[v, s] * max_cost)
-                @constraint(model, xvsTimesCurtailing[v, s, ω] <= curtailmentCostNoFailure[ω])
-                @constraint(model, xvsTimesCurtailing[v, s, ω] >= curtailmentCostNoFailure[ω] - (1 - x[v, s]) * max_cost)
-                @constraint(model, xvsTimesCurtailing[v, s, ω] >= 0)
+                @constraint(model, x[v, s] --> {xvsTimesCurtailing[v, s, ω] == curtailmentCostNoFailure[ω]})
+                @constraint(model, !x[v, s] --> {xvsTimesCurtailing[v, s, ω] == 0})
             end
             for q in 1:nbLandCableTypes
-                @constraint(model, yeqTimesCurtailing[v, q, ω] <= yland[v, q] * max_cost)
-                @constraint(model, yeqTimesCurtailing[v, q, ω] <= curtailmentCostNoFailure[ω])
-                @constraint(model, yeqTimesCurtailing[v, q, ω] >= curtailmentCostNoFailure[ω] - (1 - yland[v, q]) * max_cost)
-                @constraint(model, yeqTimesCurtailing[v, q, ω] >= 0)
+                @constraint(model, yland[v, q] --> {yeqTimesCurtailing[v, q, ω] == curtailmentCostNoFailure[ω]})
+                @constraint(model, !yland[v, q] --> {yeqTimesCurtailing[v, q, ω] == 0})
             end
         end
         @constraint(model, noFailureCostUnderOmega[ω] == curtailmentCostNoFailure[ω] + 
@@ -309,7 +308,6 @@ function linearSolver(instance :: Instance,  filename :: String = "")
     operationalCost = @variable(model)
 
     @constraint(model, operationalCost == sum([instance.windScenarios[ω].probability * (failureCostUnderOmega[ω] + noFailureCostUnderOmega[ω]) for ω in 1:nbScenarios]))
-
     # objective function
 
     @objective(model, Min, constructionCost + operationalCost)

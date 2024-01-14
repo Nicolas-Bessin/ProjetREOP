@@ -1,5 +1,6 @@
 include("parser.jl")
 include("linearSolverCode.jl")
+include("solverQuadraticIndicator.jl")
 include("utils.jl")
 include("costCompute.jl")
 include("agregator.jl")
@@ -11,8 +12,8 @@ include("agregator.jl")
 #####################
 # To use the original instance && compute the full MILP, use :
 # aggregationMethod = ""
-size = "large"
-aggregationMethod = "onlyFurthestSites+ninetyFivePercentWorse"
+size = "small"
+aggregationMethod = "onlyFurthestSites+ninetyFivePercentWorse+quadratic"
 #####################
 
 trueInstanceFile = "instances/KIRO-$size.json"
@@ -38,7 +39,18 @@ if aggregationMethod != ""
     write_instance(instance, "instances/aggregated/$outputFormat.json")
 end 
 
-solution, time = linearSolver(instance)
+# Raw data dump file for the MILP
+# If you don't want to save the raw data, just set rawDataDump to ""
+rawDataDump = "solutions/rawData/$outputFormat.json"
+# Add the raw data dump filename if you want to save the raw data
+
+# CHANGE THIS LINE TO CHANGE THE SOLVER METHOD #
+# To use the quadratic solver, use :
+# solution, time = linearQuadraticSolver(instance, rawDataDump)
+# To use the pure linear solver, use :
+# solution, time = linearSolver(instance, rawDataDump)
+#################################################
+solution, time = QuadraticSolver(instance, rawDataDump)
 
 # CHANGE THIS LINE IF USING A METHOD THAT REQUIRES DE-AGGREGATION #
 # Example : for small, onlyFurthestSites+ninetyFivePercentWorse agregations, use :
