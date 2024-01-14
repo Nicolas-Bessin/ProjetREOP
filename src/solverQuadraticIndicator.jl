@@ -260,12 +260,16 @@ function QuadraticSolver(instance :: Instance,  filename :: String = "")
     for ω in 1:nbScenarios
         for v in 1:nbSubLocations
             for s in 1:nbSubTypes
-                @constraint(model, x[v, s] --> {xvsTimesCurtailingCostFailure[v, s, ω] == curtailmentCostFailure[v, ω]})
-                @constraint(model, !x[v, s] --> {xvsTimesCurtailingCostFailure[v, s, ω] == 0})
+                @constraint(model, xvsTimesCurtailingCostFailure[v, s, ω] <= x[v, s] * max_cost)
+                @constraint(model, xvsTimesCurtailingCostFailure[v, s, ω] <= curtailmentCostFailure[v, ω])
+                @constraint(model, xvsTimesCurtailingCostFailure[v, s, ω] >= curtailmentCostFailure[v, ω] - (1 - x[v, s]) * max_cost)
+                @constraint(model, xvsTimesCurtailingCostFailure[v, s, ω] >= 0)
             end
             for q in 1:nbLandCableTypes
-                @constraint(model, yland[v, q] --> {yeqTimesCurtailingCostFailure[v, q, ω] == curtailmentCostFailure[v, ω]})
-                @constraint(model, !yland[v, q] --> {yeqTimesCurtailingCostFailure[v, q, ω] == 0})
+                @constraint(model, yeqTimesCurtailingCostFailure[v, q, ω] <= yland[v, q] * max_cost)
+                @constraint(model, yeqTimesCurtailingCostFailure[v, q, ω] <= curtailmentCostFailure[v, ω])
+                @constraint(model, yeqTimesCurtailingCostFailure[v, q, ω] >= curtailmentCostFailure[v, ω] - (1 - yland[v, q]) * max_cost)
+                @constraint(model, yeqTimesCurtailingCostFailure[v, q, ω] >= 0)
             end
             @constraint(model, weightedCurtailingCostFailure[v, ω] == sum(
                 [xvsTimesCurtailingCostFailure[v, s, ω] * instance.substationTypes[s].probability_failure for s in 1:nbSubTypes])
@@ -291,12 +295,16 @@ function QuadraticSolver(instance :: Instance,  filename :: String = "")
     for ω in 1:nbScenarios
         for v in 1:nbSubLocations
             for s in 1:nbSubTypes
-                @constraint(model, x[v, s] --> {xvsTimesCurtailing[v, s, ω] == curtailmentCostNoFailure[ω]})
-                @constraint(model, !x[v, s] --> {xvsTimesCurtailing[v, s, ω] == 0})
+                @constraint(model, xvsTimesCurtailing[v, s, ω] <= x[v, s] * max_cost)
+                @constraint(model, xvsTimesCurtailing[v, s, ω] <= curtailmentCostNoFailure[ω])
+                @constraint(model, xvsTimesCurtailing[v, s, ω] >= curtailmentCostNoFailure[ω] - (1 - x[v, s]) * max_cost)
+                @constraint(model, xvsTimesCurtailing[v, s, ω] >= 0)
             end
             for q in 1:nbLandCableTypes
-                @constraint(model, yland[v, q] --> {yeqTimesCurtailing[v, q, ω] == curtailmentCostNoFailure[ω]})
-                @constraint(model, !yland[v, q] --> {yeqTimesCurtailing[v, q, ω] == 0})
+                @constraint(model, yeqTimesCurtailing[v, q, ω] <= yland[v, q] * max_cost)
+                @constraint(model, yeqTimesCurtailing[v, q, ω] <= curtailmentCostNoFailure[ω])
+                @constraint(model, yeqTimesCurtailing[v, q, ω] >= curtailmentCostNoFailure[ω] - (1 - yland[v, q]) * max_cost)
+                @constraint(model, yeqTimesCurtailing[v, q, ω] >= 0)
             end
         end
         @constraint(model, noFailureCostUnderOmega[ω] == curtailmentCostNoFailure[ω] + 

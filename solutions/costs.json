@@ -32,7 +32,7 @@
     "medium-onlyFurthestSites+worstCaseScenario+quadratic": {
         "construction": 6396.125042287495,
         "operationnal": 91.06308493150689,
-        "time": 178.6106448173523,
+        "time": 39.9595091342926,
         "total": 6487.188127219001
     },
     "small": {

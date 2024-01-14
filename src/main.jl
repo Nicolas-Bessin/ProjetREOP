@@ -51,7 +51,7 @@ rawDataDump = ""
 # To use the pure linear solver, use :
 # solution, time = linearSolver(instance, rawDataDump)
 #################################################
-solution, time = linearSolver(instance, rawDataDump)
+solution, time = QuadraticSolver(instance, rawDataDump)
 
 # CHANGE THIS LINE IF USING A METHOD THAT REQUIRES DE-AGGREGATION #
 # Example : for small, onlyFurthestSites+ninetyFivePercentWorse agregations, use :
