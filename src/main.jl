@@ -13,8 +13,8 @@ include("agregator.jl")
 #####################
 # To use the original instance && compute the full MILP, use :
 #aggregationMethod = ""
-size = "huge"
-aggregationMethod = "FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub+Turbines"
+size = "large"
+aggregationMethod = "FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+Turbines"
 #####################
 
 trueInstanceFile = "instances/KIRO-$size.json"
@@ -42,14 +42,14 @@ instance = onlyFurthestSites(
         onlyLowerCostSubTypes(
             onlyHighestProbaSubs(
                 onlyHighestProbaLandCables(
-                    DummySubSubCables(
+                    (
                         xPercentWorseScenario(trueInstance, 0.95)
                     )
                 )
             )
         )
     )
-, 2)
+)
 #####################################################
 
 if aggregationMethod != ""

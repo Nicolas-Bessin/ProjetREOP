@@ -51,6 +51,7 @@ function linearSolver(instance :: Instance,  filename :: String = "")
     # We need this for undirected cables
     for v1 in 1:nbSubLocations
         for v2 in 1:nbSubLocations
+            @constraint(model, sum(ysub[v1, v1, :]) == 0)
                 for i in 1:nbSubCableTypes
                     @constraint(model, ysub[v1, v2, i] == ysub[v2, v1, i])
             end
