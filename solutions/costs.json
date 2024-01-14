@@ -5,6 +5,12 @@
         "time": 123.94119501113892,
         "total": 5779.811409953449
     },
+    "huge-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub+Turbines": {
+        "construction": 5072.9749905480685,
+        "operationnal": 980.1557616051377,
+        "time": 132.6315619945526,
+        "total": 6053.130752153206
+    },
     "large-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
         "construction": 8106.863372469561,
         "operationnal": 528.8043845053693,

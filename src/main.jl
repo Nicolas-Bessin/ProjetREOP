@@ -49,7 +49,7 @@ instance = onlyFurthestSites(
             )
         )
     )
-)
+, 2)
 #####################################################
 
 if aggregationMethod != ""
