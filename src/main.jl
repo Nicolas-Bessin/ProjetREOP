@@ -12,7 +12,7 @@ include("agregator.jl")
 #####################
 # To use the original instance && compute the full MILP, use :
 # aggregationMethod = ""
-size = "small"
+size = "huge"
 aggregationMethod = "FurthestSites+95%Worse+SubTypes+LandCables"
 #####################
 
