@@ -1,4 +1,10 @@
 {
+    "huge-ConstructionCost+FurthestSites": {
+        "construction": 5366.059577446346,
+        "operationnal": 1503.8029277393825,
+        "time": 348.87582087516785,
+        "total": 6869.862505185729
+    },
     "huge-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub": {
         "construction": 5072.874177869407,
         "operationnal": 706.9372320840421,
@@ -10,6 +16,18 @@
         "operationnal": 980.1557616051377,
         "time": 132.6315619945526,
         "total": 6053.130752153206
+    },
+    "large-ConstructionCost": {
+        "construction": 7196.607968918121,
+        "operationnal": 7011.008660516392,
+        "time": 0.7015848159790039,
+        "total": 14207.616629434513
+    },
+    "large-ConstructionCost+FurthestSites": {
+        "construction": 8638.978590921075,
+        "operationnal": 854.869701043726,
+        "time": 0.5461940765380859,
+        "total": 9493.848291964801
     },
     "large-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
         "construction": 8106.863372469561,
@@ -41,11 +59,11 @@
         "time": 71.35458111763,
         "total": 8635.66775697493
     },
-    "large-onlyFurthestSites+ninetyFivePercentWorse": {
-        "construction": 2806.000505385774,
-        "operationnal": 3.8343564000000048,
-        "time": 2179.4236719608307,
-        "total": 2809.834861785774
+    "large-FurthestSites+95%Worse+Turbines+DummySubSUb": {
+        "construction": 9527.912307475533,
+        "operationnal": 221.85187911991224,
+        "time": 173.636559009552,
+        "total": 9749.764186595447
     },
     "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
         "construction": 6306.716641447354,
@@ -112,6 +130,30 @@
         "operationnal": 37.6208978630137,
         "time": 1140.456465959549,
         "total": 3247.2008186546564
+    },
+    "small-ConstructionCost": {
+        "construction": 3284.1184134818945,
+        "operationnal": 227.9561917808219,
+        "time": 1.1143438816070557,
+        "total": 3512.0746052627164
+    },
+    "small-ConstructionCost+105percent": {
+        "construction": 3286.4511586828253,
+        "operationnal": 671.9040000000002,
+        "time": 0.05962109565734863,
+        "total": 3958.3551586828253
+    },
+    "small-ConstructionCost+110percent": {
+        "construction": 3417.830436596766,
+        "operationnal": 154.66709589041096,
+        "time": 1.4121050834655762,
+        "total": 3572.497532487177
+    },
+    "small-ConstructionCost+ninetyFivePercentWorse": {
+        "construction": 3209.404472228275,
+        "operationnal": 391.16021917808223,
+        "time": 0.8718621730804443,
+        "total": 3600.5646914063573
     },
     "small-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
         "construction": 3209.3497729688893,
