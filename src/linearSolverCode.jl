@@ -37,6 +37,9 @@ function linearSolver(instance :: Instance,  filename :: String = "")
     # Add the constraints on the wind turbines. (3)
     for t in 1:nbTurbines
         @constraint(model, sum(z[:, t]) == 1)
+        for v in 1:nbSubLocations
+            @constraint(model, z[v, t] <= sum(x[v, :]))
+        end
     end
 
     # Add y_eq between substations variables
