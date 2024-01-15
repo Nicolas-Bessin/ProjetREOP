@@ -4,7 +4,7 @@ include("parser.jl")
 include("utils.jl")
 
 size = "huge"
-outputFormat = "1"
+outputFormat = "furthestSites+2HProbas+4LCost+Turbines+NoSSCables+95Worse"
 inputFile = "instances/KIRO-$size.json"
 reducedInput = "instances/aggregated/$size-$outputFormat.json"
 solutionFile = "solutions/$size-$outputFormat.json"
