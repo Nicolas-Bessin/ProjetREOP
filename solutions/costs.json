@@ -5,6 +5,12 @@
         "time": 100.8680009841919,
         "total": 5584.713001881805
     },
+    "huge-99Worse+1-2Prob+LowCost+Cables+1-Subs": {
+        "construction": 5931.84127872078,
+        "operationnal": 256.31819215613,
+        "time": 727.4652409553528,
+        "total": 6188.15947087691
+    },
     "huge-ConstructionCost+FurthestSites": {
         "construction": 5366.059577446346,
         "operationnal": 1503.8029277393825,
@@ -180,10 +186,10 @@
         "total": 6487.188127219001
     },
     "small": {
-        "construction": 3209.5799207916425,
+        "construction": 3209.3497729688893,
         "operationnal": 37.6208978630137,
-        "time": 1140.456465959549,
-        "total": 3247.2008186546564
+        "time": 8354.764371871948,
+        "total": 3246.970670831903
     },
     "small-ConstructionCost": {
         "construction": 3284.1184134818945,
@@ -266,7 +272,7 @@
     "tiny": {
         "construction": 105494.9747468306,
         "operationnal": 3.4799999999999995,
-        "time": 0.008774995803833008,
+        "time": 0.007682085037231445,
         "total": 105498.4547468306
     }
 }

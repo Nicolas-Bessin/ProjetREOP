@@ -13,9 +13,9 @@ include("agregator.jl")
 # aggregationMethod = "onlyFurthestSites+ninetyFivePercentWorse"
 #####################
 # To use the original instance && compute the full MILP, use :
-#aggregationMethod = ""
-size = "huge"
-aggregationMethod = "99Worse+1-2-3Prob+LowCost+Cables+Subs"
+aggregationMethod = ""
+size = "small"
+#aggregationMethod = "testing"
 #####################
 
 trueInstanceFile = "instances/KIRO-$size.json"
@@ -33,32 +33,32 @@ trueInstance = read_instance(trueInstanceFile)
 # instance = xPercentWorseScenario(onlyFurthestSites(trueInstance), 0.95)
 #####################################################
 # To use the original instance && compute the full MILP, use :
-# instance = trueInstance
+instance = trueInstance
 #NOTA BENE : those agregation do not commute, so the order matters
 #This because taking the lowest cost cables among the highest probability cables
 #is not the same as taking the highest probability cables among the lowest cost cables
 # For the no sub sub, no agregation is needed, the absence of sub sub cables is considered in the solver
-choiceColumns = [1]
-choiceProbaCables = [1,2]
-choiceCostCables = 1:8
-choiceProbaSubs = [1,2]
-choiceCostSubs = 1:8
-instance = 
-onlyLowerCostSubTypes(
-    onlyLowerCostLandCables(
-        onlyHighestProbaSubs(
-            onlyHighestProbaLandCables(
-                onlyFurthestSites(
-                    (
-                        (
-                            xPercentWorseScenario(trueInstance, 0.99)
-                        )
-                    )
-                , choiceColumns)
-            , choiceProbaCables)
-        , choiceProbaSubs)
-    , choiceCostCables)
-, choiceCostSubs)
+choiceColumns = 1
+choiceProbaCables = 2
+choiceCostCables = []
+choiceProbaSubs = 2
+choiceCostSubs = []
+# instance = 
+# onlyLowerCostSubTypes(
+#     onlyLowerCostLandCables(
+#         onlyHighestProbaSubs(
+#             onlyHighestProbaLandCables(
+#                 onlyFurthestSites(
+#                     (
+#                         (
+#                             xPercentWorseScenario(trueInstance, 0.99)
+#                         )
+#                     )
+#                 , choiceColumns)
+#             , choiceProbaCables)
+#         , choiceProbaSubs)
+#     , choiceCostCables)
+# , choiceCostSubs)
 #####################################################
 
 if aggregationMethod != ""
@@ -86,12 +86,12 @@ solution, time = linearSolver(instance, rawDataDump)
 # trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, solution)
 ###################################################################
 # To use the original instance && compute the full MILP, use :
-# trueSolution = solution
-trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, 
-    deAggregateReducedSubstationTypes(trueInstance, instance, 
-        deAggregateReducedLandCables(trueInstance, instance, solution)
-        )
-    )
+trueSolution = solution
+# trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, 
+#     deAggregateReducedSubstationTypes(trueInstance, instance, 
+#         deAggregateReducedLandCables(trueInstance, instance, solution)
+#         )
+#     )
 
 ###################################################################
 
