@@ -418,15 +418,15 @@
         },
         {
             "id": 98,
-            "substation_id": 22
+            "substation_id": 29
         },
         {
             "id": 99,
-            "substation_id": 29
+            "substation_id": 22
         },
         {
             "id": 100,
-            "substation_id": 29
+            "substation_id": 22
         },
         {
             "id": 101,
@@ -442,7 +442,7 @@
         },
         {
             "id": 104,
-            "substation_id": 22
+            "substation_id": 29
         },
         {
             "id": 105,

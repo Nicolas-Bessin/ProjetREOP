@@ -27,7 +27,10 @@ function xPercentWorseScenario(instance :: Instance, x :: Float64)
     )
 end
 
-function onlyFurthestSites(instance :: Instance, columns = [1])
+function onlyFurthestSites(instance :: Instance, columns = [])
+    if columns == []
+        columns = 1:length(unique([site.x for site in instance.substationLocations]))
+    end
     # We only keep the substation sites closest to the turbines
     # All the instances have the turbines in X > 0, furthest away from the main substation (in X = 0)
     Xpos = unique([site.x for site in instance.substationLocations])
