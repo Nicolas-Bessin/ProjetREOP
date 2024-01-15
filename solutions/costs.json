@@ -29,6 +29,12 @@
         "time": 0.9087789058685303,
         "total": 6631.039582087329
     },
+    "huge-furthestSites+LC+Subs+Probas+Cost+Turbines+95Worse+DummySubSub": {
+        "construction": 5662.275303129195,
+        "operationnal": 635.4078256078775,
+        "time": 105.21727800369263,
+        "total": 6297.683128737072
+    },
     "large-ConstructionCost": {
         "construction": 7196.607968918121,
         "operationnal": 7011.008660516392,
@@ -76,6 +82,24 @@
         "operationnal": 221.85187911991224,
         "time": 173.636559009552,
         "total": 9749.764186595447
+    },
+    "large-furthestSites+LC+Subs+Probas+95Worse": {
+        "construction": 8126.858953720212,
+        "operationnal": 1294.7679593573682,
+        "time": 47.1274209022522,
+        "total": 9421.62691307758
+    },
+    "large-furthestSites+LC+Subs+Probas+Cost+95Worse": {
+        "construction": 8126.858953720212,
+        "operationnal": 1294.7679593573682,
+        "time": 45.61216711997986,
+        "total": 9421.62691307758
+    },
+    "large-furthestSites+LC+Subs+Probas+Cost+Turbines+95Worse+DummySubSub": {
+        "construction": 9441.659113194193,
+        "operationnal": 513.6793588287121,
+        "time": 0.5387110710144043,
+        "total": 9955.338472022906
     },
     "large-Sites+95%+Turbines+DummyCable": {
         "construction": 9527.912307475533,

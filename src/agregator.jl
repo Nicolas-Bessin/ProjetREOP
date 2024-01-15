@@ -27,12 +27,12 @@ function xPercentWorseScenario(instance :: Instance, x :: Float64)
     )
 end
 
-function onlyFurthestSites(instance :: Instance, column = [1])
+function onlyFurthestSites(instance :: Instance, columns = [1])
     # We only keep the substation sites closest to the turbines
     # All the instances have the turbines in X > 0, furthest away from the main substation (in X = 0)
     Xpos = unique([site.x for site in instance.substationLocations])
     sort!(Xpos, rev = true)
-    kept_locations = [site for site in instance.substationLocations if site.x in Xpos[column]]
+    kept_locations = [site for site in instance.substationLocations if site.x in Xpos[columns]]
     locations = [
         Location(
             i,
@@ -129,7 +129,10 @@ function onlyHighestProbaSubs(instance :: Instance, highest = [1])
 
 end
 
-function onlyLowerCostSubTypes(instance :: Instance, lowest = [1, 2, 3, 4])
+function onlyLowerCostSubTypes(instance :: Instance, lowest = [])
+    if lowest == []
+        lowest = 1:length(unique([sub.cost for sub in instance.substationTypes]))
+    end
     # We only keep the substations with cost in the three lowest costs
     # Because this is empirically what happens in the solutions for small & medium
     costs = unique(sort([sub.cost for sub in instance.substationTypes]))
@@ -218,6 +221,9 @@ function onlyHighestProbaLandCables(instance :: Instance, highest = [1])
 end
 
 function onlyLowerCostLandCables(instance :: Instance, lowest = [1, 2, 3, 4])
+    if lowest == []
+        lowest = 1:length(unique([cable.variable_cost for cable in instance.landSubstationCables]))
+    end
     # We only keep the cables with cost in the three lowest costs
     # Because this is empirically what happens in the solutions for small & medium
     varCosts = unique(sort([cable.variable_cost for cable in instance.landSubstationCables]))

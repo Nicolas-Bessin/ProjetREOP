@@ -14,8 +14,8 @@ include("agregator.jl")
 #####################
 # To use the original instance && compute the full MILP, use :
 #aggregationMethod = ""
-size = "huge"
-aggregationMethod = "furthestSites+LC+Subs+Probas+Cost+Turbines+95Worse"
+size = "large"
+aggregationMethod = "furthestSites+LC+Subs+Probas+95Worse"
 #####################
 
 trueInstanceFile = "instances/KIRO-$size.json"
@@ -38,25 +38,26 @@ trueInstance = read_instance(trueInstanceFile)
 #This because taking the lowest cost cables among the highest probability cables
 #is not the same as taking the highest probability cables among the lowest cost cables
 # For the no sub sub, no agregation is needed, the absence of sub sub cables is considered in the solver
+choiceColumns = [1]
 choiceProbaCables = [1]
-choiceCostCables = [1, 2, 3, 4]
+choiceCostCables = []
 choiceProbaSubs = [1]
-choiceCostSubs = [1, 2, 3, 4]
-instance = onlyLowerCostSubTypes(
-    onlyLowerCostLandCables(
+choiceCostSubs = []
+instance = (
+    (
         onlyHighestProbaSubs(
             onlyHighestProbaLandCables(
-                TurbineAgregator(
-                    onlyFurthestSites(
+                onlyFurthestSites(
+                    (
                         (
                             xPercentWorseScenario(trueInstance, 0.95)
                         )
-                    , 1)
-                )
+                    )
+                , choiceColumns)
             , choiceProbaCables)
         , choiceProbaSubs)
-    , choiceCostCables)
-, choiceCostSubs)
+    )
+)
 #####################################################
 
 if aggregationMethod != ""
@@ -103,5 +104,6 @@ save("plots/types/$outputFormat.png", figure)
 
 falseCost = costOfSolution(instance, solution)
 cost = costOfSolution(trueInstance, trueSolution)
+print(cost)
 
 appendCostToFile("solutions/costs.json", cost, outputFormat, time)
