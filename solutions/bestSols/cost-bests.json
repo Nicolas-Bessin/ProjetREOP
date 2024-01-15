@@ -1,0 +1,26 @@
+{
+    "huge-99Worse+1-2-3Prob+LowCost+Cables+Subs": {
+        "construction": 5316.080894888963,
+        "operationnal": 268.6321069928425,
+        "time": 100.8680009841919,
+        "total": 5584.713001881805
+    },
+    "large-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
+        "construction": 8106.863372469561,
+        "operationnal": 528.8043845053693,
+        "time": 12.102035999298096,
+        "total": 8635.66775697493
+    },
+    "medium-onlyFurthestSites+worstCaseScenario+quadratic": {
+        "construction": 6396.125042287495,
+        "operationnal": 91.06308493150689,
+        "time": 39.9595091342926,
+        "total": 6487.188127219001
+    },
+    "small": {
+        "construction": 3209.3497729688893,
+        "operationnal": 37.6208978630137,
+        "time": 8354.764371871948,
+        "total": 3246.970670831903
+    }
+}
