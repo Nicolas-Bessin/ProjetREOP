@@ -83,6 +83,12 @@
         "time": 173.636559009552,
         "total": 9749.764186595447
     },
+    "large-furthestSites+95Worse+highProb+Cables+Subs": {
+        "construction": 6335.7907434245035,
+        "operationnal": 75736.84678273363,
+        "time": 46.11570191383362,
+        "total": 82072.63752615813
+    },
     "large-furthestSites+LC+Subs+Probas+95Worse": {
         "construction": 8126.858953720212,
         "operationnal": 1294.7679593573682,
@@ -226,6 +232,12 @@
         "operationnal": 37.6208978630137,
         "time": 0.395035982131958,
         "total": 3247.2008186546564
+    },
+    "small-furthestSites+95Worse": {
+        "construction": 3209.3497729688893,
+        "operationnal": 37.6208978630137,
+        "time": 1.4791710376739502,
+        "total": 3246.970670831903
     },
     "small-onlyFurthestSites+ninetyFivePercentWorse": {
         "construction": 3209.5799207916425,

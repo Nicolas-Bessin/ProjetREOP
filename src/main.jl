@@ -15,7 +15,7 @@ include("agregator.jl")
 # To use the original instance && compute the full MILP, use :
 #aggregationMethod = ""
 size = "large"
-aggregationMethod = "furthestSites+LC+Subs+Probas+95Worse"
+aggregationMethod = "furthestSites+95Worse+highProb+Cables+Subs"
 #####################
 
 trueInstanceFile = "instances/KIRO-$size.json"
@@ -39,12 +39,12 @@ trueInstance = read_instance(trueInstanceFile)
 #is not the same as taking the highest probability cables among the lowest cost cables
 # For the no sub sub, no agregation is needed, the absence of sub sub cables is considered in the solver
 choiceColumns = [1]
-choiceProbaCables = [1]
-choiceCostCables = []
-choiceProbaSubs = [1]
-choiceCostSubs = []
-instance = (
-    (
+choiceProbaCables = [1, 2]
+choiceCostCables = 1:4
+choiceProbaSubs = [1, 2]
+choiceCostSubs = 1:4
+instance = onlyLowerCostSubTypes(
+    onlyLowerCostLandCables(
         onlyHighestProbaSubs(
             onlyHighestProbaLandCables(
                 onlyFurthestSites(
@@ -56,8 +56,8 @@ instance = (
                 , choiceColumns)
             , choiceProbaCables)
         , choiceProbaSubs)
-    )
-)
+    , choiceCostCables)
+, choiceCostSubs)
 #####################################################
 
 if aggregationMethod != ""
@@ -88,16 +88,15 @@ solution, time = linearSolver(instance, rawDataDump)
 # trueSolution = solution
 trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, 
     deAggregateReducedSubstationTypes(trueInstance, instance, 
-        deAggregateReducedLandCables(trueInstance, instance, 
-            deAggregateReducedTurbines(trueInstance, instance, solution)
+        deAggregateReducedLandCables(trueInstance, instance, solution)
         )
     )
-)
+
 ###################################################################
 
 writeSolution(trueSolution, "solutions/$outputFormat.json")
 figure = plotSolution(trueSolution, trueInstance)
-save("plots/$outputFormat.png", figure)
+save("plots/plots/$outputFormat.png", figure)
 
 figure = plotUsedTypes(trueInstance, instance, trueSolution)
 save("plots/types/$outputFormat.png", figure)

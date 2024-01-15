@@ -14,7 +14,7 @@ function plotInstance(instance::Instance; legendpos=:lt)
     X_land = instance.mainLandSubstation.x
     Y_land = instance.mainLandSubstation.y
 
-    f = Figure()
+    f = Figure(size = (1000, 1000))
     ax = Axis(f[1, 1]; title="Instance", xlabel="x", ylabel="y")#, aspect=DataAspect())
     scatter!(ax, X_land, Y_land; label="Land", color=:green, markersize=20)
     scatter!(

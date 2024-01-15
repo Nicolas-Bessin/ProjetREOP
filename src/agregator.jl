@@ -97,7 +97,10 @@ function deAggregateReducedSiteSolution(trueInstance :: Instance, aggregInstance
     return Solution(trueSubstations, trueCables, trueTurbines)
 end
 
-function onlyHighestProbaSubs(instance :: Instance, highest = [1])
+function onlyHighestProbaSubs(instance :: Instance, highest = [])
+    if highest == []
+        highest = 1:length(unique([sub.probability_failure for sub in instance.substationTypes]))
+    end
     # We only keep the substations with the highest probability of failure
     # (Because they are the lowest cost ones)
     # This comes from the fact that for small & medium, the solution only uses the substations with the highest probability of failure
@@ -188,7 +191,10 @@ function deAggregateReducedSubstationTypes(trueInstance :: Instance, instance ::
     return Solution(trueSubstations, solution.cables, solution.windTurbines)
 end
 
-function onlyHighestProbaLandCables(instance :: Instance, highest = [1])
+function onlyHighestProbaLandCables(instance :: Instance, highest = [])
+    if highest == []
+        highest = 1:length(unique([cable.probability_failure for cable in instance.landSubstationCables]))
+    end
     # We only keep the cables with the highest probability of failure
     # (Because they are the lowest cost ones)
     # This comes from the fact that for small & medium, the solution only uses the cables with the highest probability of failure
@@ -220,7 +226,7 @@ function onlyHighestProbaLandCables(instance :: Instance, highest = [1])
     )
 end
 
-function onlyLowerCostLandCables(instance :: Instance, lowest = [1, 2, 3, 4])
+function onlyLowerCostLandCables(instance :: Instance, lowest = [])
     if lowest == []
         lowest = 1:length(unique([cable.variable_cost for cable in instance.landSubstationCables]))
     end
