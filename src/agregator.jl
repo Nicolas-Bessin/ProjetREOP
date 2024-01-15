@@ -101,9 +101,9 @@ function onlyHighestProbaSubs(instance :: Instance, highest = [1])
     # We only keep the substations with the highest probability of failure
     # (Because they are the lowest cost ones)
     # This comes from the fact that for small & medium, the solution only uses the substations with the highest probability of failure
-    failure_probas = sort([sub.probability_failure for sub in instance.substationTypes], rev = true)
-    kept_substations = [sub for sub in instance.substationTypes if sub.probability_failure in failure_probas[highest]]
-    substations = [
+    probas = unique(sort([sub.probability_failure for sub in instance.substationTypes], rev = true))
+    kept_substations = [sub for sub in instance.substationTypes if sub.probability_failure in probas[highest]]
+    newSubstations = [
         SubstationType(
             i,
             sub.cost,
@@ -122,7 +122,7 @@ function onlyHighestProbaSubs(instance :: Instance, highest = [1])
         instance.landSubstationCables,
         instance.substationSubstationCables,
         instance.substationLocations,
-        substations,
+        newSubstations,
         instance.windScenarios,
         instance.windTurbine,
     )
@@ -132,10 +132,9 @@ end
 function onlyLowerCostSubTypes(instance :: Instance, lowest = [1, 2, 3, 4])
     # We only keep the substations with cost in the three lowest costs
     # Because this is empirically what happens in the solutions for small & medium
-    costs = [sub.cost for sub in instance.substationTypes]
-    sorted_costs = sort(costs)
-    kept_substations = [sub for sub in instance.substationTypes if sub.cost in sorted_costs[lowest]]
-    substations = [
+    costs = unique(sort([sub.cost for sub in instance.substationTypes]))
+    kept_substations = [sub for sub in instance.substationTypes if sub.cost in costs[lowest]]
+    newSubstations = [
         SubstationType(
             i,
             sub.cost,
@@ -154,7 +153,7 @@ function onlyLowerCostSubTypes(instance :: Instance, lowest = [1, 2, 3, 4])
         instance.landSubstationCables,
         instance.substationSubstationCables,
         instance.substationLocations,
-        substations,
+        newSubstations,
         instance.windScenarios,
         instance.windTurbine,
     )
@@ -190,9 +189,9 @@ function onlyHighestProbaLandCables(instance :: Instance, highest = [1])
     # We only keep the cables with the highest probability of failure
     # (Because they are the lowest cost ones)
     # This comes from the fact that for small & medium, the solution only uses the cables with the highest probability of failure
-    failure_probas = sort([cable.probability_failure for cable in instance.landSubstationCables], rev = true)
-    kept_cables = [cable for cable in instance.landSubstationCables if cable.probability_failure in failure_probas[highest]]
-    cables = [
+    probas = unique(sort([cable.probability_failure for cable in instance.landSubstationCables], rev = true))
+    kept_cables = [cable for cable in instance.landSubstationCables if cable.probability_failure in probas[highest]]
+    newCables = [
         CableType(
             i,
             cable.fixed_cost,
@@ -209,7 +208,7 @@ function onlyHighestProbaLandCables(instance :: Instance, highest = [1])
         instance.variableCostCable,
         instance.mainLandSubstation,
         instance.maximumPower,
-        cables,
+        newCables,
         instance.substationSubstationCables,
         instance.substationLocations,
         instance.substationTypes,
@@ -221,10 +220,9 @@ end
 function onlyLowerCostLandCables(instance :: Instance, lowest = [1, 2, 3, 4])
     # We only keep the cables with cost in the three lowest costs
     # Because this is empirically what happens in the solutions for small & medium
-    costs = [cable.variable_cost for cable in instance.landSubstationCables]
-    sorted_costs = sort(costs)
-    kept_cables = [cable for cable in instance.landSubstationCables if cable.variable_cost in sorted_costs[lowest]]
-    cables = [
+    varCosts = unique(sort([cable.variable_cost for cable in instance.landSubstationCables]))
+    kept_cables = [cable for cable in instance.landSubstationCables if cable.variable_cost in varCosts[lowest]]
+    newCables = [
         CableType(
             i,
             cable.fixed_cost,
@@ -241,7 +239,7 @@ function onlyLowerCostLandCables(instance :: Instance, lowest = [1, 2, 3, 4])
         instance.variableCostCable,
         instance.mainLandSubstation,
         instance.maximumPower,
-        cables,
+        newCables,
         instance.substationSubstationCables,
         instance.substationLocations,
         instance.substationTypes,

@@ -134,7 +134,7 @@ function plotUsedSubstationTypes(instance :: Instance, solution :: Solution)
 end
 
 function plotUsedTypes(instance :: Instance, reducedInstance :: Instance, solution :: Solution)
-    f = Figure()
+    f = Figure(size = (1200, 600))
     varCostCable = [c.variable_cost for c in instance.landSubstationCables]
     probCable = [c.probability_failure for c in instance.landSubstationCables]
     ratingCable = [c.rating for c in instance.landSubstationCables]

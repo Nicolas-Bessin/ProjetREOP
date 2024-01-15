@@ -23,6 +23,12 @@
         "time": 132.6315619945526,
         "total": 6053.130752153206
     },
+    "huge-furthestSites+LC+Subs+Probas+Cost+Turbines+95Worse": {
+        "construction": 6202.82996048202,
+        "operationnal": 428.2096216053084,
+        "time": 0.9087789058685303,
+        "total": 6631.039582087329
+    },
     "large-ConstructionCost": {
         "construction": 7196.607968918121,
         "operationnal": 7011.008660516392,
