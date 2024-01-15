@@ -13,10 +13,12 @@ include("agregator.jl")
 # aggregationMethod = "onlyFurthestSites+ninetyFivePercentWorse"
 #####################
 # To use the original instance && compute the full MILP, use :
-aggregationMethod = ""
-size = "tiny"
-#aggregationMethod = "testing"
+#aggregationMethod = ""
+size = "medium"
+aggregationMethod = "testing"
 #####################
+
+import KIRO2023
 
 trueInstanceFile = "instances/KIRO-$size.json"
 
@@ -33,32 +35,32 @@ trueInstance = read_instance(trueInstanceFile)
 # instance = xPercentWorseScenario(onlyFurthestSites(trueInstance), 0.95)
 #####################################################
 # To use the original instance && compute the full MILP, use :
-instance = trueInstance
+#instance = trueInstance
 #NOTA BENE : those agregation do not commute, so the order matters
 #This because taking the lowest cost cables among the highest probability cables
 #is not the same as taking the highest probability cables among the lowest cost cables
 # For the no sub sub, no agregation is needed, the absence of sub sub cables is considered in the solver
-choiceColumns = 1
-choiceProbaCables = 2
+choiceColumns = [1]
+choiceProbaCables = []
 choiceCostCables = []
-choiceProbaSubs = 2
+choiceProbaSubs = []
 choiceCostSubs = []
-# instance = 
-# onlyLowerCostSubTypes(
-#     onlyLowerCostLandCables(
-#         onlyHighestProbaSubs(
-#             onlyHighestProbaLandCables(
-#                 onlyFurthestSites(
-#                     (
-#                         (
-#                             xPercentWorseScenario(trueInstance, 0.99)
-#                         )
-#                     )
-#                 , choiceColumns)
-#             , choiceProbaCables)
-#         , choiceProbaSubs)
-#     , choiceCostCables)
-# , choiceCostSubs)
+instance = 
+onlyLowerCostSubTypes(
+    onlyLowerCostLandCables(
+        onlyHighestProbaSubs(
+            onlyHighestProbaLandCables(
+                onlyFurthestSites(
+                    (
+                        (
+                            xPercentWorseScenario(trueInstance, 0.95)
+                        )
+                    )
+                , choiceColumns)
+            , choiceProbaCables)
+        , choiceProbaSubs)
+    , choiceCostCables)
+, choiceCostSubs)
 #####################################################
 
 if aggregationMethod != ""
@@ -86,24 +88,34 @@ solution, time = linearSolver(instance, rawDataDump)
 # trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, solution)
 ###################################################################
 # To use the original instance && compute the full MILP, use :
-trueSolution = solution
-# trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, 
-#     deAggregateReducedSubstationTypes(trueInstance, instance, 
-#         deAggregateReducedLandCables(trueInstance, instance, solution)
-#         )
-#     )
+#trueSolution = solution
+trueSolution = deAggregateReducedSiteSolution(trueInstance, instance, 
+    deAggregateReducedSubstationTypes(trueInstance, instance, 
+        deAggregateReducedLandCables(trueInstance, instance, solution)
+        )
+    )
 
 ###################################################################
 
 writeSolution(trueSolution, "solutions/$outputFormat.json")
-figure = plotSolution(trueSolution, trueInstance)
-save("plots/plots/$outputFormat.png", figure)
+#figure = plotSolution(trueSolution, trueInstance)
+#save("plots/plots/$outputFormat.png", figure)
 
-figure = plotUsedTypes(trueInstance, instance, trueSolution)
-save("plots/types/$outputFormat.png", figure)
+#figure = plotUsedTypes(trueInstance, instance, trueSolution)
+#save("plots/types/$outputFormat.png", figure)
 
 falseCost = costOfSolution(instance, solution)
 cost = costOfSolution(trueInstance, trueSolution)
-print(cost)
+print("Self computed cost: $cost\n")
+
+offInstance = KIRO2023.read_instance("instances/KIRO-$size.json")
+offSolution = KIRO2023.read_solution("solutions/$outputFormat.json", offInstance)
+officialCost = (
+    KIRO2023.construction_cost(offSolution, offInstance),
+    KIRO2023.operational_cost(offSolution, offInstance),
+    KIRO2023.cost(offSolution, offInstance)
+)
+
+print("Official cost: $officialCost\n")
 
 appendCostToFile("solutions/costs.json", cost, outputFormat, time)

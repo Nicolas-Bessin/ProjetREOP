@@ -1,278 +1,290 @@
 {
-    "huge-99Worse+1-2-3Prob+LowCost+Cables+Subs": {
-        "construction": 5316.080894888963,
-        "operationnal": 268.6321069928425,
-        "time": 100.8680009841919,
-        "total": 5584.713001881805
-    },
-    "huge-99Worse+1-2Prob+LowCost+Cables+1-Subs": {
-        "construction": 5931.84127872078,
-        "operationnal": 256.31819215613,
-        "time": 727.4652409553528,
-        "total": 6188.15947087691
-    },
-    "huge-ConstructionCost+FurthestSites": {
-        "construction": 5366.059577446346,
-        "operationnal": 1503.8029277393825,
-        "time": 348.87582087516785,
-        "total": 6869.862505185729
-    },
-    "huge-furthestSites+2HProbas+4LCost+Turbines+NoSSCables+95Worse": {
-        "construction": 6711.840936919075,
-        "operationnal": 409.0887569424656,
-        "time": 397.59590196609497,
-        "total": 7120.929693861541
-    },
-    "huge-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub": {
-        "construction": 5072.874177869407,
-        "operationnal": 706.9372320840421,
-        "time": 123.94119501113892,
-        "total": 5779.811409953449
-    },
-    "huge-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub+Turbines": {
-        "construction": 5072.9749905480685,
-        "operationnal": 980.1557616051377,
-        "time": 132.6315619945526,
-        "total": 6053.130752153206
-    },
-    "huge-furthestSites+LC+Subs+Probas+Cost+Turbines+95Worse": {
-        "construction": 6202.82996048202,
-        "operationnal": 428.2096216053084,
-        "time": 0.9087789058685303,
-        "total": 6631.039582087329
-    },
-    "huge-furthestSites+LC+Subs+Probas+Cost+Turbines+95Worse+DummySubSub": {
-        "construction": 5662.275303129195,
-        "operationnal": 635.4078256078775,
-        "time": 105.21727800369263,
-        "total": 6297.683128737072
-    },
-    "large-100Worse+2-3Prob+LowCost+Cables+Subs": {
-        "construction": 9044.462090895488,
-        "operationnal": 212.17190908142481,
-        "time": 8.724146842956543,
-        "total": 9256.633999976912
-    },
-    "large-90Worse+2-3Prob+LowCost+Cables+Subs": {
-        "construction": 7960.939168268774,
-        "operationnal": 964.4753334627947,
-        "time": 4.014103174209595,
-        "total": 8925.414501731568
-    },
-    "large-91Worse+2-3Prob+LowCost+Cables+Subs": {
-        "construction": 9044.462090895488,
-        "operationnal": 212.17190908142481,
-        "time": 9.159580945968628,
-        "total": 9256.633999976912
-    },
-    "large-92Worse+2-3Prob+LowCost+Cables+Subs": {
-        "construction": 8290.710316905233,
-        "operationnal": 570.3004476518912,
-        "time": 1.8466060161590576,
-        "total": 8861.010764557124
-    },
     "large-95Worse+2-3Prob+LowCost+Cables+Subs": {
-        "construction": 8464.297519231162,
         "operationnal": 308.3494405682463,
         "time": 2.0669360160827637,
-        "total": 8772.64695979941
+        "total": 8772.64695979941,
+        "construction": 8464.297519231162
     },
-    "large-99Worse+1-2-3Prob+LowCost+Cables+Subs": {
-        "construction": 8502.8013621346,
-        "operationnal": 216.3210976425207,
-        "time": 96.82996582984924,
-        "total": 8719.12245977712
-    },
-    "large-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
-        "construction": 8106.863372469561,
-        "operationnal": 528.8043845053693,
-        "time": 12.102035999298096,
-        "total": 8635.66775697493
-    },
-    "large-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub": {
-        "construction": 8126.7600561155305,
-        "operationnal": 578.8300091256982,
-        "time": 0.5609099864959717,
-        "total": 8705.59006524123
-    },
-    "large-FurthestSites+95%Worse+SubTypes+LandCables": {
-        "construction": 8106.863372469561,
-        "operationnal": 528.8043845053693,
-        "time": 71.35458111763,
-        "total": 8635.66775697493
-    },
-    "large-furthestSites+95Worse+2-3Prob+LowCost+Cables+Subs": {
-        "construction": 8502.753378821419,
-        "operationnal": 277.56505559539727,
-        "time": 2.870042085647583,
-        "total": 8780.318434416817
-    },
-    "large-furthestSites+95Worse+highProb+Cables+Subs": {
-        "construction": 8466.41080022039,
-        "operationnal": 351.01296198049226,
-        "time": 88.60232281684875,
-        "total": 8817.423762200882
-    },
-    "large-furthestSites+95Worse+highProb+LowCost+Cables+Subs": {
-        "construction": 8466.41080022039,
-        "operationnal": 351.01296198049226,
-        "time": 823.145183801651,
-        "total": 8817.423762200882
-    },
-    "medium-2ndFurthestSites+95%+Turbines+DummyCable": {
-        "construction": 6570.853080043527,
-        "operationnal": 91.06308493150689,
-        "time": 4.745087146759033,
-        "total": 6661.916164975034
-    },
-    "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
-        "construction": 6306.716641447354,
-        "operationnal": 189.76908368219182,
-        "time": 2.115971088409424,
-        "total": 6496.485725129546
-    },
-    "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub": {
-        "construction": 6306.716641447354,
-        "operationnal": 189.76908368219182,
-        "time": 0.5955321788787842,
-        "total": 6496.485725129546
-    },
-    "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub+Turbines": {
-        "construction": 6306.778599111681,
-        "operationnal": 1169.944320328767,
-        "time": 0.5097751617431641,
-        "total": 7476.722919440448
-    },
-    "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+NoSubSub": {
-        "construction": 6243.081884470472,
-        "operationnal": 775.1317466958902,
-        "time": 0.9163351058959961,
-        "total": 7018.213631166362
-    },
-    "medium-FurthestSites+95%Worse+SubTypes+LandCables": {
-        "construction": 6306.755851581411,
-        "operationnal": 189.76908368219182,
-        "time": 6.150393962860107,
-        "total": 6496.524935263603
-    },
-    "medium-onlyFurthestSites+ninetyFivePercentWorse": {
-        "construction": 6306.755851581411,
-        "operationnal": 189.76908368219182,
-        "time": 468.6307849884033,
-        "total": 6496.524935263603
-    },
-    "medium-onlyFurthestSites+ninetyFivePercentWorse+quadratic": {
-        "construction": 6306.755851581411,
-        "operationnal": 189.76908368219182,
-        "time": 883.4570698738098,
-        "total": 6496.524935263603
-    },
-    "medium-onlyFurthestSites+ninetyPercentWorse": {
-        "construction": 6134.843720498646,
-        "operationnal": 485.3598345863016,
-        "time": 569.7751898765564,
-        "total": 6620.203555084948
-    },
-    "medium-onlyFurthestSites+worstCaseScenario": {
-        "construction": 6396.125042287495,
-        "operationnal": 91.06308493150689,
-        "time": 40.022510051727295,
-        "total": 6487.188127219001
-    },
-    "medium-onlyFurthestSites+worstCaseScenario+quadratic": {
-        "construction": 6396.125042287495,
-        "operationnal": 91.06308493150689,
-        "time": 39.9595091342926,
-        "total": 6487.188127219001
-    },
-    "small": {
-        "construction": 3209.3497729688893,
-        "operationnal": 37.6208978630137,
-        "time": 8354.764371871948,
-        "total": 3246.970670831903
-    },
-    "small-ConstructionCost": {
-        "construction": 3284.1184134818945,
-        "operationnal": 227.9561917808219,
-        "time": 1.1143438816070557,
-        "total": 3512.0746052627164
-    },
-    "small-ConstructionCost+105percent": {
-        "construction": 3286.4511586828253,
-        "operationnal": 671.9040000000002,
-        "time": 0.05962109565734863,
-        "total": 3958.3551586828253
-    },
-    "small-ConstructionCost+110percent": {
-        "construction": 3417.830436596766,
-        "operationnal": 154.66709589041096,
-        "time": 1.4121050834655762,
-        "total": 3572.497532487177
-    },
-    "small-ConstructionCost+ninetyFivePercentWorse": {
-        "construction": 3209.404472228275,
-        "operationnal": 391.16021917808223,
-        "time": 0.8718621730804443,
-        "total": 3600.5646914063573
-    },
-    "small-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
-        "construction": 3209.3497729688893,
-        "operationnal": 37.6208978630137,
-        "time": 0.27117013931274414,
-        "total": 3246.970670831903
-    },
-    "small-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub": {
-        "construction": 3209.3497729688893,
-        "operationnal": 37.6208978630137,
-        "time": 0.22174596786499023,
-        "total": 3246.970670831903
-    },
-    "small-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub+Turbines": {
-        "construction": 3209.404472228275,
-        "operationnal": 391.16021917808223,
-        "time": 0.2286369800567627,
-        "total": 3600.5646914063573
-    },
-    "small-FurthestSites+95%Worse+SubTypes+LandCables": {
-        "construction": 3209.5799207916425,
-        "operationnal": 37.6208978630137,
-        "time": 0.395035982131958,
-        "total": 3247.2008186546564
-    },
-    "small-furthestSites+95Worse": {
-        "construction": 3209.3497729688893,
-        "operationnal": 37.6208978630137,
-        "time": 1.4791710376739502,
-        "total": 3246.970670831903
+    "huge-99Worse+1-2Prob+LowCost+Cables+1-Subs": {
+        "operationnal": 256.31819215613,
+        "time": 727.4652409553528,
+        "total": 6188.15947087691,
+        "construction": 5931.84127872078
     },
     "small-onlyFurthestSites+ninetyFivePercentWorse": {
-        "construction": 3209.5799207916425,
         "operationnal": 37.6208978630137,
         "time": 0.8976800441741943,
-        "total": 3247.2008186546564
+        "total": 3247.2008186546564,
+        "construction": 3209.5799207916425
     },
-    "small-onlyFurthestSites+ninetyFivePercentWorse+quadratic": {
-        "construction": 3209.5799207916425,
-        "operationnal": 37.6208978630137,
-        "time": 0.9542889595031738,
-        "total": 3247.2008186546564
+    "small-ConstructionCost+110percent": {
+        "operationnal": 154.66709589041096,
+        "time": 1.4121050834655762,
+        "total": 3572.497532487177,
+        "construction": 3417.830436596766
     },
     "small-onlyFurthestSites+ninetyPercentWorse": {
-        "construction": 3209.557977554197,
         "operationnal": 58.51731616438358,
         "time": 4.831736087799072,
-        "total": 3268.0752937185803
+        "total": 3268.0752937185803,
+        "construction": 3209.557977554197
     },
-    "small-onlyFurthestSites+worstCaseScenario": {
-        "construction": 3343.338074245852,
-        "operationnal": 16.690438356164385,
-        "time": 3.049710988998413,
-        "total": 3360.0285126020167
+    "small-FurthestSites+95%Worse+SubTypes+LandCables": {
+        "operationnal": 37.6208978630137,
+        "time": 0.395035982131958,
+        "total": 3247.2008186546564,
+        "construction": 3209.5799207916425
+    },
+    "medium-FurthestSites+95%Worse+SubTypes+LandCables": {
+        "operationnal": 189.76908368219182,
+        "time": 6.150393962860107,
+        "total": 6496.524935263603,
+        "construction": 6306.755851581411
+    },
+    "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
+        "operationnal": 189.76908368219182,
+        "time": 2.115971088409424,
+        "total": 6496.485725129546,
+        "construction": 6306.716641447354
+    },
+    "large-furthestSites+95Worse+highProb+Cables+Subs": {
+        "operationnal": 351.01296198049226,
+        "time": 88.60232281684875,
+        "total": 8817.423762200882,
+        "construction": 8466.41080022039
+    },
+    "large-92Worse+2-3Prob+LowCost+Cables+Subs": {
+        "operationnal": 570.3004476518912,
+        "time": 1.8466060161590576,
+        "total": 8861.010764557124,
+        "construction": 8290.710316905233
+    },
+    "small-ConstructionCost+105percent": {
+        "operationnal": 671.9040000000002,
+        "time": 0.05962109565734863,
+        "total": 3958.3551586828253,
+        "construction": 3286.4511586828253
+    },
+    "medium-2ndFurthestSites+95%+Turbines+DummyCable": {
+        "operationnal": 91.06308493150689,
+        "time": 4.745087146759033,
+        "total": 6661.916164975034,
+        "construction": 6570.853080043527
+    },
+    "medium-onlyFurthestSites+ninetyFivePercentWorse": {
+        "operationnal": 189.76908368219182,
+        "time": 468.6307849884033,
+        "total": 6496.524935263603,
+        "construction": 6306.755851581411
     },
     "tiny": {
-        "construction": 105636.3961030679,
         "operationnal": 5.22,
         "time": 0.0034749507904052734,
-        "total": 105641.6161030679
+        "total": 105641.6161030679,
+        "construction": 105636.3961030679
+    },
+    "large-FurthestSites+95%Worse+SubTypes+LandCables": {
+        "operationnal": 528.8043845053693,
+        "time": 71.35458111763,
+        "total": 8635.66775697493,
+        "construction": 8106.863372469561
+    },
+    "small-testing": {
+        "operationnal": 16.690438356164382,
+        "time": 4.6902852058410645,
+        "total": 3359.787906552702,
+        "construction": 3343.0974681965376
+    },
+    "large-99Worse+1-2-3Prob+LowCost+Cables+Subs": {
+        "operationnal": 216.3210976425207,
+        "time": 96.82996582984924,
+        "total": 8719.12245977712,
+        "construction": 8502.8013621346
+    },
+    "huge-furthestSites+LC+Subs+Probas+Cost+Turbines+95Worse+DummySubSub": {
+        "operationnal": 635.4078256078775,
+        "time": 105.21727800369263,
+        "total": 6297.683128737072,
+        "construction": 5662.275303129195
+    },
+    "large-furthestSites+95Worse+2-3Prob+LowCost+Cables+Subs": {
+        "operationnal": 277.56505559539727,
+        "time": 2.870042085647583,
+        "total": 8780.318434416817,
+        "construction": 8502.753378821419
+    },
+    "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+NoSubSub": {
+        "operationnal": 775.1317466958902,
+        "time": 0.9163351058959961,
+        "total": 7018.213631166362,
+        "construction": 6243.081884470472
+    },
+    "medium-onlyFurthestSites+worstCaseScenario": {
+        "operationnal": 91.06308493150689,
+        "time": 40.022510051727295,
+        "total": 6487.188127219001,
+        "construction": 6396.125042287495
+    },
+    "large-91Worse+2-3Prob+LowCost+Cables+Subs": {
+        "operationnal": 212.17190908142481,
+        "time": 9.159580945968628,
+        "total": 9256.633999976912,
+        "construction": 9044.462090895488
+    },
+    "large-90Worse+2-3Prob+LowCost+Cables+Subs": {
+        "operationnal": 964.4753334627947,
+        "time": 4.014103174209595,
+        "total": 8925.414501731568,
+        "construction": 7960.939168268774
+    },
+    "medium-testing": {
+        "operationnal": 189.76908368219182,
+        "time": 295.3457589149475,
+        "total": 6496.485725129546,
+        "construction": 6306.716641447354
+    },
+    "huge-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub+Turbines": {
+        "operationnal": 980.1557616051377,
+        "time": 132.6315619945526,
+        "total": 6053.130752153206,
+        "construction": 5072.9749905480685
+    },
+    "medium-onlyFurthestSites+ninetyFivePercentWorse+quadratic": {
+        "operationnal": 189.76908368219182,
+        "time": 883.4570698738098,
+        "total": 6496.524935263603,
+        "construction": 6306.755851581411
+    },
+    "medium-onlyFurthestSites+ninetyPercentWorse": {
+        "operationnal": 485.3598345863016,
+        "time": 569.7751898765564,
+        "total": 6620.203555084948,
+        "construction": 6134.843720498646
+    },
+    "huge-99Worse+1-2-3Prob+LowCost+Cables+Subs": {
+        "operationnal": 268.6321069928425,
+        "time": 100.8680009841919,
+        "total": 5584.713001881805,
+        "construction": 5316.080894888963
+    },
+    "small-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub+Turbines": {
+        "operationnal": 391.16021917808223,
+        "time": 0.2286369800567627,
+        "total": 3600.5646914063573,
+        "construction": 3209.404472228275
+    },
+    "large-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
+        "operationnal": 528.8043845053693,
+        "time": 12.102035999298096,
+        "total": 8635.66775697493,
+        "construction": 8106.863372469561
+    },
+    "small-onlyFurthestSites+worstCaseScenario": {
+        "operationnal": 16.690438356164385,
+        "time": 3.049710988998413,
+        "total": 3360.0285126020167,
+        "construction": 3343.338074245852
+    },
+    "small-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub": {
+        "operationnal": 37.6208978630137,
+        "time": 0.22174596786499023,
+        "total": 3246.970670831903,
+        "construction": 3209.3497729688893
+    },
+    "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub+Turbines": {
+        "operationnal": 1169.944320328767,
+        "time": 0.5097751617431641,
+        "total": 7476.722919440448,
+        "construction": 6306.778599111681
+    },
+    "medium-onlyFurthestSites+worstCaseScenario+quadratic": {
+        "operationnal": 91.06308493150689,
+        "time": 39.9595091342926,
+        "total": 6487.188127219001,
+        "construction": 6396.125042287495
+    },
+    "huge-furthestSites+LC+Subs+Probas+Cost+Turbines+95Worse": {
+        "operationnal": 428.2096216053084,
+        "time": 0.9087789058685303,
+        "total": 6631.039582087329,
+        "construction": 6202.82996048202
+    },
+    "small-ConstructionCost": {
+        "operationnal": 227.9561917808219,
+        "time": 1.1143438816070557,
+        "total": 3512.0746052627164,
+        "construction": 3284.1184134818945
+    },
+    "small-furthestSites+95Worse": {
+        "operationnal": 37.6208978630137,
+        "time": 1.4791710376739502,
+        "total": 3246.970670831903,
+        "construction": 3209.3497729688893
+    },
+    "small": {
+        "operationnal": 37.6208978630137,
+        "time": 8354.764371871948,
+        "total": 3246.970670831903,
+        "construction": 3209.3497729688893
+    },
+    "huge-furthestSites+2HProbas+4LCost+Turbines+NoSSCables+95Worse": {
+        "operationnal": 409.0887569424656,
+        "time": 397.59590196609497,
+        "total": 7120.929693861541,
+        "construction": 6711.840936919075
+    },
+    "huge-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub": {
+        "operationnal": 706.9372320840421,
+        "time": 123.94119501113892,
+        "total": 5779.811409953449,
+        "construction": 5072.874177869407
+    },
+    "small-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
+        "operationnal": 37.6208978630137,
+        "time": 0.27117013931274414,
+        "total": 3246.970670831903,
+        "construction": 3209.3497729688893
+    },
+    "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub": {
+        "operationnal": 189.76908368219182,
+        "time": 0.5955321788787842,
+        "total": 6496.485725129546,
+        "construction": 6306.716641447354
+    },
+    "large-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub": {
+        "operationnal": 578.8300091256982,
+        "time": 0.5609099864959717,
+        "total": 8705.59006524123,
+        "construction": 8126.7600561155305
+    },
+    "large-100Worse+2-3Prob+LowCost+Cables+Subs": {
+        "operationnal": 212.17190908142481,
+        "time": 8.724146842956543,
+        "total": 9256.633999976912,
+        "construction": 9044.462090895488
+    },
+    "small-onlyFurthestSites+ninetyFivePercentWorse+quadratic": {
+        "operationnal": 37.6208978630137,
+        "time": 0.9542889595031738,
+        "total": 3247.2008186546564,
+        "construction": 3209.5799207916425
+    },
+    "huge-ConstructionCost+FurthestSites": {
+        "operationnal": 1503.8029277393825,
+        "time": 348.87582087516785,
+        "total": 6869.862505185729,
+        "construction": 5366.059577446346
+    },
+    "small-ConstructionCost+ninetyFivePercentWorse": {
+        "operationnal": 391.16021917808223,
+        "time": 0.8718621730804443,
+        "total": 3600.5646914063573,
+        "construction": 3209.404472228275
+    },
+    "large-furthestSites+95Worse+highProb+LowCost+Cables+Subs": {
+        "operationnal": 351.01296198049226,
+        "time": 823.145183801651,
+        "total": 8817.423762200882,
+        "construction": 8466.41080022039
     }
 }
