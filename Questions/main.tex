@@ -324,9 +324,9 @@
 Une fois le solveur linéaire mis en place, le problème principal qui empêche de l'utiliser pour les instances medium, large et huge est la taille de celles-ci - en effet, le nombre de variable dans le modèle influe énormément sur le temps de calcul (et donc la possibilité de résoudre le problème). 
 Ainsi nous avons implémenté la stratégie suivante :
 \begin{itemize}
-    \item On réduit la taille de l'instance avec différente méthode (voir ci-dessous) .
-    \item On résout le problème pour cette sous-instance avec le solveur linéaire
-    \item On re-transforme la solution obtenue en une solution du problème initial.
+    \item Réduire la taille de l'instance avec différente méthode (voir ci-dessous) .
+    \item Résoudre le problème pour cette sous-instance avec le solveur linéaire
+    \item Transformer la solution obtenue en une solution du problème initial.
 \end{itemize}
 Les stratégies de réduction de taille que nous avons implémenté sont motivées par les observations suivantes que nous avons pu faire sur l'instance small :
 Seuls certains sites de sous-station sont utilisés (voir figure 1), et seuls certains types de sous-station et de câbles sont utilisés (voir figure 2).
@@ -342,6 +342,26 @@ Seuls certains sites de sous-station sont utilisés (voir figure 1), et seuls ce
     \item Remplacer les multiples scénarios par un unique scénario représentatif (e.g. un scénario dont la puissance est $p = p_{min} + x(p_{max} - p_{min})$ avec $x$ un coefficient choisi, e.g $x = 0.95$)
     \item Éliminer certains types possibles de sous-stations et / ou de câbles, en fonction de leurs probabilités de panne et de leurs coûts.
 \end{itemize}
+
+L'intérêt de ces stratégies est le suivant : si on note $n_{SubSites}$ le nombre de sites de sous-station, $n_{SubTypes}$ le nombre de types de sous-station, $n_{LandCables}$ le nombre de types de câbles liant à la terre, $n_{SubCables}$ le nombre de types de câble reliant des sous-stations, $n_{Scenarios}$ le nombre de scénarios, et $n_{t}$ le nombre d'éoliennes, alors le nombre de variables du problème - et donc le temps de calcul - est de l'ordre de 
+$$ O(n_{SubSites} \times n_{SubTypes} + n_{LandCables} \times n_{SubSites} + n_{SubSites}^2 \times n_{SubCables} + n_{Scenarios} \times n_{t} \times n_{SubSites} \times n_{SubTypes}) $$
+
+Avec ces stratégies, nous pouvons utiliser le solveur linéaire pour résoudre les instances. Les meilleurs scores obtenus sont les suivants :
+
+\begin{table}[h]
+    \centering
+
+    \begin{tabular}{lllll}
+    size & small         & medium       & large   & huge    \\ \hline
+    cost & 3244          & 6472         & 8566    & 5583    \\
+    gap  & $\leq 3.8 \%$ & $\leq 7.5\%$ & Unknown & Unknown \\ \hline
+    \end{tabular}
+
+\end{table}
+
+Le gap est calculé par rapport à la solution du relaché linéaire, et est donc une sur-estimation du gap par rapport à la solution optimale entière.
+(Pour large \& huge, nous n'avons pas pu calculer le gap, 16Go de RAM n'étant pas suffisant pour les résoudre.)
+
 
 \end{document}
 
