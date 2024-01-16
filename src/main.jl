@@ -53,7 +53,7 @@ onlyLowerCostSubTypes(
                 onlyFurthestSites(
                     (
                         (
-                            xPercentWorseScenario(trueInstance, 0.95)
+                            (trueInstance)
                         )
                     )
                 , choiceColumns)
@@ -123,6 +123,8 @@ pathToBestSolsFiles = "solutions/bestSols/cost-bests.json"
 
 bestCosts = JSON.parsefile(pathToBestSolsFiles)
 if bestCosts[size]["total"] >= officialCost[3]
+    println("--------------------------------------------")
+    println("New best solution found for $size")
     bestCosts[size]["construction"] = officialCost[1]
     bestCosts[size]["operational"] = officialCost[2]
     bestCosts[size]["total"] = officialCost[3]

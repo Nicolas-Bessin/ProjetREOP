@@ -179,6 +179,12 @@
         "total": 8635.66775697493,
         "construction": 8106.863372469561
     },
+    "large-testing": {
+        "operationnal": 351.01296198049226,
+        "time": 3937.9399309158325,
+        "total": 8817.423762200882,
+        "construction": 8466.41080022039
+    },
     "small-onlyFurthestSites+worstCaseScenario": {
         "operationnal": 16.690438356164385,
         "time": 3.049710988998413,
