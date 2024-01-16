@@ -152,20 +152,18 @@ function linearRelaxation(instance :: Instance,  filename :: String = "")
     # This is a min term, so we will need to linearize it
 
     @variable(model, powerSentUnderOtherFailure[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios])
-    # @variable(model, minIsPowerSent[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios], Bin)
-    # @variable(model, minIsCableCapa[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios], Bin)
+    @variable(model, minIsPowerSent[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios], Bin)
+    @variable(model, minIsCableCapa[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios], Bin)
 
     for ω in 1:nbScenarios
         for v1 in 1:nbSubLocations
             for v2 in 1:nbSubLocations
                 # Only one is the actual min
-                # @constraint(model, minIsPowerSent[v1, v2, ω] + minIsCableCapa[v1, v2, ω] == 1)
+                @constraint(model, minIsPowerSent[v1, v2, ω] + minIsCableCapa[v1, v2, ω] == 1)
                 power_sent = instance.windScenarios[ω].power * nbTurbinesLinked[v1]
                 cable_capa = sum(instance.substationSubstationCables[i].rating * ysub[v1, v2, i] for i in 1:nbSubCableTypes)
-                # @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] >= power_sent - minIsCableCapa[v1, v2, ω] * max_power)
-                # @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] >= cable_capa - minIsPowerSent[v1, v2, ω] * max_power)
-
-                @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] == min(power_sent, cable_capa))
+                @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] >= power_sent - minIsCableCapa[v1, v2, ω] * max_power)
+                @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] >= cable_capa - minIsPowerSent[v1, v2, ω] * max_power)
             end
         end
     end
