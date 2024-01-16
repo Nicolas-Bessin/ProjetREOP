@@ -101,7 +101,7 @@ writeSolution(trueSolution, "solutions/$outputFormat.json")
 #figure = plotSolution(trueSolution, trueInstance)
 #save("plots/plots/$outputFormat.png", figure)
 
-#figure = plotUsedTypes(trueInstance, instance, trueSolution)
+#figure = plotUsedTypes(trueInstance, trueSolution, instance)
 #save("plots/types/$outputFormat.png", figure)
 
 falseCost = costOfSolution(instance, solution)

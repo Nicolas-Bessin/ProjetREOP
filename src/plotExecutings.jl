@@ -4,18 +4,25 @@ include("parser.jl")
 include("utils.jl")
 include("agregator.jl")
 
-size = "huge"
-outputFormat = "furthestSites+2HProbas+4LCost+Turbines+NoSSCables+95Worse"
+size = "small"
+
+aggregationMethod = ""
+if aggregationMethod == ""
+    outputFormat = "$size"
+else
+    outputFormat = "$size-$aggregationMethod"
+end
+
 inputFile = "instances/KIRO-$size.json"
-reducedInput = "instances/aggregated/$size-$outputFormat.json"
-solutionFile = "solutions/$size-$outputFormat.json"
+reducedInput = "instances/aggregated/$outputFormat.json"
+solutionFile = "solutions/$outputFormat.json"
 instance = read_instance(inputFile)
-if outputFormat != "1"
+if outputFormat != "1" && outputFormat != ""
     reducedInstance = read_instance(reducedInput)
 else
     reducedInstance = instance
 end
 solution = read_solution(solutionFile)
-f = plotUsedTypes(instance, reducedInstance, solution)
-save("plots/types/$size-$outputFormat.png", f)
+f = plotUsedTypes(instance, solution, (800, 400))
+save("plots/types/$outputFormat-types.png", f)
 #plotSolution(solution, instance)

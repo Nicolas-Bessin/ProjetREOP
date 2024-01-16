@@ -133,8 +133,8 @@ function plotUsedSubstationTypes(instance :: Instance, solution :: Solution)
     return f
 end
 
-function plotUsedTypes(instance :: Instance, reducedInstance :: Instance, solution :: Solution)
-    f = Figure(size = (1200, 600))
+function plotUsedTypes(instance :: Instance , solution :: Solution, size, reducedInstance = nothing)
+    f = Figure(size = size)
     varCostCable = [c.variable_cost for c in instance.landSubstationCables]
     probCable = [c.probability_failure for c in instance.landSubstationCables]
     ratingCable = [c.rating for c in instance.landSubstationCables]
@@ -156,6 +156,9 @@ function plotUsedTypes(instance :: Instance, reducedInstance :: Instance, soluti
     usedSubstations = [instance.substationTypes[sub.id_type].id for sub in solution.substations]
     scatter!(ax2, probSub[usedSubstations], ratingSub[usedSubstations]; color=:red, markersize=15, marker = :cross)
 
+    if isnothing(reducedInstance)
+        return f
+    end
     redProbCable = [c.probability_failure for c in reducedInstance.landSubstationCables]
     redRatingCable = [c.rating for c in reducedInstance.landSubstationCables]
     redProbSub = [s.probability_failure for s in reducedInstance.substationTypes]
