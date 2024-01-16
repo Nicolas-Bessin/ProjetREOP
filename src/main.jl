@@ -116,6 +116,22 @@ officialCost = (
     KIRO2023.cost(offSolution, offInstance)
 )
 
+
 print("Official cost: $officialCost\n")
+
+pathToBestSolsFiles = "solutions/bestSols/cost-bests.json"
+
+bestCosts = JSON.parsefile(pathToBestSolsFiles)
+if bestCosts[size]["total"] >= officialCost[3]
+    bestCosts[size]["construction"] = officialCost[1]
+    bestCosts[size]["operational"] = officialCost[2]
+    bestCosts[size]["total"] = officialCost[3]
+    bestCosts[size]["time"] = time
+    open(pathToBestSolsFiles, "w") do f
+        JSON.print(f, bestCosts, 4)
+    end
+
+    writeSolution(trueSolution, "solutions/bestSols/$size-best.json")
+end
 
 appendCostToFile("solutions/costs.json", cost, outputFormat, time)
