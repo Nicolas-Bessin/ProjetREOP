@@ -252,18 +252,39 @@ Seuls certains sites de sous-station sont utilisés (voir figure 1), et seuls ce
     \item Éliminer certains types possibles de sous-stations et / ou de câbles, en fonction de leurs probabilités de panne et de leurs coûts.
 \end{itemize}
 
-L'intérêt de ces stratégies est le suivant : si on note $n_{SubSites}$ le nombre de sites de sous-station, $n_{SubTypes}$ le nombre de types de sous-station, $n_{LandCables}$ le nombre de types de câbles liant à la terre, $n_{SubCables}$ le nombre de types de câble reliant des sous-stations, $n_{Scenarios}$ le nombre de scénarios, et $n_{t}$ le nombre d'éoliennes, alors le nombre de variables du problème - et donc le temps de calcul - est de l'ordre de 
-$$ O(n_{SubSites} \times n_{SubTypes} + n_{LandCables} \times n_{SubSites} + n_{SubSites}^2 \times n_{SubCables} + n_{Scenarios} \times n_{t} \times n_{SubSites} \times n_{SubTypes}) $$
+L'intérêt de ces stratégies est le suivant : on note selon le tableau suivant les tailles caractèristiques des instances :
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|llllll}
+    Instance Component & $ V_s $  & $ S $    & $ Q^0 $  & $ Q^s $  & $ V^t $  & $ \Omega$\\ \hline
+    Size               & $|V^s|$ & $|S|$ & $|Q^0|$ & $|Q^s|$ & $|V^t|$ & $|\Omega|$ \\
+    \end{tabular}
+\end{table}
+
+On peut alors récaptituler le nombre de variables / contraintes correspondant à chaque composante du coût :
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|l|}
+        \hline
+        Nom & $ x_{vs} $      & $ y_{eq} $                         & $ z_{e} $        & \begin{tabular}[c]{@{}l@{}}Curtailing of $v $ \\ under $ \omega$ \end{tabular} \\ \hline
+        Quantité & $|V^s| \times |S|$ & \begin{tabular}[c]{@{}l@{}} $ |Q^0| \times |V^s| $ \\ $ + |V^s|^2 \times |Q^s| $ \end{tabular} & $|V^s| \times |V^t| $ & $ |V^s| |\Omega| $ \\ \hline
+        Nom      & $C^n(x, y, z, \omega)$ & \begin{tabular}[c]{@{}l@{}}Curtailing of $v $ \\ under $ \omega$  and failure of $v$ \end{tabular}  & Power sent from $v$ to $\tilde{v}$ & $C^f(v, x, y, z, \omega)$ \\ \hline
+        Quantité & $ |\Omega| $ & $ |V^s| |\Omega| $                            & $ |V^s|^2 |\Omega| $            & $ |V^s| |\Omega| $              \\ \hline
+    \end{tabular}
+
+\end{table}
 
 Avec ces stratégies, nous pouvons utiliser le solveur linéaire pour résoudre les instances. Les meilleurs scores obtenus sont les suivants :
 
 \begin{table}[h]
     \centering
 
-    \begin{tabular}{lllll}
+    \begin{tabular}{l|llll}
     size & small         & medium       & large   & huge    \\ \hline
     cost & 3244          & 6472         & 8566    & 5583    \\
-    gap  & $\leq 3.8 \%$ & $\leq 7.5\%$ & Unknown & Unknown \\ \hline
+    gap  & $\leq 3.8 \%$ & $\leq 7.5\%$ & Unknown & Unknown \\ 
     \end{tabular}
 
 \end{table}
