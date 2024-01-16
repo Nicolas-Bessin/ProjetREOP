@@ -8,3 +8,9 @@ Questions/main.synctex.gz
 .vscode/settings.json
 Questions/main.pdf
 src/test_Erwann.jl
+Manifest.toml
+Project.toml
+src/test_Erwann_2.jl
+plots/powprob-huge.png
+plots/powprob-large.png
+plots/powprob-medium.png

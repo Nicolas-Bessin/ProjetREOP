@@ -1,10 +1,13 @@
+
 # tri des scenarios par puissance
 include("instance.jl")
 include("solution.jl")
 include("parser.jl")
-
+println("PreGLMakie")
 using GLMakie
-size = "small"
+println("Included GLMAKIE")
+
+size = "huge"
 sizes = ["tiny", "small", "medium", "large", "huge"]
 input = "instances/KIRO-$size.json"
 
@@ -25,7 +28,7 @@ function plotpowprob(instance::Instance; legendpos=:lt)
     X_proba = [l.probability for l in ordered_scenarios]    
     f = Figure()
     ax = Axis(f[1, 1]; title="scenarios", xlabel="proba", ylabel="power")#, aspect=DataAspect())
-    scatter!(ax, X_proba, Y_power; label = "Scenarios", color=:green, markersize=20)
+    scatter!(ax, X_proba, Y_power; label = "Scenarios", color=:green, markersize=10)
     return f
 end
 
@@ -89,6 +92,5 @@ function aggregateMeanInstance(nb_agr_scen)
     end
 end
 
-aggregateMeanInstance(4)
 
 
