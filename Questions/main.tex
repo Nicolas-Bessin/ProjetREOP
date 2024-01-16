@@ -244,6 +244,7 @@
                 & C_{v}^{substation} = \sum_{s \in S} c_{s} * x_{v, s} && \text{for }  v \in V^{s} \\
                 & C_{v}^{landcable} = \sum_{q \in Q_0} y_{v,q}^{land}*(c_{q}^{f} + c_{q}^{l} l_{e}) && \text{for }  v \in V^{s} \\
                 & C_{u,v}^{subcable} = \sum_{q \in Q_0} y_{u,v,q}^{sub} * (c_{q}^{f}+c_{q}^{l} l_{(u,v)}) && \text{for }  (u,v) \in {V^{s}}^{2} \\
+                & C_{v}^{turbine} = \sum_{q \in Q_0} y_{v,q}^{land}*(c_{t}^{f} + c_{t}^{l} l_{(v,t)}) && \text{for }  v \in V^{s}, t \in V^{t} \\
                 & C^{c} = \sum_{v \in V^s} C_{v}^{substation} + \sum_{v} C_{v}^{landcable} + \sum_{u \in V_{s},v \in V_{s}} C_{u,v}^{subcable} + \sum_{v \in V^s, t \in V^{t}} C_{v,t}^{turbine} \\
             \end{alignedat}
         \end{cases}
@@ -319,5 +320,29 @@
 
 \end{enumerate}
 
+\section {Algorithm}
+Une fois le solveur linéaire mis en place, le problème principal qui empêche de l'utiliser pour les instances medium, large et huge est la taille de celles-ci - en effet, le nombre de variable dans le modèle influe énormément sur le temps de calcul (et donc la possibilité de résoudre le problème). 
+Ainsi nous avons implémenté la stratégie suivante :
+\begin{itemize}
+    \item On réduit la taille de l'instance avec différente méthode (voir ci-dessous) .
+    \item On résout le problème pour cette sous-instance avec le solveur linéaire
+    \item On re-transforme la solution obtenue en une solution du problème initial.
+\end{itemize}
+Les stratégies de réduction de taille que nous avons implémenté sont motivées par les observations suivantes que nous avons pu faire sur l'instance small :
+Seuls certains sites de sous-station sont utilisés (voir figure 1), et seuls certains types de sous-station et de câbles sont utilisés (voir figure 2).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{small-types.png}
+    \caption{Types des sous-stations et des câbles dans l'instance small - en rouge, les types effectivement utilisés dans la solution optimale}
+\end{figure}
+
+\begin{itemize}
+    \item Ne garder que les sites de sous-station les plus proches des éoliennes (comme avec la solution optimale de l'instance small)
+    \item Remplacer les multiples scénarios par un unique scénario représentatif (e.g. un scénario dont la puissance est $p = p_{min} + x(p_{max} - p_{min})$ avec $x$ un coefficient choisi, e.g $x = 0.95$)
+    \item Éliminer certains types possibles de sous-stations et / ou de câbles, en fonction de leurs probabilités de panne et de leurs coûts.
+\end{itemize}
+
 \end{document}
+
 

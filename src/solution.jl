@@ -31,7 +31,7 @@ function toSolution(x, yland, ysub, z, instance)
         for s in 1:length(instance.substationTypes)
             if x[v, s] > 0.5
                 #Find the associated cable
-                for c in 1:length(instance.substationSubstationCables)
+                for c in 1:length(instance.landSubstationCables)
                     if yland[v, c] > 0.5
                         push!(substations, Substation(v, s, c))
                     end

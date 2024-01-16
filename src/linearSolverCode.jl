@@ -1,9 +1,9 @@
 include("instance.jl")
 include("solution.jl")
 
-using JuMP, Gurobi
+using JuMP, Gurobi, JSON
 
-function linearSolver(instance :: Instance)
+function linearSolver(instance :: Instance,  filename :: String = "")
     # We need to compute an upper bound for the curtailing cost under failure (At first we can compute one for every scenario)
     nbScenarios = length(instance.windScenarios)
     max_power = maximum([instance.windScenarios[i].power for i in 1:nbScenarios]) * length(instance.windTurbine)
@@ -37,6 +37,9 @@ function linearSolver(instance :: Instance)
     # Add the constraints on the wind turbines. (3)
     for t in 1:nbTurbines
         @constraint(model, sum(z[:, t]) == 1)
+        for v in 1:nbSubLocations
+            @constraint(model, z[v, t] <= sum(x[v, :]))
+        end
     end
 
     # Add y_eq between substations variables
@@ -44,8 +47,18 @@ function linearSolver(instance :: Instance)
     @variable(model, ysub[1:nbSubLocations, 1:nbSubLocations, 1:nbSubCableTypes], Bin)
 
     # Add the constraints on the substation-substation cables. (4)
+    # THIS IS NOT ENOUGH
     for v in 1:nbSubLocations
         @constraint(model, sum(ysub[v, :, :]) <= sum(x[v, :]))
+    end
+    # We need this for undirected cables
+    for v1 in 1:nbSubLocations
+        for v2 in 1:nbSubLocations
+            @constraint(model, sum(ysub[v1, v1, :]) == 0)
+                for i in 1:nbSubCableTypes
+                    @constraint(model, ysub[v1, v2, i] == ysub[v2, v1, i])
+            end
+        end
     end
 
     # We will add a variable for the number of turbines linked to each substation
@@ -109,7 +122,7 @@ function linearSolver(instance :: Instance)
         end
     end
 
-    # Variables for power sent from v1 to v2 under scenario ω and failure of v2
+    # Variables for power sent from v1 to v2 under scenario ω and failure of v1
     # This is a min term, so we will need to linearize it
 
     @variable(model, powerSentUnderOtherFailure[1:nbSubLocations, 1:nbSubLocations, 1:nbScenarios])
@@ -123,8 +136,6 @@ function linearSolver(instance :: Instance)
                 @constraint(model, minIsPowerSent[v1, v2, ω] + minIsCableCapa[v1, v2, ω] == 1)
                 power_sent = instance.windScenarios[ω].power * nbTurbinesLinked[v1]
                 cable_capa = sum(instance.substationSubstationCables[i].rating * ysub[v1, v2, i] for i in 1:nbSubCableTypes)
-                @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] <= power_sent)
-                @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] <= cable_capa)
                 @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] >= power_sent - minIsCableCapa[v1, v2, ω] * max_power)
                 @constraint(model, powerSentUnderOtherFailure[v1, v2, ω] >= cable_capa - minIsPowerSent[v1, v2, ω] * max_power)
             end
@@ -195,9 +206,9 @@ function linearSolver(instance :: Instance)
 
     for v in 1:nbSubLocations
         for t in 1:nbTurbines
-            cable_cost = sum(instance.fixedCostCable * z[v, t] for i in 1:nbSubCableTypes)
+            cable_cost = instance.fixedCostCable * z[v, t]
             lengthCable = distance(instance.substationLocations[v], instance.windTurbine[t])
-            cable_cost += sum(instance.variableCostCable * lengthCable * z[v, t] for i in 1:nbSubCableTypes)
+            cable_cost += instance.variableCostCable * lengthCable * z[v, t]
             @constraint(model, turbineCableCost[v, t] == cable_cost)
         end
     end 
@@ -307,6 +318,20 @@ function linearSolver(instance :: Instance)
 
     optimize!(model)
 
+    time = solve_time(model)
+
     solution = toSolution(value.(x), value.(yland), value.(ysub), value.(z), instance)
-    return solution
+
+    if filename != ""
+        rawData = Dict(
+            "x" => value.(x),
+            "yland" => value.(yland),
+            "ysub" => value.(ysub),
+            "z" => value.(z), 
+        )
+        open(filename, "w") do f
+            JSON.print(f, rawData)
+        end
+    end
+    return solution, time
 end

@@ -1,6 +1,8 @@
 include("solution.jl")
 include("instance.jl")
 
+maxCurtailmentExceeded = false
+
 function constructionCost(instance::Instance, solution::Solution)
     cost = 0.
     # We first add the construction cost for the substations
@@ -106,6 +108,9 @@ function totalCurtailingGivenFailedSub(instance :: Instance, solution :: Solutio
 end
 
 function costOfCurtailing(instance :: Instance, curtailing :: Float64)
+    if curtailing > instance.maxCurtailment
+        maxCurtailmentExceeded = true
+    end
     return instance.curtailingCost * curtailing + instance.curtailingPenalty * max(0, curtailing - instance.maxCurtailment)
 end
 
@@ -141,5 +146,8 @@ end
 function costOfSolution(instance :: Instance, solution :: Solution)
     conCost = constructionCost(instance, solution)
     opeCost = operationalCost(instance, solution)
+    if maxCurtailmentExceeded
+        print("WARNING: Maximum curtailment exceeded")
+    end
     return (conCost, opeCost, conCost + opeCost)
 end
