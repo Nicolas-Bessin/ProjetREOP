@@ -41,6 +41,12 @@
         "total": 6496.524935263603,
         "construction": 6306.755851581411
     },
+    "medium-relaxation": {
+        "operationnal": 63.118798332772116,
+        "time": 494.46229100227356,
+        "total": 5981.194894421987,
+        "construction": 5918.076096089215
+    },
     "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
         "operationnal": 189.76908368219182,
         "time": 2.115971088409424,
@@ -226,6 +232,12 @@
         "time": 1.4791710376739502,
         "total": 3246.970670831903,
         "construction": 3209.3497729688893
+    },
+    "small-relaxation": {
+        "operationnal": 56.30027284636576,
+        "time": 134.07159209251404,
+        "total": 3119.8686879896427,
+        "construction": 3063.568415143277
     },
     "small": {
         "operationnal": 37.6208978630137,
