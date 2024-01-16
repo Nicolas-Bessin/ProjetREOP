@@ -82,4 +82,16 @@ function plotAllInstances(namingFormat :: String = "KIRO")
     end
 end
 
+function plotWindScenario(instance::Instance; legendpos=:lt)
+    scenario_probability = [s.probability for p in Instance.windScenarios]
+    scenario_power = [s.power for p in Instance.windScenarios]
+    f = figure()
+    ax = Axis(f[1, 1]; title="Instance", xlabel="x", ylabel="y")
+    scatter!(ax, scenario_probability, scenario_power; label="Scenarios of ", color=:black, markersize=10)
+    axislegend(ax; position=legendpos)
+    return f
+    
+
+
+
 plotAllInstances("onlyFurthestSites")

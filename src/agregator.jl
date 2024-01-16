@@ -5,6 +5,7 @@ include("parser.jl")
 include("instance.jl")
 
 function meanPowerScenario(instance :: Instance)
+    #Replace all scenario with a average scenario
     meanPower = sum([w.power * w.probability for w in instance.windScenarios])
     meanScenario = WindScenario(1, meanPower, 1.0)
     return Instance(
