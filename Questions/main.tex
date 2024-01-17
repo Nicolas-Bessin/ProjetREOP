@@ -99,8 +99,9 @@
 \end{titlepage}
 
 \section{Questions}
-\begin {enumerate}
-\item { 
+%\begin {enumerate}
+%\item { 
+    \textit{Q1 }
     Les contraintes suivantes sur $\mu$ permettent la linéarisation de $\mu = \alpha \beta$ avec $\alpha \in \lbrace 0,1 \rbrace$ et $\beta \in \lbrack 0, M \rbrack$ : 
     \begin{equation*}
         \begin{cases}
@@ -111,8 +112,9 @@
             \end{alignedat}
         \end{cases}
     \end{equation*}
-    }
-\item {
+%}
+%\item {
+    \textit{Q2 }
     Les contraintes suivantes sur $\mu$ et $\alpha$ permettent la linéarisation de $\mu = [\beta]^{+}$ avec $\beta \in \lbrack -M, M \rbrack$ : 
     \begin{equation*}
         \begin{cases}
@@ -125,8 +127,9 @@
         \end{cases}
     \end{equation*}
     Notons que $\alpha$ est indéterminé pour $\beta = 0$, mais qu'on a tout de même $\mu = 0= [\beta]^{+}$.
-}
-\item {
+%}
+%\item {
+    \textit{Q3 }
     Les contraintes suivantes sur $\gamma$ et $\delta$ permettent la linéarisation de $ \gamma = min(\alpha, \beta)$ avec $\alpha, \beta \in \lbrack -M, M \rbrack$ : 
     \begin{equation*}
         \begin{cases}
@@ -154,8 +157,9 @@
     La contrainte $y_\alpha + y_\beta = 1$ assure  $y = \alpha$ ou $y = \beta$.
     De plus, puisque c'est un problème de minimisation, on a bien $y = min(\alpha, \beta)$. \\
     %\textit{N.B. : Nous avons trouvé cette élégante méthode à \underline{\href{https://doi.org/10.3390/math10020283}{ce lien}}.}
-}
-\item {
+%}
+%\item {
+    \textit{Q4 }
     \begin{comment}
         On a le problème suivant : 
         \begin{equation}
@@ -165,7 +169,6 @@
             \end{aligned}
         \end{equation}
     \end{comment}
-
     On introduit la variable continue $\delta$ et les contraintes suivantes :
     $$ \delta \geq \alpha, \qquad \delta \geq \beta $$
     Le problème initial s'écrit alors :
@@ -177,9 +180,9 @@
             \beta &\leq \delta \\
         \end{aligned}
     \end{equation}
-}
-
-\item{
+%}
+%\item{
+    \textit{Q5 }
     Considérons le problème suivant :
     \begin{equation}
         \begin{aligned}
@@ -225,26 +228,64 @@
     $$ \lbrack 1 - \sum _{v \in V^s} p_f(v) \rbrack c^c(C^n(\omega)) = 
     c^c(C^n(\omega)) - \sum _{v \in V^s} \lbrack \sum _{s \in S} p_s x_{vs} c^c(C^n(\omega)) + \sum _{q \in Q_0} p_q y _{eq} c^c(C^n(\omega)) \rbrack  $$
 
-    La PLNE peut s'écrire avec la formulation suivante (notons $e = (v_{0},v)$) :
+    La PLNE peut alors s'écrire (notons $e = (v_{0},v)$, $N^{turbine} =$ nombre de turbine) :
     \begin{align*}
-        \min_{x,y,z} C_{c}+C_{o} \\
-        \text{s.c. \text{ (1), (2), (3), (4)  (conditions du sujet)}} 
+        & \min_{x,y,z} C_{c}+C_{o} \\
+        & \text{s.c. \text{ (1), (2), (3), (4)  (conditions du sujet)}} 
     \end{align*}
     \begin{equation}
         \begin{cases}
+            \begin{alignedat}{3}
+                & (x_{v,s}) \in \{0,1\}^{V^{s} \times S}, && (y_{e,q}^{land}) \in \{0,1\}^{V^{s} \times Q}, (z_{v,t})\in \{0,1\}^{V^{s} \times V^{t}}&&, (y_{u,v,q}^{sub}) \in \{0,1\}^{V^{s} \times V^{s} \times Q}\\
+                & \sum_{q \in Q_0} y_{u,v,q}^{sub} = 0, && y_{u,v,q}^{sub} =  y_{v,u,q}^{sub}  && \text{for } u \in V^s, v \in V^s, q \in Q_0 \\
+            \end{alignedat}
+        \end{cases}
+    \end{equation}
+    \begin{equation}
+        \begin{cases}
             \begin{alignedat}{2}
-                
+                & (N_v^{linkTurbine}) \in R^{V^s}, (Capa_v^{linMin}) \in R^{V^s}, (Curt_{v,\omega}) \in R^{V^s \times \Omega},(Curt_\omega^{noFail}) \in R^{\Omega},&& (Curt_{v, \omega}^{ownFail}) \in R^{V^s \times \Omega} \\
+                & N_v^{linkTurbine} = \sum_{t \in V^t} z_{v,t} && \text{for } v \in V^s \\
+                & Capa_v^{linMin} \geq - \sum_{s \in S} r_s * x_{v,s}, \quad Capa_v^{linMin} \geq - \sum_{q \in Q_0} r_q * y_{e,q}^{land}  &&  \text{for } v \in V^s  \\
+                & Curt_{v,\omega} \geq 0, Curt_{v,\omega} \geq \pi_\omega * N_v^{linkTurbine} + Capa_v^{linMin}  &&  \text{for } v \in V^s, \omega \in \Omega  \\
+                & Curt_\omega^{noFail} = \sum_{v \in V^s} Curt_{v,\omega} && \text{for } \omega \in \Omega \\
+                & Curt_{v, \omega}^{ownFail} \geq 0, \quad Curt_{v, \omega}^{ownFail} \geq \pi_\omega * N_v^{linkTurbine} - \sum_{u \in V^s, q \in Q_0} r_q * y_{v,u,q}^{sub}  &&  \text{for } v \in V^s, \omega \in \Omega \\
+            \end{alignedat}
+        \end{cases}
+    \end{equation}
+    \begin{equation}
+        \begin{cases}
+            \begin{alignedat}{2}
+                & (Curt_{v, \omega}^{ownFail}) \in R^{V^s \times \Omega} \\
+                & Curt_{v, \omega}^{ownFail} \geq 0, \quad Curt_{v, \omega}^{ownFail} \geq \pi_\omega * N_v^{linkTurbine} - \sum_{u \in V^s, q \in Q_0} r_q * y_{v,u,q}^{sub} \quad &&  \text{for } v \in V^s, \omega \in \Omega \\
+            \end{alignedat}
+        \end{cases}
+    \end{equation}
+    \begin{equation}
+        \begin{cases}
+            \begin{alignedat}{2}
+                & (P_{u,v,\omega}^{sendOtherFail}) \in R^{{V^s}^2 \times \Omega}, 1_{u,v,\omega}^{powerSend} \in \{0,1\}^{{V^{s}}^2 \times \Omega},  1_{u,v,\omega}^{cableCapa} \in && \{0,1\}^{{V^{s}}^2 \times \Omega} \\
+                & 1_{u,v,\omega}^{powerSend} + 1_{u,v,\omega}^{cableCapa} = 1 && \text{for } (u,v) \in {V^s}^2, \omega \in \Omega \\
+                & P_{u,v,\omega}^{sendOtherFail} \geq N_v^{linkTurbine} * \pi_\omega - 1_{u,v,\omega}^{cableCapa} * P^{max} * N^{turbine}
+            \end{alignedat}
+        \end{cases}
+    \end{equation}
+    \begin{equation}
+        \begin{cases}
+            \begin{alignedat}{2}
+                & (Curt_{u,v,\omega}^{otherFail}) \in R^{{V^s}^2 \times \Omega}, (Curt_{v,\omega}^{fail}) \in R^{V^s \times \Omega} \\
+                & Curt_{u,v,\omega}^{otherFail} \geq 0 && \text{for } (u,v) \in {V^s}^2, \omega \in \Omega \\
+                & Curt_{u,v,\omega}^{otherFail} \geq p_\omega * N^{turbine} + P_{u,v,\omega}^{sendOtherFail} + Capa_v^{linMin} \quad && \text{for } (u,v) \in {V^s}^2, \omega \in \Omega \\
+                & Curt_{v,\omega}^{fail} = curt_{v,\omega}^{ownFail} + \sum_{u \in V^s} Curt_{v,u,\omega}^{otherFail} \quad && \text{for } v \in V^s, \omega \in \Omega \\
             \end{alignedat}
         \end{cases}
     \end{equation}
     \begin{equation}
         \begin{cases}
             \begin{alignedat} {2}
-                & (C_{v}^{substation}) \in R^{V^{s}}, (C_{v}^{landcable}) \in R^{V^{s}}, (C_{u,v}^{subcable}) \in R^{{V^{s}}^{2}},&& C_{v,t}^{turbine} \in R^{V^{s} \times V^{t}}, C^{c} \in R \\
-                & C_{v}^{substation} = \sum_{s \in S} c_{s} * x_{v, s} && \text{for }  v \in V^{s} \\
-                & C_{v}^{landcable} = \sum_{q \in Q_0} y_{v,q}^{land}*(c_{q}^{f} + c_{q}^{l} l_{e}) && \text{for }  v \in V^{s} \\
-                & C_{u,v}^{subcable} = \sum_{q \in Q_0} y_{u,v,q}^{sub} * (c_{q}^{f}+c_{q}^{l} l_{(u,v)}) && \text{for }  (u,v) \in {V^{s}}^{2} \\
-                & C_{v}^{turbine} = \sum_{q \in Q_0} y_{v,q}^{land}*(c_{t}^{f} + c_{t}^{l} l_{(v,t)}) && \text{for }  v \in V^{s}, t \in V^{t} \\
+                & (C_{v}^{substation}) \in R^{V^{s}}, (C_{v}^{landcable}) \in R^{V^{s}}, (C_{u,v}^{subcable}) \in R^{{V^{s}}^{2}}, C_{v,t}^{turbine} \in R^{V^{s} \times V^{t}}, && C^{c} \in R \\
+                & C_{v}^{substation} = \sum_{s \in S} c_{s} * x_{v, s}, \quad C_{v}^{landcable} = \sum_{q \in Q_0} y_{v,q}^{land}*(c_{q}^{f} + c_{q}^{l} l_{e}) && \text{for }  v \in V^{s} \\
+                & C_{u,v}^{subcable} = \sum_{q \in Q_0} y_{u,v,q}^{sub} * (c_{q}^{f}+c_{q}^{l} l_{(u,v)}),\quad C_{v}^{turbine} = \sum_{q \in Q_0} z_{v,t}*(c_{t}^{f} + c_{t}^{l} l_{(v,t)}) && \text{for }  (u,v) \in {V^{s}}^{2}, t \in V^{t} \\
                 & C^{c} = \sum_{v \in V^s} C_{v}^{substation} + \sum_{v} C_{v}^{landcable} + \sum_{u \in V_{s},v \in V_{s}} C_{u,v}^{subcable} + \sum_{v \in V^s, t \in V^{t}} C_{v,t}^{turbine} \\
             \end{alignedat}
         \end{cases}
@@ -252,18 +293,9 @@
     \begin{equation}
         \begin{cases}
             \begin{alignedat}{2}
-                & (C_{v,\omega}^{curtFail}) \in R^{V^{s} \times \Omega} \\
-                & C_{v,\omega}^{curtFail} \geq c^{0}*Curt_{v,\omega}^{fail} & \quad  \text{for } \omega \in\Omega, v \in V^{s} \\
-                & C_{v,\omega}^{curtFail} \geq c^{0}*Curt_{v,\omega}^{fail} + c^{p}(Curt^{fail}-C^{max}) & \quad  \text{for } \omega \in\Omega, v \in V^{s} \\
-            \end{alignedat}
-        \end{cases}
-    \end{equation}
-    \begin{equation}
-        \begin{cases}
-            \begin{alignedat}{2}
-                & (C_{v,\omega}^{curtNoFail}) \in R^{V_{s} \times \Omega} \\
-                & C_{v,\omega}^{curtNoFail} \geq c^{0}*Curt_{v,\omega}^{noFail} & \quad  \text{for } \omega \in\Omega, v \in V^{s} \\
-                & C_{v,\omega}^{curtNoFail} \geq c^{0}*Curt_{v,\omega}^{noFail} + c^{p}(Curt^{noFail}-C^{max}) & \quad  \text{for } \omega \in\Omega, v \in V^{s} \\
+                & (C_{v,\omega}^{curtNoFail}) \in R^{V_{s} \times \Omega}, (C_{v,\omega}^{curtFail}) \in R^{V^{s} \times \Omega} \\
+                & C_{v,\omega}^{curtNoFail} \geq c^{0}Curt_{v,\omega}^{noFail}, C_{v,\omega}^{curtNoFail} \geq c^{0}Curt_{v,\omega}^{noFail} + c^{p}(Curt^{noFail}-C^{max}) \quad &&  \text{for } \omega \in\Omega, v \in V^{s} \\
+                & C_{v,\omega}^{curtFail} \geq c^{0}Curt_{v,\omega}^{fail}, \quad C_{v,\omega}^{curtFail} \geq c^{0}Curt_{v,\omega}^{fail} + c^{p}(Curt^{fail}-C^{max}) \quad && \text{for } \omega \in\Omega, v \in V^{s} \\
             \end{alignedat}
         \end{cases}
     \end{equation}
@@ -271,14 +303,10 @@
         \begin{cases}
             \begin{alignedat}{2}
                 & (C_{v,\omega}^{wCurtFail}) \in R^{V^{s} \times \Omega}, (x_{v,s,\omega}^{timeCurtCostFail}) \in R^{V^{s} \times S \times \Omega},(y_{e,q, \omega}^{timeCurtCostFail}) \in && R^{V^{s} \times Q \times \Omega} \\
-                & x_{v,s,\omega}^{timeCurtCostFail} \leq x_{v,s} * C_{max} && \text{for } \omega \in\Omega, v \in V^{s}, s \in S\\
-                & x_{v,s,\omega}^{timeCurtCostFail} \leq C^{curtFail} && \text{for } \omega \in\Omega, v \in V^{s}, s \in S \\
-                & x_{v,s,\omega}^{timeCurtCostFail} \geq C^{curtFail} - (1 - x_{v,s})*C_{max} && \text{for } \omega \in\Omega, v \in V^{s}, s \in S\\
-                & x_{v,s,\omega}^{timeCurtCostFail} \geq 0 && \text{for } \omega \in\Omega, v \in V^{s}, s \in S\\
-                & y_{e,q,\omega}^{timeCurtCostFail} \leq y_{v,q}^{land}*C_{max} && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
-                & y_{e,q,\omega}^{timeCurtCostFail} \leq C_{v,\omega}^{curtfail} && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
-                & y_{e,q,\omega}^{timeCurtCostFail} \geq C_{v,\omega}^{curtfail} - (1 - x_{v,s})*C_{max} && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
-                & y_{e,q,\omega}^{timeCurtCostFail} \geq 0 && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
+                & x_{v,s,\omega}^{timeCurtCostFail} \leq x_{v,s} * C_{max}, \quad x_{v,s,\omega}^{timeCurtCostFail} \leq C^{curtFail} && \text{for } \omega \in\Omega, v \in V^{s}, s \in S\\
+                & x_{v,s,\omega}^{timeCurtCostFail} \geq C^{curtFail} - (1 - x_{v,s})*C_{max}, \quad x_{v,s,\omega}^{timeCurtCostFail} \geq 0 && \text{for } \omega \in\Omega, v \in V^{s}, s \in S\\
+                & y_{e,q,\omega}^{timeCurtCostFail} \leq y_{v,q}^{land}*C_{max}, \quad y_{e,q,\omega}^{timeCurtCostFail} \leq C_{v,\omega}^{curtfail} && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
+                & y_{e,q,\omega}^{timeCurtCostFail} \geq C_{v,\omega}^{curtfail} - (1 - x_{v,s})*C_{max}, \quad y_{e,q,\omega}^{timeCurtCostFail} \geq 0  && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
                 & C_{v,\omega}^{wCurtFail} = \sum_{s \in S} x_{v,s, \omega}^{timeCurtCostFail}*p_{s} + \sum_{q \in Q} y_{e,q,\omega}^{timeCurtCostFail} * p_{q} && \text{for } \omega \in\Omega, v \in V^{s}\\
             \end{alignedat}
         \end{cases}
@@ -286,39 +314,30 @@
     \begin{equation}
         \begin{cases}
             \begin{alignedat}{2}
-                & (x_{v,s,\omega}) \in R^{V^{s} \times Q_{0}, \Omega} && \quad \text{(linéatisation des } p^{f}*c^{c} \text{)}\\
-                & x_{v,s,\omega}^{TimeCurt} \leq x_{v,s}*C_{max} &&\quad \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
-                & x_{v,s,\omega}^{TimeCurt} \leq C_{\omega}^{fail} &&\quad \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
-                & x_{v,s,\omega}^{TimeCurt} \geq C_{\omega}^{fail}-(1-x_{v,s})*C_{max} &&\quad \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
-                & x_{v,s,\omega}^{TimeCurt} \geq 0 &&\quad \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
+                & (x_{v,s,\omega}) \in R^{V^{s} \times Q_{0}, \Omega}, (y_{e,q,\omega}) \in R^{V^{s} \times Q_{0}, \Omega} \\
+                & x_{v,s,\omega}^{TimeCurt} \leq x_{v,s}*C_{max}, \quad x_{v,s,\omega}^{TimeCurt} \leq C_{\omega}^{fail} &&\quad \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
+                & x_{v,s,\omega}^{TimeCurt} \geq C_{\omega}^{fail}-(1-x_{v,s})*C_{max}, \quad x_{v,s,\omega}^{TimeCurt} \geq 0 &&\quad \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
+                & y_{e,q,\omega}^{TimeCurt} \leq y_{v,q}^{land} * C_{max}, \quad y_{e,q,\omega}^{TimeCurt} \leq C_{\omega}^{fail} \quad && \text{for } \omega \in \Omega, q \in Q_{0}, v \in V^{s} \\
+                & y_{e,q,\omega}^{TimeCurt} \geq C_{\omega}^{fail}-(1-y_{v,q}^{land})*C_{max}, \quad  y_{e,q,\omega}^{TimeCurt} \geq 0 \quad && \text{for } \omega \in\Omega, q \in Q_{0}, v \in V^{s}\\
             \end{alignedat}
         \end{cases}
     \end{equation}
     \begin{equation}
         \begin{cases}
             \begin{alignedat}{2}
-                & (y_{e,q,\omega}) \in R^{V^{s} \times Q_{0}, \Omega} && \quad \text{(linéatisation des } p^{f}*c^{c} \text{)} \\
-                & y_{e,q,\omega}^{TimeCurt} \leq y_{v,q}^{land} * C_{max} &&\quad \text{for } \omega \in \Omega \\
-                & y_{e,q,\omega}^{TimeCurt} \leq C_{\omega}^{fail} &&\quad \text{for } \omega \in\Omega, q \in Q_{0}, v \in V^{s}\\
-                & y_{e,q,\omega}^{TimeCurt} \geq C_{\omega}^{fail}-(1-y_{v,q}^{land})*C_{max} &&\quad \text{for } \omega \in\Omega, q \in Q_{0}, v \in V^{s}\\
-                & y_{e,q,\omega}^{TimeCurt} \geq 0 &&\quad \text{for } \omega \in \Omega, q \in Q_{0}, v \in V^{s}\\
-            \end{alignedat}
-        \end{cases}
-    \end{equation}
-    \begin{equation}
-        \begin{cases}
-            \begin{alignedat}{2}
-                & (C_{\omega}^{fail}) \in R^{\Omega}, C_{\omega}^{nofail} \in R^{\Omega}, C_{o} \in R\\
+                & (C_{\omega}^{fail}) \in R^{\Omega}, (C_{\omega}^{nofail}) \in R^{\Omega}, C_{o} \in R\\
                 & (C_{\omega}^{fail}) = \sum_{v \in V_{0}} C_{v,\omega}^{wCurtFail} &&\quad \text{for } \omega \in \Omega \\
                 & C_{\omega}^{nofail} = C_\omega^{curtailement} - \sum_{v \in V_{s},s \in S} x_{v,s,\omega}^{TimeCurt}*p_s - \sum_{v \in V^s, q \in Q_{0}} y_{e,q,w}^{TimeCurt}*p_{q} && \quad \text{for } \omega \in \Omega \\
                 & C_{o} = \sum_{\omega \in \Omega} p_{\omega} * (C_{\omega}^{fail} + C_{\omega}^{nofail}) \\
             \end{alignedat}
         \end{cases}
     \end{equation}
-}
+
+    \textit{N.B. : la justification de cette formulation du PLNE est trouvable étape par étape dans les commentaires du document linearSolverCode.jl}
+%}
 
 
-\end{enumerate}
+%\end{enumerate}
 
 \section {Algorithm}
 Une fois le solveur linéaire mis en place, le problème principal qui empêche de l'utiliser pour les instances medium, large et huge est la taille de celles-ci - en effet, le nombre de variable dans le modèle influe énormément sur le temps de calcul (et donc la possibilité de résoudre le problème). 
