@@ -14,7 +14,7 @@ function plotInstance(instance::Instance; legendpos=:lt)
     X_land = instance.mainLandSubstation.x
     Y_land = instance.mainLandSubstation.y
 
-    f = Figure(size = (1000, 1000))
+    f = Figure(size = (800, 400))
     ax = Axis(f[1, 1]; title="Instance", xlabel="x", ylabel="y")#, aspect=DataAspect())
     scatter!(ax, X_land, Y_land; label="Land", color=:green, markersize=20)
     scatter!(
@@ -88,20 +88,7 @@ function plotWindScenario(instance::Instance; legendpos=:lt)
     scatter!(ax, scenario_probability, scenario_power; label="Scenarios of ", color=:black, markersize=10)
     axislegend(ax; position=legendpos)
     return f
-    
-
-
-
-function plotWindScenario(instance::Instance; legendpos=:lt)
-    scenario_probability = [s.probability for p in Instance.windScenarios]
-    scenario_power = [s.power for p in Instance.windScenarios]
-    f = figure()
-    ax = Axis(f[1, 1]; title="Instance", xlabel="x", ylabel="y")
-    scatter!(ax, scenario_probability, scenario_power; label="Scenarios of ", color=:black, markersize=10)
-    axislegend(ax; position=legendpos)
-    return f
-    
-
+end
 
 
 function plotPowerProba(instance::Instance)

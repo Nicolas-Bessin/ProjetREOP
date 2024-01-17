@@ -2,14 +2,9 @@
     "substation_substation_cables": [],
     "substations": [
         {
-            "substation_type": 17,
-            "id": 3,
-            "land_cable_type": 17
-        },
-        {
-            "substation_type": 17,
+            "substation_type": 18,
             "id": 6,
-            "land_cable_type": 17
+            "land_cable_type": 18
         },
         {
             "substation_type": 17,
@@ -25,67 +20,67 @@
     "turbines": [
         {
             "id": 1,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 2,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 3,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 4,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 5,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 6,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 7,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 8,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 9,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 10,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 11,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 12,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 13,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 14,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 15,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 16,
-            "substation_id": 3
+            "substation_id": 6
         },
         {
             "id": 17,
@@ -141,15 +136,15 @@
         },
         {
             "id": 30,
-            "substation_id": 6
+            "substation_id": 9
         },
         {
             "id": 31,
-            "substation_id": 6
+            "substation_id": 9
         },
         {
             "id": 32,
-            "substation_id": 6
+            "substation_id": 9
         },
         {
             "id": 33,
@@ -213,11 +208,11 @@
         },
         {
             "id": 48,
-            "substation_id": 9
+            "substation_id": 12
         },
         {
             "id": 49,
-            "substation_id": 9
+            "substation_id": 12
         },
         {
             "id": 50,

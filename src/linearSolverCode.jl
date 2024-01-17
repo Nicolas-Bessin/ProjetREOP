@@ -149,10 +149,14 @@ function linearSolver(instance :: Instance,  filename :: String = "")
     for ω in 1:nbScenarios
         for v1 in 1:nbSubLocations
             for v2 in 1:nbSubLocations
-                @constraint(model, curtailingUnderOtherFailure[v1, v2, ω] >= 0)
-                power_received_from_turbines = instance.windScenarios[ω].power * nbTurbinesLinked[v2]
-                power_received_from_other = powerSentUnderOtherFailure[v1, v2, ω]
-                @constraint(model, curtailingUnderOtherFailure[v1, v2, ω] >= power_received_from_turbines + power_received_from_other + minusCapa[v2])
+                if v2 != v1
+                    @constraint(model, curtailingUnderOtherFailure[v1, v2, ω] >= 0)
+                    power_received_from_turbines = instance.windScenarios[ω].power * nbTurbinesLinked[v2]
+                    power_received_from_other = powerSentUnderOtherFailure[v1, v2, ω]
+                    @constraint(model, curtailingUnderOtherFailure[v1, v2, ω] >= power_received_from_turbines + power_received_from_other + minusCapa[v2])
+                else 
+                    @constraint(model, curtailingUnderOtherFailure[v1, v1, ω] == 0)
+                end
             end
         end
     end

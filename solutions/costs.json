@@ -96,10 +96,10 @@
         "construction": 8106.863372469561
     },
     "small-testing": {
-        "operationnal": 16.690438356164382,
-        "time": 4.6902852058410645,
-        "total": 3359.787906552702,
-        "construction": 3343.0974681965376
+        "operationnal": 37.6208978630137,
+        "time": 443.174840927124,
+        "total": 3246.970670831903,
+        "construction": 3209.3497729688893
     },
     "large-99Worse+1-2-3Prob+LowCost+Cables+Subs": {
         "operationnal": 216.3210976425207,

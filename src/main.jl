@@ -3,7 +3,7 @@ include("linearSolverCode.jl")
 #include("solverConstructionCost.jl")
 #include("solverQuadraticIndicator.jl")
 #include("solverNoSubSub.jl")
-include("utils.jl")
+#include("utils.jl")
 include("costCompute.jl")
 include("agregator.jl")
 
@@ -122,7 +122,7 @@ print("Official cost: $officialCost\n")
 pathToBestSolsFiles = "solutions/bestSols/cost-bests.json"
 
 bestCosts = JSON.parsefile(pathToBestSolsFiles)
-if bestCosts[size]["total"] >= officialCost[3]
+if bestCosts[size]["total"] > officialCost[3]
     println("--------------------------------------------")
     println("New best solution found for $size")
     bestCosts[size]["construction"] = officialCost[1]

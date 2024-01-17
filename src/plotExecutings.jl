@@ -25,4 +25,5 @@ end
 solution = read_solution(solutionFile)
 f = plotUsedTypes(instance, solution, (800, 400))
 save("plots/types/$outputFormat-types.png", f)
-#plotSolution(solution, instance)
+f = plotSolution(solution, instance)
+save("plots/plots/$outputFormat.png", f)

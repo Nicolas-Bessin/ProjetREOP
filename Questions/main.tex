@@ -130,20 +130,6 @@
 %}
 %\item {
     \textit{Q3 }
-    Les contraintes suivantes sur $\gamma$ et $\delta$ permettent la linéarisation de $ \gamma = min(\alpha, \beta)$ avec $\alpha, \beta \in \lbrack -M, M \rbrack$ : 
-    \begin{equation*}
-        \begin{cases}
-            \begin{alignedat}{2}
-                &\gamma \in [-M,M], \delta \in \lbrace 0,1 \rbrace && \quad \text{(domaine de définition)} \\ 
-                &2M(\delta - 1) \leq \beta - \alpha \leq 2M \delta && \quad \text{(impose } \delta = 1 \text{ si }  \beta > \alpha \text{, }\delta = 0 \text{ si }  \beta < \alpha \text{)}\\
-                &\beta - 2M\delta \leq \mu \leq \beta + 2M\delta && \quad \text{(impose } \gamma = \beta \text{ si }  \beta < \alpha \text{)}\\
-                &\alpha - 2M(1-\delta) \leq \mu \leq \alpha + 2M(1-\delta) && \quad \text{(impose } \gamma = \alpha \text{ si }  \beta > \alpha \text{)}
-            \end{alignedat}
-        \end{cases}
-    \end{equation*}
-    Noton que $\delta$ est indéterminé pour $\alpha = \beta$, mais qu'on a tout de même $\gamma = \alpha = \beta = min(\alpha, \beta)$.
-    
-    \underline{Autre méthode} \\
     On introduit les variables binaires $y_\alpha$ et $y_\beta$, et la variable continue $y$.
     Le problème s'écrit alors :
     \begin{equation}
@@ -183,176 +169,136 @@
 %}
 %\item{
     \textit{Q5 }
-    Considérons le problème suivant :
-    \begin{equation}
-        \begin{aligned}
-            \min _{a, b, c} & \lbrack a - \min(b, c) \rbrack^+ \\
-        \end{aligned}
-        \label{linmin}
-    \end{equation}
+    \underline{Remarque :} Pour la linearisation des termes en -min : $-min(a,b) = max(-a,-b)$
+    Pour linéariser les termes $p_f(v, x, y) c^c(C^f(v, x, y, z ,\omega))$, on doit distribuer la multiplication.
 
-    On a $ \forall b, c : -\min(b, c) = \max(-b, -c) $ \\
-    Puisque c'est un problème de minimisation, on peut écrire :
-    \begin{equation}
-        \eqref{linmin} \iff
-        \begin{aligned}
-            \min _{a, b, c, d} & d \\
-            \text{ s.c. } & d \geq 0 \\
-            & d \geq a - \min(b, c) \\
-        \end{aligned}
-        \iff
-        \begin{aligned}
-            \min _{a, b, c, d, e} d \\
-            \text{ s.c. }
-            d &\geq 0 & \quad& d \geq a + e \\
-            e &\geq -b & \quad& e \geq -c \\   
-        \end{aligned}
-    \end{equation}
-    
-
-    Pour linéariser les termes $p_f(v, x, y) c^c(C^f(v, x, y, z ,\omega))$, on doit distribuer la multiplication
-    (On sait linéariser les multiplications de variables binaires et de variables continues). On a donc :
-    $$ p_f(v, x, y) c^c(C^f(v, x, y, z ,\omega)) = (\sum _ {s \in S} p_s x_{vs} + \sum _{q \in Q_0} p_q y _{eq}) (c^c(C^f(v, x, y, z ,\omega)))  $$
-    où $c^c(C^f(v, x, y, z ,\omega))$ est une variable continue, issue du regroupement des composantes du coût et de la linéarisation de la pénalité.
-    $$
-    \begin{aligned}
-        p_f(v, x, y) c^c(C^f(v, x, y, z ,\omega)) &= \sum _ {s \in S} p_s x_{vs} (c^c(C^f(v, x, y, z ,\omega))) \\
-        &+ \sum _{q \in Q_0} p_q y _{eq} (c^c(C^f(v, x, y, z ,\omega)))
-    \end{aligned}
-    $$
-
-    On a donc besoin d'une borne supérieure pour $C^f(v, x, y, z ,\omega)$
-
-    Même raisonnement pour $(1 - \sum _{v \in V^s} p_f(v)) c^c(C^n(\omega))$ :
-
-    $$ \lbrack 1 - \sum _{v \in V^s} p_f(v) \rbrack c^c(C^n(\omega)) = 
-    c^c(C^n(\omega)) - \sum _{v \in V^s} \lbrack \sum _{s \in S} p_s x_{vs} c^c(C^n(\omega)) + \sum _{q \in Q_0} p_q y _{eq} c^c(C^n(\omega)) \rbrack  $$
-
-    La PLNE peut alors s'écrire (notons $e = (v_{0},v)$, $N^{turbine} =$ nombre de turbine) :
     \begin{align*}
-        & \min_{x,y,z} C_{c}+C_{o} \\
+        & \min_{x,y,z} cost^{cons}+ cost ^{ope} \\
+         (x_{v,s}) \in \{0,1\}^{V^{s} \times S}, & (y_{e,q}^{land}) \in \{0,1\}^{E^0 \times Q}, (z_{e})\in \{0,1\}^{E^t}, (y_{e,q}^{sub}) \in \{0,1\}^{E^S\times Q}\\
         & \text{s.c. \text{ (1), (2), (3), (4)  (conditions du sujet)}} 
     \end{align*}
     \begin{equation}
         \begin{cases}
-            \begin{alignedat}{3}
-                & (x_{v,s}) \in \{0,1\}^{V^{s} \times S}, && (y_{e,q}^{land}) \in \{0,1\}^{V^{s} \times Q}, (z_{v,t})\in \{0,1\}^{V^{s} \times V^{t}}&&, (y_{u,v,q}^{sub}) \in \{0,1\}^{V^{s} \times V^{s} \times Q}\\
-                & \sum_{q \in Q_0} y_{u,v,q}^{sub} = 0, && y_{u,v,q}^{sub} =  y_{v,u,q}^{sub}  && \text{for } u \in V^s, v \in V^s, q \in Q_0 \\
+            \begin{alignedat}{2}
+                & minusCapa_v \geq - \sum_{s \in S} r_s * x_{v,s}, \quad minusCapa_v \geq - \sum_{q \in Q_0} r_q * y_{e,q}^{land}  &&  \text{for } v \in V^s, e = (v_0, v)  \\
+                & C_{v,\omega}^{n} \geq 0, C_{v,\omega}^{n} \geq \pi_\omega * \sum_{t \in V^t} z_{v,t} + minusCapa_v  &&  \text{for } v \in V^s, \omega \in \Omega  \\
+                & C^n_{\omega} = \sum_{v \in V^s} C_{v,\omega}^{nf} && \text{for } \omega \in \Omega \\
             \end{alignedat}
         \end{cases}
     \end{equation}
     \begin{equation}
         \begin{cases}
             \begin{alignedat}{2}
-                & (N_v^{linkTurbine}) \in R^{V^s}, (Capa_v^{linMin}) \in R^{V^s}, (Curt_{v,\omega}) \in R^{V^s \times \Omega},(Curt_\omega^{noFail}) \in R^{\Omega},&& (Curt_{v, \omega}^{ownFail}) \in R^{V^s \times \Omega} \\
-                & N_v^{linkTurbine} = \sum_{t \in V^t} z_{v,t} && \text{for } v \in V^s \\
-                & Capa_v^{linMin} \geq - \sum_{s \in S} r_s * x_{v,s}, \quad Capa_v^{linMin} \geq - \sum_{q \in Q_0} r_q * y_{e,q}^{land}  &&  \text{for } v \in V^s  \\
-                & Curt_{v,\omega} \geq 0, Curt_{v,\omega} \geq \pi_\omega * N_v^{linkTurbine} + Capa_v^{linMin}  &&  \text{for } v \in V^s, \omega \in \Omega  \\
-                & Curt_\omega^{noFail} = \sum_{v \in V^s} Curt_{v,\omega} && \text{for } \omega \in \Omega \\
-                & Curt_{v, \omega}^{ownFail} \geq 0, \quad Curt_{v, \omega}^{ownFail} \geq \pi_\omega * N_v^{linkTurbine} - \sum_{u \in V^s, q \in Q_0} r_q * y_{v,u,q}^{sub}  &&  \text{for } v \in V^s, \omega \in \Omega \\
+                & C_{v, \omega}^{ownFail} \in R^{V^s \times \Omega}_+ \\
+                & C_{v, \omega}^{ownFail} \geq 0, \quad C_{v, \omega}^{ownFail} \geq \pi_\omega * \sum_{t \in V^t} z_{v,t} - \sum_{e = (v, \tilde{v}) \in E^S , q \in Q_0} r_q * y_{e,q}^{sub}  &&  \text{for } v \in V^s, \omega \in \Omega \\
             \end{alignedat}
         \end{cases}
     \end{equation}
     \begin{equation}
         \begin{cases}
             \begin{alignedat}{2}
-                & (Curt_{v, \omega}^{ownFail}) \in R^{V^s \times \Omega} \\
-                & Curt_{v, \omega}^{ownFail} \geq 0, \quad Curt_{v, \omega}^{ownFail} \geq \pi_\omega * N_v^{linkTurbine} - \sum_{u \in V^s, q \in Q_0} r_q * y_{v,u,q}^{sub} \quad &&  \text{for } v \in V^s, \omega \in \Omega \\
+                & (P_{u,v,\omega}^{sent}) \in R^{{V^s}^2 \times \Omega}, 1_{u,v,\omega}^{powerIsMin} \in \{0,1\}^{{V^{s}}^2 \times \Omega},  1_{u,v,\omega}^{cableIsMin} \in && \{0,1\}^{{V^{s}}^2 \times \Omega} \\
+                & 1_{u,v,\omega}^{powerIsMin} + 1_{u,v,\omega}^{cableIsMin} = 1 && \text{for } (u,v) \in {V^s}^2, \omega \in \Omega \\
+                & P_{u,v,\omega}^{sent} \geq \sum_{t \in V^t} z_{u,t} * \pi_\omega - 1_{u,v,\omega}^{cableIsMin} * P^{max} * N^{turbine} \\
+                & P_{u, v, \omega}^{sent} \geq  \sum_{q \in Q^S} y_{e,q}^{sub} * r_q - 1_{u, v, \omega}^{powerIsMin} * P^{max} * N^{turbine} && e = (u, v) \\
             \end{alignedat}
         \end{cases}
     \end{equation}
     \begin{equation}
         \begin{cases}
             \begin{alignedat}{2}
-                & (P_{u,v,\omega}^{sendOtherFail}) \in R^{{V^s}^2 \times \Omega}, 1_{u,v,\omega}^{powerSend} \in \{0,1\}^{{V^{s}}^2 \times \Omega},  1_{u,v,\omega}^{cableCapa} \in && \{0,1\}^{{V^{s}}^2 \times \Omega} \\
-                & 1_{u,v,\omega}^{powerSend} + 1_{u,v,\omega}^{cableCapa} = 1 && \text{for } (u,v) \in {V^s}^2, \omega \in \Omega \\
-                & P_{u,v,\omega}^{sendOtherFail} \geq N_v^{linkTurbine} * \pi_\omega - 1_{u,v,\omega}^{cableCapa} * P^{max} * N^{turbine}
+                & C_{u, v, \omega}^{otherFail} \in R^{{V^s}^2 \times \Omega}_+ \\
+                & C_{u, v, \omega}^{otherFail} \geq 0, \\
+                & C_{u, v, \omega}^{otherFail} \geq \pi_\omega * \sum_{t \in V^t} z_{v,t} - P_{u, v, \omega}^{sent} + minusCapa_v
             \end{alignedat}
         \end{cases}
     \end{equation}
     \begin{equation}
         \begin{cases}
             \begin{alignedat}{2}
-                & (Curt_{u,v,\omega}^{otherFail}) \in R^{{V^s}^2 \times \Omega}, (Curt_{v,\omega}^{fail}) \in R^{V^s \times \Omega} \\
-                & Curt_{u,v,\omega}^{otherFail} \geq 0 && \text{for } (u,v) \in {V^s}^2, \omega \in \Omega \\
-                & Curt_{u,v,\omega}^{otherFail} \geq p_\omega * N^{turbine} + P_{u,v,\omega}^{sendOtherFail} + Capa_v^{linMin} \quad && \text{for } (u,v) \in {V^s}^2, \omega \in \Omega \\
-                & Curt_{v,\omega}^{fail} = curt_{v,\omega}^{ownFail} + \sum_{u \in V^s} Curt_{v,u,\omega}^{otherFail} \quad && \text{for } v \in V^s, \omega \in \Omega \\
+                & C^f(v, \omega) \in R^{V^s \times \Omega} && \\
+                & C^f(v, \omega) = C_{v, \omega}^{ownFail} + \sum_{\substack{e = (v_0, \bar{v}) \\ v \neq \bar{v} \\ \tilde{e} = (v, \bar{v})}} C_{v, \bar{v} \omega}^{otherFail} && \text{for } v \in V^s, \omega \in \Omega \\
             \end{alignedat}
         \end{cases}
     \end{equation}
     \begin{equation}
         \begin{cases}
             \begin{alignedat} {2}
-                & (C_{v}^{substation}) \in R^{V^{s}}, (C_{v}^{landcable}) \in R^{V^{s}}, (C_{u,v}^{subcable}) \in R^{{V^{s}}^{2}}, C_{v,t}^{turbine} \in R^{V^{s} \times V^{t}}, && C^{c} \in R \\
-                & C_{v}^{substation} = \sum_{s \in S} c_{s} * x_{v, s}, \quad C_{v}^{landcable} = \sum_{q \in Q_0} y_{v,q}^{land}*(c_{q}^{f} + c_{q}^{l} l_{e}) && \text{for }  v \in V^{s} \\
-                & C_{u,v}^{subcable} = \sum_{q \in Q_0} y_{u,v,q}^{sub} * (c_{q}^{f}+c_{q}^{l} l_{(u,v)}),\quad C_{v}^{turbine} = \sum_{q \in Q_0} z_{v,t}*(c_{t}^{f} + c_{t}^{l} l_{(v,t)}) && \text{for }  (u,v) \in {V^{s}}^{2}, t \in V^{t} \\
-                & C^{c} = \sum_{v \in V^s} C_{v}^{substation} + \sum_{v} C_{v}^{landcable} + \sum_{u \in V_{s},v \in V_{s}} C_{u,v}^{subcable} + \sum_{v \in V^s, t \in V^{t}} C_{v,t}^{turbine} \\
+                cost^{cons} = \sum_{v \in V^s} \sum _{s \in S} c_s x_{vs} + \sum_{e \in E^0} \sum_{q \in Q_0} c_{eq} y_{eq}^{land} + \sum _{e \in E^S} \sum_{q \in Q_S} c_{eq} y_{eq}^{sub} + \sum_{e \in E^t} c_e z_e \\
+            \end{alignedat}
+        \end{cases}
+    \end{equation}
+    \begin{equation}
+        \begin{cases}
+            \begin{alignedat}{3}
+                & (cost_{\omega}^{n}) \in R^{V_{s} \times \Omega} , (cost_{v,\omega}^{f}) \in R^{V^{s} \times \Omega} \\
+                & cost_{\omega}^{n} \geq c^{0}C_{\omega}^{n} , cost_{\omega}^{n} \geq c^{0}C_{\omega}^{n} + c^{p}(C_{\omega}^{n}-C^{max}) \quad &&  \text{for } \omega \in\Omega, v \in V^{s} \\
+                & cost_{v,\omega}^{f} \geq c^{0}Curt_{v,\omega}^{fail}, \quad cost_{v,\omega}^{f} \geq c^{0}C_{v,\omega}^{f} + c^{p}(C_{v,\omega}^{f} - C^{max}) \quad && \text{for } \omega \in\Omega, v \in V^{s} \\
             \end{alignedat}
         \end{cases}
     \end{equation}
     \begin{equation}
         \begin{cases}
             \begin{alignedat}{2}
-                & (C_{v,\omega}^{curtNoFail}) \in R^{V_{s} \times \Omega}, (C_{v,\omega}^{curtFail}) \in R^{V^{s} \times \Omega} \\
-                & C_{v,\omega}^{curtNoFail} \geq c^{0}Curt_{v,\omega}^{noFail}, C_{v,\omega}^{curtNoFail} \geq c^{0}Curt_{v,\omega}^{noFail} + c^{p}(Curt^{noFail}-C^{max}) \quad &&  \text{for } \omega \in\Omega, v \in V^{s} \\
-                & C_{v,\omega}^{curtFail} \geq c^{0}Curt_{v,\omega}^{fail}, \quad C_{v,\omega}^{curtFail} \geq c^{0}Curt_{v,\omega}^{fail} + c^{p}(Curt^{fail}-C^{max}) \quad && \text{for } \omega \in\Omega, v \in V^{s} \\
+                & (x_{v,s,\omega}^{timesCostF}) \in R^{V^{s} \times S \times \Omega},(y_{e,q, \omega}^{timesCostF}) \in R^{V^{s} \times Q \times \Omega} \\
+                & cost^{max} = c^0  P^{max}  N^{turbine} + c^p  \lbrack P^{max} N^{turbine} - C^{max} \rbrack ^+ && \text{Pas une variable} \\
+                & x_{v,s,\omega}^{timesCostF} \leq x_{v,s} * cost^{max}, \quad x_{v,s,\omega}^{timesCostF} \leq cost_{v, \omega}^{f} && \text{for } \omega \in\Omega, v \in V^{s}, s \in S\\
+                & x_{v,s,\omega}^{timesCostF} \geq cost_{v, \omega}^{f} - (1 - x_{v,s})*cost^{max}, \quad x_{v,s,\omega}^{timesCostF} \geq 0 && \text{for } \omega \in\Omega, v \in V^{s}, s \in S\\
+                & y_{e,q,\omega}^{timesCostF} \leq y_{v,q}^{land}*cost^{max}, \quad y_{e,q,\omega}^{timesCostF} \leq cost_{v, \omega}^{f} && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
+                & y_{e,q,\omega}^{timesCostF} \geq cost_{v, \omega}^{f} - (1 - x_{v,s})*cost^{max}, \quad y_{e,q,\omega}^{timesCostF} \geq 0  && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
             \end{alignedat}
         \end{cases}
     \end{equation}
     \begin{equation}
         \begin{cases}
             \begin{alignedat}{2}
-                & (C_{v,\omega}^{wCurtFail}) \in R^{V^{s} \times \Omega}, (x_{v,s,\omega}^{timeCurtCostFail}) \in R^{V^{s} \times S \times \Omega},(y_{e,q, \omega}^{timeCurtCostFail}) \in && R^{V^{s} \times Q \times \Omega} \\
-                & x_{v,s,\omega}^{timeCurtCostFail} \leq x_{v,s} * C_{max}, \quad x_{v,s,\omega}^{timeCurtCostFail} \leq C^{curtFail} && \text{for } \omega \in\Omega, v \in V^{s}, s \in S\\
-                & x_{v,s,\omega}^{timeCurtCostFail} \geq C^{curtFail} - (1 - x_{v,s})*C_{max}, \quad x_{v,s,\omega}^{timeCurtCostFail} \geq 0 && \text{for } \omega \in\Omega, v \in V^{s}, s \in S\\
-                & y_{e,q,\omega}^{timeCurtCostFail} \leq y_{v,q}^{land}*C_{max}, \quad y_{e,q,\omega}^{timeCurtCostFail} \leq C_{v,\omega}^{curtfail} && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
-                & y_{e,q,\omega}^{timeCurtCostFail} \geq C_{v,\omega}^{curtfail} - (1 - x_{v,s})*C_{max}, \quad y_{e,q,\omega}^{timeCurtCostFail} \geq 0  && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
-                & C_{v,\omega}^{wCurtFail} = \sum_{s \in S} x_{v,s, \omega}^{timeCurtCostFail}*p_{s} + \sum_{q \in Q} y_{e,q,\omega}^{timeCurtCostFail} * p_{q} && \text{for } \omega \in\Omega, v \in V^{s}\\
+                & (x_{v,s,\omega}^{timesCostNoF}) \in R^{V^{s} \times Q_{0}, \Omega}, (y_{e,q,\omega}^{timesCostNoF}) \in R^{V^{s} \times Q_{0}, \Omega} \\
+                & x_{v,s,\omega}^{timesCostNoF} \leq x_{v,s}*cost^{max}, \quad x_{v,s,\omega}^{timesCostNoF} \leq cost_{\omega} ^n &&\quad \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
+                & x_{v,s,\omega}^{timesCostNoF} \geq cost_{\omega} ^n - (1-x_{v,s})*cost^{max}, \quad x_{v,s,\omega}^{timesCostNoF} \geq 0 &&\quad \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
+                & y_{e,q,\omega}^{timesCostNoF} \leq y_{v,q}^{land} * cost^{max}, \quad y_{e,q,\omega}^{timesCostNoF} \leq cost_{\omega} ^n \quad && \text{for } \omega \in \Omega, q \in Q_{0}, v \in V^{s} \\
+                & y_{e,q,\omega}^{timesCostNoF} \geq cost_{\omega} ^n -(1-y_{v,q}^{land})*cost^{max}, \quad  y_{e,q,\omega}^{timesCostNoF} \geq 0 \quad && \text{for } \omega \in\Omega, q \in Q_{0}, v \in V^{s}\\
             \end{alignedat}
         \end{cases}
     \end{equation}
     \begin{equation}
         \begin{cases}
             \begin{alignedat}{2}
-                & (x_{v,s,\omega}) \in R^{V^{s} \times Q_{0}, \Omega}, (y_{e,q,\omega}) \in R^{V^{s} \times Q_{0}, \Omega} \\
-                & x_{v,s,\omega}^{TimeCurt} \leq x_{v,s}*C_{max}, \quad x_{v,s,\omega}^{TimeCurt} \leq C_{\omega}^{fail} &&\quad \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
-                & x_{v,s,\omega}^{TimeCurt} \geq C_{\omega}^{fail}-(1-x_{v,s})*C_{max}, \quad x_{v,s,\omega}^{TimeCurt} \geq 0 &&\quad \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
-                & y_{e,q,\omega}^{TimeCurt} \leq y_{v,q}^{land} * C_{max}, \quad y_{e,q,\omega}^{TimeCurt} \leq C_{\omega}^{fail} \quad && \text{for } \omega \in \Omega, q \in Q_{0}, v \in V^{s} \\
-                & y_{e,q,\omega}^{TimeCurt} \geq C_{\omega}^{fail}-(1-y_{v,q}^{land})*C_{max}, \quad  y_{e,q,\omega}^{TimeCurt} \geq 0 \quad && \text{for } \omega \in\Omega, q \in Q_{0}, v \in V^{s}\\
-            \end{alignedat}
-        \end{cases}
-    \end{equation}
-    \begin{equation}
-        \begin{cases}
-            \begin{alignedat}{2}
-                & (C_{\omega}^{fail}) \in R^{\Omega}, (C_{\omega}^{nofail}) \in R^{\Omega}, C_{o} \in R\\
-                & (C_{\omega}^{fail}) = \sum_{v \in V_{0}} C_{v,\omega}^{wCurtFail} &&\quad \text{for } \omega \in \Omega \\
-                & C_{\omega}^{nofail} = C_\omega^{curtailement} - \sum_{v \in V_{s},s \in S} x_{v,s,\omega}^{TimeCurt}*p_s - \sum_{v \in V^s, q \in Q_{0}} y_{e,q,w}^{TimeCurt}*p_{q} && \quad \text{for } \omega \in \Omega \\
-                & C_{o} = \sum_{\omega \in \Omega} p_{\omega} * (C_{\omega}^{fail} + C_{\omega}^{nofail}) \\
+                 cost^{ope} &= \sum_{\omega \in \Omega} \lbrack \sum_{v \in V^s} ( \sum_{s \in S} p_s x_{v,s,\omega}^{timesCostF} + \sum_{\substack{q \in Q^0 \\ e = (v_0, v)}} p_q y_{e,q,\omega}^{timesCostF} ) \\
+                &+ cost^n_{\omega} - \sum_{v \in V^s} ( \sum_{s \in S} p_s x_{v,s,\omega}^{timesCostNoF} + \sum_{\substack{q \in Q^0 \\ e = (v_0, v)}} p_q y_{e,q,\omega}^{timesCostNoF} ) \rbrack \\ 
+                 
             \end{alignedat}
         \end{cases}
     \end{equation}
 
     \textit{N.B. : la justification de cette formulation du PLNE est trouvable étape par étape dans les commentaires du document linearSolverCode.jl}
-%}
+\textit{Q8}
+On obtient pour small la solution optimale suivante :
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.3]{small.png}
+    \caption{Solution optimale pour l'instance small}
+\end{figure}
 
-%\end{enumerate}
+On constate que les sites de sous-station utilisés sont les plus proches des éoliennes, et que les types de sous-station et de câbles utilisés sont les moins chers (voir figure 2).
+De plus, plutôt que de regrouper toutes les éoliennes sur une même sous-station, la solution optimale les répartit sur trois sous-stations différentes, ce qui permet d'améliorer la résilience de la solution.
+
 
 \section {Algorithm}
 Une fois le solveur linéaire mis en place, le problème principal qui empêche de l'utiliser pour les instances medium, large et huge est la taille de celles-ci - en effet, le nombre de variable dans le modèle influe énormément sur le temps de calcul (et donc la possibilité de résoudre le problème). 
 Ainsi nous avons implémenté la stratégie suivante :
+\\
 \begin{itemize}
     \item Réduire la taille de l'instance avec différente méthode (voir ci-dessous) .
     \item Résoudre le problème pour cette sous-instance avec le solveur linéaire
-    \item Transformer la solution obtenue en une solution du problème initial.
+    \item Transformer la solution obtenue en une solution du problème initial. \\
 \end{itemize}
 Les stratégies de réduction de taille que nous avons implémenté sont motivées par les observations suivantes que nous avons pu faire sur l'instance small :
-Seuls certains sites de sous-station sont utilisés (voir figure 1), et seuls certains types de sous-station et de câbles sont utilisés (voir figure 2).
+Seuls certains sites de sous-station sont utilisés (voir figure 1), seuls certains types de sous-station et de câbles sont utilisés (voir figure 2), et le nombre de scénarios est très grand (~100 pour small \& medium, ~1000 pour large \& huge).
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.5]{small-types.png}
+    \includegraphics[scale=0.4]{small-types.png}
     \caption{Types des sous-stations et des câbles dans l'instance small - en rouge, les types effectivement utilisés dans la solution optimale}
 \end{figure}
 
@@ -361,18 +307,6 @@ Seuls certains sites de sous-station sont utilisés (voir figure 1), et seuls ce
     \item Remplacer les multiples scénarios par un unique scénario représentatif (e.g. un scénario dont la puissance est $p = p_{min} + x(p_{max} - p_{min})$ avec $x$ un coefficient choisi, e.g $x = 0.95$)
     \item Éliminer certains types possibles de sous-stations et / ou de câbles, en fonction de leurs probabilités de panne et de leurs coûts.
 \end{itemize}
-
-L'intérêt de ces stratégies est le suivant : on note selon le tableau suivant les tailles caractèristiques des instances :
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{l|llllll}
-    Instance Component & $ V_s $  & $ S $    & $ Q^0 $  & $ Q^s $  & $ V^t $  & $ \Omega$\\ \hline
-    Size               & $|V^s|$ & $|S|$ & $|Q^0|$ & $|Q^s|$ & $|V^t|$ & $|\Omega|$ \\
-    \end{tabular}
-\end{table}
-
-On peut alors récaptituler le nombre de variables / contraintes correspondant à chaque composante du coût :
 
 \begin{table}[h]
     \centering
@@ -383,10 +317,23 @@ On peut alors récaptituler le nombre de variables / contraintes correspondant �
         Nom      & $C^n(x, y, z, \omega)$ & \begin{tabular}[c]{@{}l@{}}Curtailing of $v $ \\ under $ \omega$  and failure of $v$ \end{tabular}  & Power sent from $v$ to $\tilde{v}$ & $C^f(v, x, y, z, \omega)$ \\ \hline
         Quantité & $ |\Omega| $ & $ |V^s| |\Omega| $                            & $ |V^s|^2 |\Omega| $            & $ |V^s| |\Omega| $              \\ \hline
     \end{tabular}
+    \caption{Nombre de variables du problème / contraintes en fonction des tailles caractéristiques de l'instance}
+\end{table}
+Le nombre de variable / contrainte - et donc le temps de résolution - du problème est donc en $O(|V^s| |S| + |V^s|^2 |Q^s| + |V^s| |Q^0| + |V^s| |V^t| + |V^s| ^ 2 |\Omega|)$. \\
+L'intérêt de la stratégie de réduction de taille d'instance est donc d'obtenir des instances dont on peut trouver la solution optimale en un temps raisonnable, à l'aide du solveur linéaire.
+Ces sous-instance étant extraites des instances initiales, la solution optimale de la sous-instance est une solution réalisable pour l'instance initiale, de coût supérieur à l'optimal.
+(Mais relativement proches si la réduction de taille est bien faite.)
 
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l|ll}
+    Instance & \begin{tabular}[c]{@{}l@{}}small\\ $|V^s| = 15, |\Omega| = 100$\end{tabular} & \begin{tabular}[c]{@{}l@{}}small reduced\\ $|V^s| = 5, |\Omega| = 1$\end{tabular} \\ \hline
+    Time (s) & 7654                                                                         & 1.4                                                                           \\ \hline
+    Cost     & 3244                                                                         & 3244                                                                             
+    \end{tabular}
+    \caption{Temps de calcul \& résultat selon la réduction appliquée}
 \end{table}
 
-Avec ces stratégies, nous pouvons utiliser le solveur linéaire pour résoudre les instances. Les meilleurs scores obtenus sont les suivants :
 
 \begin{table}[h]
     \centering
@@ -397,11 +344,12 @@ Avec ces stratégies, nous pouvons utiliser le solveur linéaire pour résoudre 
     gap  & $\leq 3.8 \%$ & $\leq 7.5\%$ & Unknown & Unknown \\ 
     \end{tabular}
 
+    \caption{Meilleurs résultats obtenus pour les différentes instances.}
+
 \end{table}
 
 Le gap est calculé par rapport à la solution du relaché linéaire, et est donc une sur-estimation du gap par rapport à la solution optimale entière.
-(Pour large \& huge, nous n'avons pas pu calculer le gap, 16Go de RAM n'étant pas suffisant pour les résoudre.)
-
+    (Pour large \& huge, nous n'avons pas pu calculer le gap, 16Go de RAM n'étant pas suffisant pour les résoudre.)
 
 \end{document}
 
