@@ -15,7 +15,7 @@ include("agregator.jl")
 # To use the original instance && compute the full MILP, use :
 #aggregationMethod = ""
 size = "medium"
-aggregationMethod = "testing"
+aggregationMethod = ""
 #####################
 
 import KIRO2023
@@ -61,6 +61,8 @@ onlyLowerCostSubTypes(
         , choiceProbaSubs)
     , choiceCostCables)
 , choiceCostSubs)
+
+#instance = trueInstance
 #####################################################
 
 if aggregationMethod != ""
@@ -94,6 +96,8 @@ trueSolution = deAggregateReducedSiteSolution(trueInstance, instance,
         deAggregateReducedLandCables(trueInstance, instance, solution)
         )
     )
+
+#trueSolution = solution
 
 ###################################################################
 
