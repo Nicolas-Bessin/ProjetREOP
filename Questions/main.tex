@@ -271,7 +271,7 @@
     \end{equation}
 
     \textit{N.B. : la justification de cette formulation du PLNE est trouvable étape par étape dans les commentaires du document linearSolverCode.jl} \\
-\textit{Q8}
+\textit{Q6}
 On obtient pour small la solution optimale suivante :
 
 \begin{figure}[h]
@@ -280,21 +280,22 @@ On obtient pour small la solution optimale suivante :
     \caption{Solution optimale pour l'instance small}
 \end{figure}
 
-On constate que les sites de sous-station utilisés sont les plus proches des éoliennes, et que les types de sous-station et de câbles utilisés sont les moins chers (voir figure 2).
+\textit{Q8}
+On constate (cf \textit{Q6}) que les sites de sous-station utilisés sont les plus proches des éoliennes, et que les types de sous-station et de câbles utilisés sont les moins chers (voir figure 2).
 De plus, plutôt que de regrouper toutes les éoliennes sur une même sous-station, la solution optimale les répartit sur trois sous-stations différentes, ce qui permet d'améliorer la résilience de la solution.
 
 
 \section {Algorithm}
-Une fois le solveur linéaire mis en place, le problème principal qui empêche de l'utiliser pour les instances medium, large et huge est la taille de celles-ci - en effet, le nombre de variable dans le modèle influe énormément sur le temps de calcul (et donc la possibilité de résoudre le problème). 
+Une fois le solveur linéaire mis en place, le problème principal qui empêche de l'utiliser pour les instances medium, large et huge est la taille de celles-ci - en effet, le nombre de variables dans le modèle influe énormément sur le temps de calcul (et donc la possibilité de résoudre le problème). 
 Ainsi nous avons implémenté la stratégie suivante :
 \\
 \begin{itemize}
-    \item Réduire la taille de l'instance avec différente méthode (voir ci-dessous) .
+    \item Réduire la taille de l'instance avec différentes méthodes (voir ci-dessous) .
     \item Résoudre le problème pour cette sous-instance avec le solveur linéaire
     \item Transformer la solution obtenue en une solution du problème initial. \\
 \end{itemize}
-Les stratégies de réduction de taille que nous avons implémenté sont motivées par les observations suivantes que nous avons pu faire sur l'instance small :
-Seuls certains sites de sous-station sont utilisés (voir figure 1), seuls certains types de sous-station et de câbles sont utilisés (voir figure 2), et le nombre de scénarios est très grand (~100 pour small \& medium, ~1000 pour large \& huge).
+Les stratégies de réduction de taille que nous avons implémentées sont motivées par les observations suivantes que nous avons pu faire sur l'instance small :
+seuls certains sites de sous-station sont utilisés (voir figure 1), seuls certains types de sous-station et de câbles sont utilisés (voir figure 2), et le nombre de scénarios est très grand (~100 pour small \& medium, ~1000 pour large \& huge).
 
 \begin{figure}[h]
     \centering
@@ -319,9 +320,9 @@ Seuls certains sites de sous-station sont utilisés (voir figure 1), seuls certa
     \end{tabular}
     \caption{Nombre de variables du problème / contraintes en fonction des tailles caractéristiques de l'instance}
 \end{table}
-Le nombre de variable / contrainte - et donc le temps de résolution - du problème est donc en $O(|V^s| |S| + |V^s|^2 |Q^s| + |V^s| |Q^0| + |V^s| |V^t| + |V^s| ^ 2 |\Omega|)$. \\
+Le nombre de variables / contraintes - et donc le temps de résolution - du problème est donc en $O(|V^s| |S| + |V^s|^2 |Q^s| + |V^s| |Q^0| + |V^s| |V^t| + |V^s| ^ 2 |\Omega|)$. \\
 L'intérêt de la stratégie de réduction de taille d'instance est donc d'obtenir des instances dont on peut trouver la solution optimale en un temps raisonnable, à l'aide du solveur linéaire.
-Ces sous-instance étant extraites des instances initiales, la solution optimale de la sous-instance est une solution réalisable pour l'instance initiale, de coût supérieur à l'optimal.
+Ces sous-instances étant extraites des instances initiales, la solution optimale de la sous-instance est une solution réalisable pour l'instance initiale, de coût supérieur à l'optimal.
 (Mais relativement proches si la réduction de taille est bien faite.)
 
 \begin{table}[h]
@@ -354,5 +355,3 @@ Le gap est calculé par rapport à la solution du relaché linéaire, et est don
 \textit{Le code source pour le projet est disponible sur \underline{\href{https://github.com/Nicolas-Bessin/ProjetREOP}{github}}.}
 
 \end{document}
-
-
