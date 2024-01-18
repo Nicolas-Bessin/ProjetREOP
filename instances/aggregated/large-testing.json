@@ -1,171 +1,87 @@
 {
     "land_substation_cable_types": [
         {
-            "variable_cost": 9.6,
-            "rating": 200.0,
-            "probability_of_failure": 0.000273972602739726,
-            "id": 1,
-            "fixed_cost": 96.0
-        },
-        {
-            "variable_cost": 12.0,
-            "rating": 300.0,
-            "probability_of_failure": 0.000273972602739726,
-            "id": 2,
-            "fixed_cost": 96.0
-        },
-        {
-            "variable_cost": 19.2,
-            "rating": 500.0,
-            "probability_of_failure": 0.000273972602739726,
-            "id": 3,
-            "fixed_cost": 96.0
-        },
-        {
-            "variable_cost": 28.799999999999997,
-            "rating": 900.0,
-            "probability_of_failure": 0.000273972602739726,
-            "id": 4,
-            "fixed_cost": 96.0
-        },
-        {
-            "variable_cost": 38.4,
-            "rating": 1450.0,
-            "probability_of_failure": 0.000273972602739726,
-            "id": 5,
-            "fixed_cost": 96.0
-        },
-        {
-            "variable_cost": 57.599999999999994,
-            "rating": 2400.0,
-            "probability_of_failure": 0.000273972602739726,
-            "id": 6,
-            "fixed_cost": 96.0
-        },
-        {
             "variable_cost": 8.0,
             "rating": 200.0,
             "probability_of_failure": 0.0013698630136986301,
-            "id": 7,
+            "id": 1,
             "fixed_cost": 80.0
         },
         {
             "variable_cost": 10.0,
             "rating": 300.0,
             "probability_of_failure": 0.0013698630136986301,
-            "id": 8,
+            "id": 2,
             "fixed_cost": 80.0
         },
         {
             "variable_cost": 16.0,
             "rating": 500.0,
             "probability_of_failure": 0.0013698630136986301,
-            "id": 9,
+            "id": 3,
             "fixed_cost": 80.0
         },
         {
             "variable_cost": 24.0,
             "rating": 900.0,
             "probability_of_failure": 0.0013698630136986301,
-            "id": 10,
-            "fixed_cost": 80.0
-        },
-        {
-            "variable_cost": 32.0,
-            "rating": 1450.0,
-            "probability_of_failure": 0.0013698630136986301,
-            "id": 11,
-            "fixed_cost": 80.0
-        },
-        {
-            "variable_cost": 48.0,
-            "rating": 2400.0,
-            "probability_of_failure": 0.0013698630136986301,
-            "id": 12,
+            "id": 4,
             "fixed_cost": 80.0
         },
         {
             "variable_cost": 7.2,
             "rating": 200.0,
             "probability_of_failure": 0.002054794520547945,
-            "id": 13,
+            "id": 5,
             "fixed_cost": 72.0
         },
         {
             "variable_cost": 9.0,
             "rating": 300.0,
             "probability_of_failure": 0.002054794520547945,
-            "id": 14,
+            "id": 6,
             "fixed_cost": 72.0
         },
         {
             "variable_cost": 14.4,
             "rating": 500.0,
             "probability_of_failure": 0.002054794520547945,
-            "id": 15,
+            "id": 7,
             "fixed_cost": 72.0
         },
         {
             "variable_cost": 21.6,
             "rating": 900.0,
             "probability_of_failure": 0.002054794520547945,
-            "id": 16,
-            "fixed_cost": 72.0
-        },
-        {
-            "variable_cost": 28.8,
-            "rating": 1450.0,
-            "probability_of_failure": 0.002054794520547945,
-            "id": 17,
-            "fixed_cost": 72.0
-        },
-        {
-            "variable_cost": 43.2,
-            "rating": 2400.0,
-            "probability_of_failure": 0.002054794520547945,
-            "id": 18,
+            "id": 8,
             "fixed_cost": 72.0
         },
         {
             "variable_cost": 6.8,
             "rating": 200.0,
             "probability_of_failure": 0.00410958904109589,
-            "id": 19,
+            "id": 9,
             "fixed_cost": 68.0
         },
         {
             "variable_cost": 8.5,
             "rating": 300.0,
             "probability_of_failure": 0.00410958904109589,
-            "id": 20,
+            "id": 10,
             "fixed_cost": 68.0
         },
         {
             "variable_cost": 13.6,
             "rating": 500.0,
             "probability_of_failure": 0.00410958904109589,
-            "id": 21,
+            "id": 11,
             "fixed_cost": 68.0
         },
         {
             "variable_cost": 20.4,
             "rating": 900.0,
             "probability_of_failure": 0.00410958904109589,
-            "id": 22,
-            "fixed_cost": 68.0
-        },
-        {
-            "variable_cost": 27.2,
-            "rating": 1450.0,
-            "probability_of_failure": 0.00410958904109589,
-            "id": 23,
-            "fixed_cost": 68.0
-        },
-        {
-            "variable_cost": 40.8,
-            "rating": 2400.0,
-            "probability_of_failure": 0.00410958904109589,
-            "id": 24,
+            "id": 12,
             "fixed_cost": 68.0
         }
     ],
@@ -813,7 +729,7 @@
     ],
     "wind_scenarios": [
         {
-            "power_generation": 17.099999999999998,
+            "power_generation": 17.46,
             "probability": 1.0,
             "id": 1
         }
@@ -847,148 +763,76 @@
     ],
     "substation_types": [
         {
-            "cost": 240.0,
-            "rating": 200.0,
-            "probability_of_failure": 1.3698630136986302e-5,
-            "id": 1
-        },
-        {
-            "cost": 360.0,
-            "rating": 300.0,
-            "probability_of_failure": 1.3698630136986302e-5,
-            "id": 2
-        },
-        {
-            "cost": 600.0,
-            "rating": 500.0,
-            "probability_of_failure": 1.3698630136986302e-5,
-            "id": 3
-        },
-        {
-            "cost": 1080.0,
-            "rating": 900.0,
-            "probability_of_failure": 1.3698630136986302e-5,
-            "id": 4
-        },
-        {
-            "cost": 1740.0,
-            "rating": 1450.0,
-            "probability_of_failure": 1.3698630136986302e-5,
-            "id": 5
-        },
-        {
-            "cost": 2880.0,
-            "rating": 2400.0,
-            "probability_of_failure": 1.3698630136986302e-5,
-            "id": 6
-        },
-        {
             "cost": 200.0,
             "rating": 200.0,
             "probability_of_failure": 0.000136986301369863,
-            "id": 7
+            "id": 1
         },
         {
             "cost": 300.0,
             "rating": 300.0,
             "probability_of_failure": 0.000136986301369863,
-            "id": 8
+            "id": 2
         },
         {
             "cost": 500.0,
             "rating": 500.0,
             "probability_of_failure": 0.000136986301369863,
-            "id": 9
+            "id": 3
         },
         {
             "cost": 900.0,
             "rating": 900.0,
             "probability_of_failure": 0.000136986301369863,
-            "id": 10
-        },
-        {
-            "cost": 1450.0,
-            "rating": 1450.0,
-            "probability_of_failure": 0.000136986301369863,
-            "id": 11
-        },
-        {
-            "cost": 2400.0,
-            "rating": 2400.0,
-            "probability_of_failure": 0.000136986301369863,
-            "id": 12
+            "id": 4
         },
         {
             "cost": 190.0,
             "rating": 200.0,
             "probability_of_failure": 0.000547945205479452,
-            "id": 13
+            "id": 5
         },
         {
             "cost": 285.0,
             "rating": 300.0,
             "probability_of_failure": 0.000547945205479452,
-            "id": 14
+            "id": 6
         },
         {
             "cost": 475.0,
             "rating": 500.0,
             "probability_of_failure": 0.000547945205479452,
-            "id": 15
+            "id": 7
         },
         {
             "cost": 855.0,
             "rating": 900.0,
             "probability_of_failure": 0.000547945205479452,
-            "id": 16
-        },
-        {
-            "cost": 1377.5,
-            "rating": 1450.0,
-            "probability_of_failure": 0.000547945205479452,
-            "id": 17
-        },
-        {
-            "cost": 2280.0,
-            "rating": 2400.0,
-            "probability_of_failure": 0.000547945205479452,
-            "id": 18
+            "id": 8
         },
         {
             "cost": 180.0,
             "rating": 200.0,
             "probability_of_failure": 0.002191780821917808,
-            "id": 19
+            "id": 9
         },
         {
             "cost": 270.0,
             "rating": 300.0,
             "probability_of_failure": 0.002191780821917808,
-            "id": 20
+            "id": 10
         },
         {
             "cost": 450.0,
             "rating": 500.0,
             "probability_of_failure": 0.002191780821917808,
-            "id": 21
+            "id": 11
         },
         {
             "cost": 810.0,
             "rating": 900.0,
             "probability_of_failure": 0.002191780821917808,
-            "id": 22
-        },
-        {
-            "cost": 1305.0,
-            "rating": 1450.0,
-            "probability_of_failure": 0.002191780821917808,
-            "id": 23
-        },
-        {
-            "cost": 2160.0,
-            "rating": 2400.0,
-            "probability_of_failure": 0.002191780821917808,
-            "id": 24
+            "id": 12
         }
     ],
     "general_parameters": {

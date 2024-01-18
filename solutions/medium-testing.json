@@ -22,14 +22,9 @@
             "land_cable_type": 21
         },
         {
-            "substation_type": 19,
+            "substation_type": 21,
             "id": 23,
-            "land_cable_type": 19
-        },
-        {
-            "substation_type": 19,
-            "id": 28,
-            "land_cable_type": 19
+            "land_cable_type": 21
         }
     ],
     "turbines": [
@@ -147,7 +142,7 @@
         },
         {
             "id": 29,
-            "substation_id": 3
+            "substation_id": 8
         },
         {
             "id": 30,
@@ -259,11 +254,11 @@
         },
         {
             "id": 57,
-            "substation_id": 8
+            "substation_id": 13
         },
         {
             "id": 58,
-            "substation_id": 8
+            "substation_id": 13
         },
         {
             "id": 59,
@@ -383,15 +378,15 @@
         },
         {
             "id": 88,
-            "substation_id": 13
+            "substation_id": 18
         },
         {
             "id": 89,
-            "substation_id": 13
+            "substation_id": 18
         },
         {
             "id": 90,
-            "substation_id": 13
+            "substation_id": 18
         },
         {
             "id": 91,
@@ -431,7 +426,7 @@
         },
         {
             "id": 100,
-            "substation_id": 18
+            "substation_id": 23
         },
         {
             "id": 101,
@@ -483,31 +478,31 @@
         },
         {
             "id": 113,
-            "substation_id": 18
+            "substation_id": 23
         },
         {
             "id": 114,
-            "substation_id": 18
+            "substation_id": 23
         },
         {
             "id": 115,
-            "substation_id": 18
+            "substation_id": 23
         },
         {
             "id": 116,
-            "substation_id": 18
+            "substation_id": 23
         },
         {
             "id": 117,
-            "substation_id": 18
+            "substation_id": 23
         },
         {
             "id": 118,
-            "substation_id": 28
+            "substation_id": 23
         },
         {
             "id": 119,
-            "substation_id": 28
+            "substation_id": 23
         },
         {
             "id": 120,
@@ -539,39 +534,39 @@
         },
         {
             "id": 127,
-            "substation_id": 28
+            "substation_id": 23
         },
         {
             "id": 128,
-            "substation_id": 28
+            "substation_id": 23
         },
         {
             "id": 129,
-            "substation_id": 28
+            "substation_id": 23
         },
         {
             "id": 130,
-            "substation_id": 28
+            "substation_id": 23
         },
         {
             "id": 131,
-            "substation_id": 28
+            "substation_id": 23
         },
         {
             "id": 132,
-            "substation_id": 28
+            "substation_id": 23
         },
         {
             "id": 133,
-            "substation_id": 28
+            "substation_id": 23
         },
         {
             "id": 134,
-            "substation_id": 28
+            "substation_id": 23
         },
         {
             "id": 135,
-            "substation_id": 28
+            "substation_id": 23
         }
     ]
 }

@@ -8,7 +8,7 @@ include("linearRelaxation.jl")
 #####################
 # To use the original instance && compute the full MILP, use :
 #aggregationMethod = ""
-size = "small"
+size = "large"
 #####################
 
 import KIRO2023

@@ -15,7 +15,7 @@ include("agregator.jl")
 # To use the original instance && compute the full MILP, use :
 #aggregationMethod = ""
 size = "medium"
-aggregationMethod = ""
+aggregationMethod = "testing"
 #####################
 
 import KIRO2023
@@ -40,11 +40,11 @@ trueInstance = read_instance(trueInstanceFile)
 #This because taking the lowest cost cables among the highest probability cables
 #is not the same as taking the highest probability cables among the lowest cost cables
 # For the no sub sub, no agregation is needed, the absence of sub sub cables is considered in the solver
-choiceColumns = [1]
-choiceProbaCables = []
-choiceCostCables = []
-choiceProbaSubs = []
-choiceCostSubs = []
+choiceColumns = 1:2
+choiceProbaCables = 1:3
+choiceCostCables = 1:12
+choiceProbaSubs = 1:3
+choiceCostSubs = 1:12
 instance = 
 onlyLowerCostSubTypes(
     onlyLowerCostLandCables(
@@ -53,7 +53,7 @@ onlyLowerCostSubTypes(
                 onlyFurthestSites(
                     (
                         (
-                            (trueInstance)
+                            xPercentWorseScenario(trueInstance, 0.99)
                         )
                     )
                 , choiceColumns)
@@ -62,7 +62,6 @@ onlyLowerCostSubTypes(
     , choiceCostCables)
 , choiceCostSubs)
 
-#instance = trueInstance
 #####################################################
 
 if aggregationMethod != ""

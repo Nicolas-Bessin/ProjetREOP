@@ -97,7 +97,7 @@
     },
     "small-testing": {
         "operationnal": 37.6208978630137,
-        "time": 443.174840927124,
+        "time": 451.28247594833374,
         "total": 3246.970670831903,
         "construction": 3209.3497729688893
     },
@@ -118,6 +118,12 @@
         "time": 2.870042085647583,
         "total": 8780.318434416817,
         "construction": 8502.753378821419
+    },
+    "huge-testing": {
+        "operationnal": 268.6321069928425,
+        "time": 216.77362513542175,
+        "total": 5584.713001881805,
+        "construction": 5316.080894888963
     },
     "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+NoSubSub": {
         "operationnal": 775.1317466958902,
@@ -144,10 +150,10 @@
         "construction": 7960.939168268774
     },
     "medium-testing": {
-        "operationnal": 189.76908368219182,
-        "time": 295.3457589149475,
-        "total": 6496.485725129546,
-        "construction": 6306.716641447354
+        "operationnal": 95.33177753424663,
+        "time": 1749.998055934906,
+        "total": 6491.1868624738145,
+        "construction": 6395.855084939568
     },
     "huge-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+DummySubSub+Turbines": {
         "operationnal": 980.1557616051377,
@@ -256,6 +262,12 @@
         "time": 123.94119501113892,
         "total": 5779.811409953449,
         "construction": 5072.874177869407
+    },
+    "small-Vincent'sBullshit": {
+        "operationnal": 166451.52834246578,
+        "time": 2.8728959560394287,
+        "total": 168493.3501926228,
+        "construction": 2041.821850157019
     },
     "small-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost": {
         "operationnal": 37.6208978630137,
