@@ -126,7 +126,7 @@
             \end{alignedat}
         \end{cases}
     \end{equation*}
-    Notons que $\alpha$ est indéterminé pour $\beta = 0$, mais qu'on a tout de même $\mu = 0= [\beta]^{+}$.
+    Notons que $\alpha$ est indéterminé pour $\beta = 0$, mais qu'on a tout de même $\mu = 0= [\beta]^{+}$. \\
 %}
 %\item {
     \textit{Q3 }
@@ -165,7 +165,7 @@
 %}
 %\item{
     \textit{Q5 }
-    \underline{Remarque :} Pour la linearisation des termes en -min : $-min(a,b) = max(-a,-b)$ \\
+    Pour linérariser les termes en $-\min$, on utilise : $-\min(a,b) = \max(-a,-b)$ \\
     Pour linéariser les termes $p_f(v, x, y) c^c(C^f(v, x, y, z ,\omega))$, on doit distribuer la multiplication.\\
     \textit{N.B. : la justification de cette formulation du PLNE est trouvable étape par étape dans les commentaires du document linearSolverCode.jl} 
     \begin{align*}
@@ -259,7 +259,8 @@
     \end{equation}
 
 \textit{Q6}
-On obtient pour small la solution optimale suivante :
+On obtient pour small la solution optimale suivante, de coût $3244$ :
+
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.2]{small.png}
@@ -325,10 +326,10 @@ Ces sous-instances étant extraites des instances initiales, la solution optimal
 \begin{table}[h]
     \centering
 
-    \begin{tabular}{l|llll}
-    size & small         & medium       & large   & huge    \\ \hline
-    cost & 3244          & 6472         & 8566    & 5583    \\
-    gap  & $\leq 3.8 \%$ & $\leq 7.5\%$ & Unknown & Unknown \\ 
+    \begin{tabular}{l|llll|l}
+    size & small         & medium       & large   & huge    & Total \\ \hline
+    cost & 3244          & 6426         & 8566    & 5584    & 23820 \\ 
+    gap  & $\leq 3.8 \%$ & $\leq 6.9\%$ & Unknown & Unknown & Unknown\\ 
     \end{tabular}
 
     \caption{Meilleurs résultats obtenus pour les différentes instances.}
