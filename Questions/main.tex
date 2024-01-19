@@ -305,7 +305,7 @@ seuls certains sites de sous-station sont utilisés (voir figure 1), seuls certa
 
 \begin{itemize}
     \item Ne garder que les sites de sous-station les plus proches des éoliennes (comme avec la solution optimale de l'instance small)
-    \item Remplacer les multiples scénarios par un unique scénario représentatif (e.g. un scénario dont la puissance est $p = p_{min} + x(p_{max} - p_{min})$ avec $x$ un coefficient choisi, e.g $x = 0.95$)
+    \item Remplacer les multiples scénarios par un unique scénario (e.g. un scénario dont la puissance est $p = p_{min} + x(p_{max} - p_{min})$ avec $x$ un coefficient choisi. Avec $x = 1$, la solution est sur-dimensionée : les coûts de contruction sont trop élevés, et avec $x = 0$, la solution est sous-dimensionnée : les coûts d'opération sont trop élevés. On trouve une valeur "optimale" de x à environ $ x = 0.99$.
     \item Éliminer certains types possibles de sous-stations et / ou de câbles, en fonction de leurs probabilités de panne et de leurs coûts.
 \end{itemize}
 

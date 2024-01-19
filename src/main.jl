@@ -3,7 +3,7 @@ include("linearSolverCode.jl")
 #include("solverConstructionCost.jl")
 #include("solverQuadraticIndicator.jl")
 #include("solverNoSubSub.jl")
-#include("utils.jl")
+include("utils.jl")
 include("costCompute.jl")
 include("agregator.jl")
 
@@ -14,7 +14,7 @@ include("agregator.jl")
 #####################
 # To use the original instance && compute the full MILP, use :
 #aggregationMethod = ""
-size = "huge"
+size = "large"
 aggregationMethod = "testing"
 #####################
 
@@ -40,11 +40,11 @@ trueInstance = read_instance(trueInstanceFile)
 #This because taking the lowest cost cables among the highest probability cables
 #is not the same as taking the highest probability cables among the lowest cost cables
 # For the no sub sub, no agregation is needed, the absence of sub sub cables is considered in the solver
-choiceColumns = []
-choiceProbaCables = []
-choiceCostCables = []
-choiceProbaSubs = []
-choiceCostSubs = []
+choiceColumns = 1:3
+choiceProbaCables = 2:4
+choiceCostCables = 1:8
+choiceProbaSubs = 2:4
+choiceCostSubs = 1:8
 instance = 
 onlyLowerCostSubTypes(
     onlyLowerCostLandCables(
@@ -52,7 +52,7 @@ onlyLowerCostSubTypes(
             onlyHighestProbaLandCables(
                 onlyFurthestSites(
                     (
-                        (
+                       DummySubSubCables(
                             xPercentWorseScenario(trueInstance, 0.99)
                         )
                     )
@@ -64,9 +64,9 @@ onlyLowerCostSubTypes(
 
 #####################################################
 
-if aggregationMethod != ""
-    write_instance(instance, "instances/aggregated/$outputFormat.json")
-end 
+# if aggregationMethod != ""
+#     write_instance(instance, "instances/aggregated/$outputFormat.json")
+# end 
 
 # Raw data dump file for the MILP
 # If you don't want to save the raw data, just set rawDataDump to ""
@@ -101,11 +101,11 @@ trueSolution = deAggregateReducedSiteSolution(trueInstance, instance,
 ###################################################################
 
 writeSolution(trueSolution, "solutions/$outputFormat.json")
-#figure = plotSolution(trueSolution, trueInstance)
-#save("plots/plots/$outputFormat.png", figure)
+figure = plotSolution(trueSolution, trueInstance)
+save("plots/plots/$outputFormat.png", figure)
 
-#figure = plotUsedTypes(trueInstance, trueSolution, instance)
-#save("plots/types/$outputFormat.png", figure)
+figure = plotUsedTypes(trueInstance, trueSolution, (600,600), instance)
+save("plots/types/$outputFormat.png", figure)
 
 falseCost = costOfSolution(instance, solution)
 cost = costOfSolution(trueInstance, trueSolution)
