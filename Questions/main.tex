@@ -136,8 +136,7 @@
         \begin{alignedat}{2}
             \min _{\alpha, \beta, y_\alpha, y_\beta, y} & y \\
             \text{ s.c. } 
-            &y \geq \alpha - 2M y_\alpha, & \quad& y \geq \beta - 2M y_\beta \\
-            &y_\alpha + y_\beta = 1 \\
+            &y \geq \alpha - 2M y_\alpha, & \quad& y \geq \beta - 2M y_\beta, \quad y_\alpha + y_\beta = 1 \\
         \end{alignedat}
     \end{equation}
     La contrainte $y_\alpha + y_\beta = 1$ assure  $y = \alpha$ ou $y = \beta$.
@@ -155,23 +154,20 @@
             \end{aligned}
         \end{equation}
     \end{comment}
-    On introduit la variable continue $\delta$ et les contraintes suivantes :
-    $$ \delta \geq \alpha, \qquad \delta \geq \beta $$
+    On introduit la variable continue $\delta$ et les contraintes suivantes :$\qquad \delta \geq \alpha, \quad \delta \geq \beta $ \\
     Le problème initial s'écrit alors :
     \begin{equation}
         \begin{aligned}
             \min _{\alpha, \beta, \gamma, \delta}  \delta &+ \gamma \\
-            \text{ s.c. }  A(\alpha, \beta, \gamma)^T &\leq b \\
-            \alpha &\leq \delta \\
-            \beta &\leq \delta \\
+            \text{ s.c. }  A(\alpha, \beta, \gamma)^T \leq b, & \quad \alpha \leq \delta,  \quad \beta \leq \delta \\
         \end{aligned}
     \end{equation}
 %}
 %\item{
     \textit{Q5 }
     \underline{Remarque :} Pour la linearisation des termes en -min : $-min(a,b) = max(-a,-b)$ \\
-    Pour linéariser les termes $p_f(v, x, y) c^c(C^f(v, x, y, z ,\omega))$, on doit distribuer la multiplication.
-
+    Pour linéariser les termes $p_f(v, x, y) c^c(C^f(v, x, y, z ,\omega))$, on doit distribuer la multiplication.\\
+    \textit{N.B. : la justification de cette formulation du PLNE est trouvable étape par étape dans les commentaires du document linearSolverCode.jl} 
     \begin{align*}
         & \min_{x,y,z} cost^{cons}+ cost ^{ope} \\
          (x_{v,s}) \in \{0,1\}^{V^{s} \times S}, & (y_{e,q}^{land}) \in \{0,1\}^{E^0 \times Q}, (z_{e})\in \{0,1\}^{E^t}, (y_{e,q}^{sub}) \in \{0,1\}^{E^S\times Q}\\
@@ -181,7 +177,7 @@
         \begin{cases}
             \begin{alignedat}{2}
                 & minusCapa_v \geq - \sum_{s \in S} r_s * x_{v,s}, \quad minusCapa_v \geq - \sum_{q \in Q_0} r_q * y_{e,q}^{land}  &&  \text{for } v \in V^s, e = (v_0, v)  \\
-                & C_{v,\omega}^{n} \geq 0, C_{v,\omega}^{n} \geq \pi_\omega * \sum_{t \in V^t} z_{v,t} + minusCapa_v  &&  \text{for } v \in V^s, \omega \in \Omega  \\
+                & C_{v,\omega}^{n} \geq 0, \quad C_{v,\omega}^{n} \geq \pi_\omega * \sum_{t \in V^t} z_{v,t} + minusCapa_v  &&  \text{for } v \in V^s, \omega \in \Omega  \\
                 & C^n_{\omega} = \sum_{v \in V^s} C_{v,\omega}^{nf} && \text{for } \omega \in \Omega \\
             \end{alignedat}
         \end{cases}
@@ -208,8 +204,7 @@
         \begin{cases}
             \begin{alignedat}{2}
                 & C_{u, v, \omega}^{otherFail} \in R^{{V^s}^2 \times \Omega}_+ \\
-                & C_{u, v, \omega}^{otherFail} \geq 0, \\
-                & C_{u, v, \omega}^{otherFail} \geq \pi_\omega * \sum_{t \in V^t} z_{v,t} - P_{u, v, \omega}^{sent} + minusCapa_v
+                & C_{u, v, \omega}^{otherFail} \geq 0, \quad C_{u, v, \omega}^{otherFail} \geq \pi_\omega * \sum_{t \in V^t} z_{v,t} - P_{u, v, \omega}^{sent} + minusCapa_v
             \end{alignedat}
         \end{cases}
     \end{equation}
@@ -217,14 +212,7 @@
         \begin{cases}
             \begin{alignedat}{2}
                 & C^f(v, \omega) \in R^{V^s \times \Omega} && \\
-                & C^f(v, \omega) = C_{v, \omega}^{ownFail} + \sum_{\substack{e = (v_0, \bar{v}) \\ v \neq \bar{v} \\ \tilde{e} = (v, \bar{v})}} C_{v, \bar{v} \omega}^{otherFail} && \text{for } v \in V^s, \omega \in \Omega \\
-            \end{alignedat}
-        \end{cases}
-    \end{equation}
-    \begin{equation}
-        \begin{cases}
-            \begin{alignedat} {2}
-                cost^{cons} = \sum_{v \in V^s} \sum _{s \in S} c_s x_{vs} + \sum_{e \in E^0} \sum_{q \in Q_0} c_{eq} y_{eq}^{land} + \sum _{e \in E^S} \sum_{q \in Q_S} c_{eq} y_{eq}^{sub} + \sum_{e \in E^t} c_e z_e \\
+                & C^f(v, \omega) = C_{v, \omega}^{ownFail} + \sum_{\substack{e = (v_0, \bar{v}), v \neq \bar{v}, \tilde{e} = (v, \bar{v})}} C_{v, \bar{v} \omega}^{otherFail} && \text{for } v \in V^s, \omega \in \Omega \\
             \end{alignedat}
         \end{cases}
     \end{equation}
@@ -232,6 +220,7 @@
         \begin{cases}
             \begin{alignedat}{3}
                 & (cost_{\omega}^{n}) \in R^{V_{s} \times \Omega} , (cost_{v,\omega}^{f}) \in R^{V^{s} \times \Omega} \\
+                & cost^{cons} = \sum_{v \in V^s} \sum _{s \in S} c_s x_{vs} + \sum_{e \in E^0} \sum_{q \in Q_0} c_{eq} y_{eq}^{land} + \sum _{e \in E^S} \sum_{q \in Q_S} c_{eq} y_{eq}^{sub} + \sum_{e \in E^t} c_e z_e \\
                 & cost_{\omega}^{n} \geq c^{0}C_{\omega}^{n} , cost_{\omega}^{n} \geq c^{0}C_{\omega}^{n} + c^{p}(C_{\omega}^{n}-C^{max}) \quad &&  \text{for } \omega \in\Omega, v \in V^{s} \\
                 & cost_{v,\omega}^{f} \geq c^{0}Curt_{v,\omega}^{fail}, \quad cost_{v,\omega}^{f} \geq c^{0}C_{v,\omega}^{f} + c^{p}(C_{v,\omega}^{f} - C^{max}) \quad && \text{for } \omega \in\Omega, v \in V^{s} \\
             \end{alignedat}
@@ -245,7 +234,7 @@
                 & x_{v,s,\omega}^{timesCostF} \leq x_{v,s} * cost^{max}, \quad x_{v,s,\omega}^{timesCostF} \leq cost_{v, \omega}^{f} && \text{for } \omega \in\Omega, v \in V^{s}, s \in S\\
                 & x_{v,s,\omega}^{timesCostF} \geq cost_{v, \omega}^{f} - (1 - x_{v,s})*cost^{max}, \quad x_{v,s,\omega}^{timesCostF} \geq 0 && \text{for } \omega \in\Omega, v \in V^{s}, s \in S\\
                 & y_{e,q,\omega}^{timesCostF} \leq y_{v,q}^{land}*cost^{max}, \quad y_{e,q,\omega}^{timesCostF} \leq cost_{v, \omega}^{f} && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
-                & y_{e,q,\omega}^{timesCostF} \geq cost_{v, \omega}^{f} - (1 - x_{v,s})*cost^{max}, \quad y_{e,q,\omega}^{timesCostF} \geq 0  && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
+                & y_{e,q,\omega}^{timesCostF} \geq cost_{v, \omega}^{f} - (1 - x_{v,s})*cost^{max}, \quad y_{e,q,\omega}^{timesCostF} \geq  0  \quad && \text{for } \omega \in\Omega, v \in V^{s}, q \in Q\\
             \end{alignedat}
         \end{cases}
     \end{equation}
@@ -253,8 +242,8 @@
         \begin{cases}
             \begin{alignedat}{2}
                 & (x_{v,s,\omega}^{timesCostNoF}) \in R^{V^{s} \times Q_{0}, \Omega}, (y_{e,q,\omega}^{timesCostNoF}) \in R^{V^{s} \times Q_{0}, \Omega} \\
-                & x_{v,s,\omega}^{timesCostNoF} \leq x_{v,s}*cost^{max}, \quad x_{v,s,\omega}^{timesCostNoF} \leq cost_{\omega} ^n &&\quad \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
-                & x_{v,s,\omega}^{timesCostNoF} \geq cost_{\omega} ^n - (1-x_{v,s})*cost^{max}, \quad x_{v,s,\omega}^{timesCostNoF} \geq 0 &&\quad \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
+                & x_{v,s,\omega}^{timesCostNoF} \leq x_{v,s}*cost^{max}, \quad x_{v,s,\omega}^{timesCostNoF} \leq cost_{\omega} ^n && \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
+                & x_{v,s,\omega}^{timesCostNoF} \geq cost_{\omega} ^n - (1-x_{v,s})*cost^{max}, \quad x_{v,s,\omega}^{timesCostNoF} \geq 0 && \text{for } \omega \in\Omega, v \in V_{s}, s \in S\\
                 & y_{e,q,\omega}^{timesCostNoF} \leq y_{v,q}^{land} * cost^{max}, \quad y_{e,q,\omega}^{timesCostNoF} \leq cost_{\omega} ^n \quad && \text{for } \omega \in \Omega, q \in Q_{0}, v \in V^{s} \\
                 & y_{e,q,\omega}^{timesCostNoF} \geq cost_{\omega} ^n -(1-y_{v,q}^{land})*cost^{max}, \quad  y_{e,q,\omega}^{timesCostNoF} \geq 0 \quad && \text{for } \omega \in\Omega, q \in Q_{0}, v \in V^{s}\\
             \end{alignedat}
@@ -263,20 +252,17 @@
     \begin{equation}
         \begin{cases}
             \begin{alignedat}{2}
-                 cost^{ope} &= \sum_{\omega \in \Omega} \lbrack \sum_{v \in V^s} ( \sum_{s \in S} p_s x_{v,s,\omega}^{timesCostF} + \sum_{\substack{q \in Q^0 \\ e = (v_0, v)}} p_q y_{e,q,\omega}^{timesCostF} ) \\
-                &+ cost^n_{\omega} - \sum_{v \in V^s} ( \sum_{s \in S} p_s x_{v,s,\omega}^{timesCostNoF} + \sum_{\substack{q \in Q^0 \\ e = (v_0, v)}} p_q y_{e,q,\omega}^{timesCostNoF} ) \rbrack \\ 
-                 
+                cost^{ope} = & \sum_{\omega \in \Omega} \lbrack \sum_{v \in V^s} ( \sum_{s \in S} p_s x_{v,s,\omega}^{timesCostF} + \sum_{\substack{q \in Q^0, e = (v_0, v)}} p_q y_{e,q,\omega}^{timesCostF} ) \\
+                &+ cost^n_{\omega} - \sum_{v \in V^s} ( \sum_{s \in S} p_s x_{v,s,\omega}^{timesCostNoF} + \sum_{\substack{q \in Q^{0}, e = (v_0, v)}} p_q y_{e,q,\omega}^{timesCostNoF} ) \rbrack \\ 
             \end{alignedat}
         \end{cases}
     \end{equation}
 
-    \textit{N.B. : la justification de cette formulation du PLNE est trouvable étape par étape dans les commentaires du document linearSolverCode.jl} \\
 \textit{Q6}
 On obtient pour small la solution optimale suivante :
-
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.3]{small.png}
+    \includegraphics[scale=0.2]{small.png}
     \caption{Solution optimale pour l'instance small}
 \end{figure}
 
