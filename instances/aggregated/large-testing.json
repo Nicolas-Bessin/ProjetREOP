@@ -729,7 +729,7 @@
     ],
     "wind_scenarios": [
         {
-            "power_generation": 17.46,
+            "power_generation": 17.099999999999998,
             "probability": 1.0,
             "id": 1
         }

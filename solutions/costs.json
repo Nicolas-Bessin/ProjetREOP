@@ -121,9 +121,9 @@
     },
     "huge-testing": {
         "operationnal": 268.6321069928425,
-        "time": 216.77362513542175,
-        "total": 5584.713001881805,
-        "construction": 5316.080894888963
+        "time": 40.32237100601196,
+        "total": 5995.670272138334,
+        "construction": 5727.038165145492
     },
     "medium-FurthestSites+95%Worse+SubTypes&LandCablesHighProba&LowCost+NoSubSub": {
         "operationnal": 775.1317466958902,
@@ -192,10 +192,10 @@
         "construction": 8106.863372469561
     },
     "large-testing": {
-        "operationnal": 351.01296198049226,
-        "time": 3937.9399309158325,
-        "total": 8817.423762200882,
-        "construction": 8466.41080022039
+        "operationnal": 216.3210976425207,
+        "time": 59.16024589538574,
+        "total": 8719.12245977712,
+        "construction": 8502.8013621346
     },
     "small-onlyFurthestSites+worstCaseScenario": {
         "operationnal": 16.690438356164385,
