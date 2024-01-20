@@ -14,7 +14,7 @@ include("agregator.jl")
 #####################
 # To use the original instance && compute the full MILP, use :
 #aggregationMethod = ""
-size = "large"
+size = "medium"
 aggregationMethod = "testing"
 #####################
 
@@ -40,11 +40,11 @@ trueInstance = read_instance(trueInstanceFile)
 #This because taking the lowest cost cables among the highest probability cables
 #is not the same as taking the highest probability cables among the lowest cost cables
 # For the no sub sub, no agregation is needed, the absence of sub sub cables is considered in the solver
-choiceColumns = 1:3
-choiceProbaCables = 2:4
-choiceCostCables = 1:8
-choiceProbaSubs = 2:4
-choiceCostSubs = 1:8
+choiceColumns = []
+choiceProbaCables = []
+choiceCostCables = []
+choiceProbaSubs = []
+choiceCostSubs = []
 instance = 
 onlyLowerCostSubTypes(
     onlyLowerCostLandCables(
@@ -52,15 +52,15 @@ onlyLowerCostSubTypes(
             onlyHighestProbaLandCables(
                 onlyFurthestSites(
                     (
-                       DummySubSubCables(
-                            xPercentWorseScenario(trueInstance, 0.99)
-                        )
+                       trueInstance
                     )
                 , choiceColumns)
             , choiceProbaCables)
         , choiceProbaSubs)
     , choiceCostCables)
 , choiceCostSubs)
+
+instance = trueInstance
 
 #####################################################
 
@@ -96,7 +96,7 @@ trueSolution = deAggregateReducedSiteSolution(trueInstance, instance,
         )
     )
 
-#trueSolution = solution
+trueSolution = solution
 
 ###################################################################
 
