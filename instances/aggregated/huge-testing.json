@@ -1,52 +1,31 @@
 {
     "land_substation_cable_types": [
         {
-            "variable_cost": 4.5,
-            "rating": 200.0,
-            "probability_of_failure": 0.002054794520547945,
-            "id": 1,
-            "fixed_cost": 90.0
-        },
-        {
-            "variable_cost": 4.5,
-            "rating": 300.0,
-            "probability_of_failure": 0.002054794520547945,
-            "id": 2,
-            "fixed_cost": 90.0
-        },
-        {
             "variable_cost": 6.75,
             "rating": 500.0,
             "probability_of_failure": 0.002054794520547945,
-            "id": 3,
+            "id": 1,
             "fixed_cost": 90.0
         },
         {
             "variable_cost": 9.0,
             "rating": 750.0,
             "probability_of_failure": 0.002054794520547945,
-            "id": 4,
+            "id": 2,
             "fixed_cost": 90.0
         },
         {
             "variable_cost": 9.0,
             "rating": 900.0,
             "probability_of_failure": 0.002054794520547945,
-            "id": 5,
+            "id": 3,
             "fixed_cost": 90.0
         },
         {
             "variable_cost": 11.25,
             "rating": 1450.0,
             "probability_of_failure": 0.002054794520547945,
-            "id": 6,
-            "fixed_cost": 90.0
-        },
-        {
-            "variable_cost": 15.75,
-            "rating": 2400.0,
-            "probability_of_failure": 0.002054794520547945,
-            "id": 7,
+            "id": 4,
             "fixed_cost": 90.0
         }
     ],
@@ -733,46 +712,22 @@
     ],
     "substation_types": [
         {
-            "cost": 190.0,
-            "rating": 200.0,
-            "probability_of_failure": 0.000547945205479452,
-            "id": 1
-        },
-        {
             "cost": 285.0,
             "rating": 300.0,
             "probability_of_failure": 0.000547945205479452,
-            "id": 2
+            "id": 1
         },
         {
             "cost": 475.0,
             "rating": 500.0,
             "probability_of_failure": 0.000547945205479452,
-            "id": 3
+            "id": 2
         },
         {
             "cost": 712.5,
             "rating": 750.0,
             "probability_of_failure": 0.000547945205479452,
-            "id": 4
-        },
-        {
-            "cost": 855.0,
-            "rating": 900.0,
-            "probability_of_failure": 0.000547945205479452,
-            "id": 5
-        },
-        {
-            "cost": 1377.5,
-            "rating": 1450.0,
-            "probability_of_failure": 0.000547945205479452,
-            "id": 6
-        },
-        {
-            "cost": 2280.0,
-            "rating": 2400.0,
-            "probability_of_failure": 0.000547945205479452,
-            "id": 7
+            "id": 3
         }
     ],
     "general_parameters": {

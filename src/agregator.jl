@@ -27,6 +27,33 @@ function xPercentWorseScenario(instance :: Instance, x :: Float64)
     )
 end
 
+function nWorseScenario(instance :: Instance, n :: Int = 5)
+    scenarios = sort(instance.windScenarios, by = x-> x.power, rev = true)
+    normalization = sum([scenario.probability for scenario in scenarios[1:n]])
+    kept_scenarios = [
+        WindScenario(
+            i,
+            scenario.power,
+            scenario.probability / normalization
+        ) for (i, scenario) in enumerate(scenarios[1:n])
+    ]
+    return Instance(
+        instance.curtailingCost,
+        instance.curtailingPenalty,
+        instance.maxCurtailment,
+        instance.fixedCostCable,
+        instance.variableCostCable,
+        instance.mainLandSubstation,
+        instance.maximumPower,
+        instance.landSubstationCables,
+        instance.substationSubstationCables,
+        instance.substationLocations,
+        instance.substationTypes,
+        kept_scenarios,
+        instance.windTurbine,
+    )
+end
+
 function onlyFurthestSites(instance :: Instance, columns = [])
     if columns == []
         columns = 1:length(unique([site.x for site in instance.substationLocations]))
