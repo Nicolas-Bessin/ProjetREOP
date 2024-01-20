@@ -101,7 +101,7 @@
     \end{center}
 \end{titlepage}
 
-\section{Questions}
+\section{Linéarisations}
 %\begin {enumerate}
 %\item { 
     \textit{Q1 }
@@ -277,13 +277,15 @@ On obtient pour small la solution optimale suivante, pour une valeur optimale de
 \textit{Q8}
 On constate (cf \textit{Q6}) que les sites de sous-station utilisés sont les plus proches des éoliennes, et que les types de sous-station et de câbles utilisés sont les moins chers (\ref{Figure 2}).
 De plus, plutôt que de regrouper toutes les éoliennes sur une même sous-station, la solution optimale les répartit sur trois sous-stations différentes, ce qui permet d'améliorer la résilience de la solution.
-\section {Algorithm}
-Une fois le solveur linéaire mis en place, le problème principal qui empêche de l'utiliser pour les instances medium, large et huge est la taille de celles-ci - en effet, le nombre de variables dans le modèle influe énormément sur le temps de calcul (et donc la possibilité de résoudre le problème). 
-Ainsi nous avons implémenté la stratégie suivante :
+
+\section {Résolution du problème}
+
+Une fois le solveur linéaire mis en place, le problème principal qui empêche de l'utiliser pour les instances medium, large et huge est la taille de celles-ci - en effet, le nombre de variables dans le modèle influe énormément sur le temps de calcul et la mémoire nécessaire (et donc la possibilité de résoudre le problème). 
+Ainsi nous avons implémenté la stratégie suivante : \\
 \begin{itemize}
     \item Réduire la taille de l'instance avec différentes méthodes (voir ci-dessous).
     \item Résoudre le problème pour cette sous-instance avec le solveur linéaire
-    \item Transformer la solution obtenue en une solution du problème initial.
+    \item Transformer la solution obtenue en une solution du problème initial. \\
 \end{itemize}
 Les stratégies de réduction de taille que nous avons implémentées sont motivées par les observations suivantes que nous avons pu faire sur l'instance small :
 seuls certains sites de sous-station sont utilisés (\ref{Figure 1}), seuls certains types de sous-station et de câbles sont utilisés (\ref{Figure 2}), et le nombre de scénarios est très grand (~100 pour small \& medium, ~1000 pour large \& huge).
