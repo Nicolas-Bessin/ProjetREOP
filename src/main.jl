@@ -14,7 +14,7 @@ include("agregator.jl")
 #####################
 # To use the original instance && compute the full MILP, use :
 #aggregationMethod = ""
-size = "large"
+size = "small"
 aggregationMethod = "testing"
 #####################
 
@@ -60,7 +60,7 @@ onlyLowerCostSubTypes(
     , choiceCostCables)
 , choiceCostSubs)
 
-#instance = trueInstance
+instance = trueInstance
 
 #####################################################
 
@@ -96,7 +96,7 @@ trueSolution = deAggregateReducedSiteSolution(trueInstance, instance,
         )
     )
 
-#trueSolution = solution
+trueSolution = solution
 
 ###################################################################
 

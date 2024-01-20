@@ -222,7 +222,7 @@ function linearSolver(instance :: Instance,  filename :: String = "")
 
     constructionCost = @variable(model)
 
-    @constraint(model, constructionCost == sum(substationCost) + sum(landCableCost) + sum(subCableCost) + sum(turbineCableCost))
+    @constraint(model, constructionCost == sum(substationCost) + sum(landCableCost) + sum(subCableCost) / 2 + sum(turbineCableCost))
 
     # Cost of the curtailment per substation, per scenario (This is c^c(C^f(v, ω)))
 
