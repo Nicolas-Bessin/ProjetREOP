@@ -129,6 +129,7 @@
     Notons que $\alpha$ est indéterminé pour $\beta = 0$, mais qu'on a tout de même $\mu = 0= [\beta]^{+}$.
 %}
 %\item {
+
     \textit{Q3 }
     On introduit les variables binaires $y_\alpha$ et $y_\beta$, et la variable continue $y$.
     Le problème s'écrit alors :
@@ -259,12 +260,15 @@
     \end{equation}
 
 \textit{Q6}
-On obtient pour small la solution optimale suivante :
+On obtient pour small la solution optimale suivante, pour une valeur optimale de \textit{3246.97} :
+
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.2]{small.png}
     \caption{Solution optimale pour l'instance small}
 \end{figure}
+
+\textit{Q7} Les \textit{indicator} rallongent le temps de calcul mais la solution optimale est la même. (cf document \textit{solverQuadraticIndicator.jl}, lignes 122 à 145). On peut en déduire que linéariser un problème est plus efficace, même si cela requiert un travail de linéarisation au préalable.
 
 \textit{Q8}
 On constate (cf \textit{Q6}) que les sites de sous-station utilisés sont les plus proches des éoliennes, et que les types de sous-station et de câbles utilisés sont les moins chers (voir figure 2).
@@ -273,7 +277,7 @@ De plus, plutôt que de regrouper toutes les éoliennes sur une même sous-stati
 Une fois le solveur linéaire mis en place, le problème principal qui empêche de l'utiliser pour les instances medium, large et huge est la taille de celles-ci - en effet, le nombre de variables dans le modèle influe énormément sur le temps de calcul (et donc la possibilité de résoudre le problème). 
 Ainsi nous avons implémenté la stratégie suivante :
 \begin{itemize}
-    \item Réduire la taille de l'instance avec différentes méthodes (voir ci-dessous) .
+    \item Réduire la taille de l'instance avec différentes méthodes (voir ci-dessous).
     \item Résoudre le problème pour cette sous-instance avec le solveur linéaire
     \item Transformer la solution obtenue en une solution du problème initial. 
 \end{itemize}
