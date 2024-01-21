@@ -40,7 +40,7 @@ trueInstance = read_instance(trueInstanceFile)
 #This because taking the lowest cost cables among the highest probability cables
 #is not the same as taking the highest probability cables among the lowest cost cables
 # For the no sub sub, no agregation is needed, the absence of sub sub cables is considered in the solver
-choiceColumns = [1]
+choiceColumns = []
 choiceProbaCables = []
 choiceCostCables = []
 choiceProbaSubs = []
@@ -52,7 +52,7 @@ onlyLowerCostSubTypes(
             onlyHighestProbaLandCables(
                 onlyFurthestSites(
                     (
-                       xPercentWorseScenario(trueInstance, 0.99)
+                       nWorseScenario(trueInstance, 10)
                     )
                 , choiceColumns)
             , choiceProbaCables)
